@@ -1,0 +1,39 @@
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
+
+export const metadata: Metadata = {
+  title: 'LINE流行語大賞 | トーク履歴解析',
+  description:
+    'LINEのトーク履歴を解析して、あなたの1年間の流行語大賞を発表します。プライバシーを重視した安全な解析サービスです。',
+  keywords: ['LINE', 'トーク履歴', '流行語', '解析', 'ランキング'],
+  authors: [{ name: 'LINE Talk Analyzer' }],
+  openGraph: {
+    title: 'LINE流行語大賞 | トーク履歴解析',
+    description: 'LINEのトーク履歴を解析して、あなたの1年間の流行語大賞を発表します。',
+    type: 'website',
+    locale: 'ja_JP',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'LINE流行語大賞 | トーク履歴解析',
+    description: 'LINEのトーク履歴を解析して、あなたの1年間の流行語大賞を発表します。',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ja">
+      <body className="bg-background text-foreground min-h-screen antialiased">{children}</body>
+    </html>
+  );
+}
