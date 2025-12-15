@@ -1,0 +1,16 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Coverage
+coverage
+
+# Misc
+.DS_Store
+*.pem
+*.log
