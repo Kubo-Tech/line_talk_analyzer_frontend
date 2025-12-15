@@ -925,6 +925,9 @@ result = analyzer.analyze(content)  # 解析処理
   - 結果ページの表示
 - [ ] テストカバレッジの確認・改善
   - 目標: 80%以上
+- [ ] **CI設定の更新**
+  - `.github/workflows/ci.yml` のE2Eテストジョブのコメントを解除して有効化
+  - Playwrightブラウザキャッシュが正しく動作することを確認
 
 **テスト計画**:
 - E2Eテスト: `tests/e2e/`
