@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="min-h-screen bg-background text-foreground antialiased">{children}</body>
+      <body className="bg-background text-foreground min-h-screen antialiased">{children}</body>
     </html>
   );
 }

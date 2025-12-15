@@ -548,9 +548,34 @@ result = analyzer.analyze(content)  # 解析処理
 ## 8. 実装計画
 
 **重要**: 各PRの作業が完了したら、以下を必ず実施すること：
-1. `doc/PR/PRxx.md`ファイルを作成（xxはPR番号）
-   - 実装内容、テスト結果、修正内容などを詳細に記載
-2. 本仕様書（SPEC.md）の該当PRのタスクチェックボックスにチェック（`[ ]` → `[x]`）を入れる
+
+### PRマージ前のチェックリスト
+
+1. **ローカルでCIと同じ処理を実行し、全て成功することを確認**
+   ```bash
+   # フォーマッタの適用
+   npm run format
+   
+   # フォーマットチェック（CIと同じ）
+   npm run format:check
+   
+   # Lint チェック
+   npm run lint
+   
+   # 型チェック
+   npx tsc --noEmit
+   
+   # テスト実行
+   npm run test -- --passWithNoTests
+   
+   # ビルド確認
+   npm run build
+   ```
+
+2. **ドキュメント更新**
+   - `doc/PR/PRxx.md`ファイルを作成（xxはPR番号）
+     - 実装内容、テスト結果、修正内容などを詳細に記載
+   - 本仕様書（SPEC.md）の該当PRのタスクチェックボックスにチェック（`[ ]` → `[x]`）を入れる
 
 ### Phase 1: プロジェクト基盤構築（並列実行不可）
 

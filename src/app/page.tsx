@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <main className="w-full max-w-md space-y-8 text-center">
-        <h1 className="text-3xl font-bold text-primary">LINE流行語大賞</h1>
+        <h1 className="text-primary text-3xl font-bold">LINE流行語大賞</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           LINEのトーク履歴を解析して
           <br />
