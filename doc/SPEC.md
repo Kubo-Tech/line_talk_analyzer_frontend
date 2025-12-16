@@ -699,7 +699,7 @@ result = analyzer.analyze(content)  # 解析処理
 
 **タスク**:
 
-- [ ] `src/types/api.ts` の実装
+- [x] `src/types/api.ts` の実装
   - AnalysisResponse 型
   - TopWord 型
   - TopMessage 型
@@ -707,14 +707,14 @@ result = analyzer.analyze(content)  # 解析処理
   - UserWordAnalysis 型
   - UserMessageAnalysis 型
   - ErrorResponse 型
-- [ ] `src/types/result.ts` の実装
+- [x] `src/types/result.ts` の実装
   - フロントエンド用の結果データ型
-- [ ] `src/lib/api.ts` の実装
+- [x] `src/lib/api.ts` の実装
   - analyzeFile() 関数
   - healthCheck() 関数
   - エラーハンドリング
   - タイムアウト設定
-- [ ] `src/lib/constants.ts` の実装
+- [x] `src/lib/constants.ts` の実装
   - API_BASE_URL
   - MAX_FILE_SIZE
   - SUPPORTED_FILE_TYPES
@@ -722,10 +722,10 @@ result = analyzer.analyze(content)  # 解析処理
 **テスト計画**:
 
 - 単体テスト: `tests/unit/lib/`
-  - [ ] APIクライアント: 正常系リクエスト（モック使用）
-  - [ ] APIクライアント: エラーレスポンスのハンドリング
-  - [ ] APIクライアント: ネットワークエラーのハンドリング
-  - [ ] APIクライアント: タイムアウト処理
+  - [x] APIクライアント: 正常系リクエスト（モック使用）
+  - [x] APIクライアント: エラーレスポンスのハンドリング
+  - [x] APIクライアント: ネットワークエラーのハンドリング
+  - [x] APIクライアント: タイムアウト処理
 
 **依存**: PR#1
 
