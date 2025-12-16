@@ -117,11 +117,11 @@ line_talk_analyzer_frontend/
 
 ### 3.1 画面一覧
 
-| 画面名 | パス | 説明 |
-|--------|------|------|
-| トップページ | `/` | ファイルアップロード画面 |
-| 結果表示ページ | `/result` | 解析結果の表示 |
-| ヘルプページ | `/help` | トーク履歴の取得方法 |
+| 画面名               | パス       | 説明                     |
+| -------------------- | ---------- | ------------------------ |
+| トップページ         | `/`        | ファイルアップロード画面 |
+| 結果表示ページ       | `/result`  | 解析結果の表示           |
+| ヘルプページ         | `/help`    | トーク履歴の取得方法     |
 | プライバシーポリシー | `/privacy` | プライバシーポリシー全文 |
 
 ### 3.2 トップページ（`/`）
@@ -185,11 +185,13 @@ line_talk_analyzer_frontend/
 #### 3.3.1 表示モード
 
 **A. アニメーションモード（初回表示時）**
+
 - Apple Music年間ランキング風のストーリー形式
 - スワイプまたは自動再生で進行
 - 10位から1位へカウントダウン形式で発表
 
 **B. リストモード（アニメーション後 / スキップ時）**
+
 - 従来のランキングリスト形式で表示
 - タブで切り替え可能
 
@@ -287,10 +289,10 @@ line_talk_analyzer_frontend/
 
 ### 4.1 バックエンドAPI
 
-| エンドポイント | メソッド | 説明 |
-|---------------|---------|------|
-| `/api/v1/health` | GET | ヘルスチェック |
-| `/api/v1/analyze` | POST | トーク履歴解析 |
+| エンドポイント    | メソッド | 説明           |
+| ----------------- | -------- | -------------- |
+| `/api/v1/health`  | GET      | ヘルスチェック |
+| `/api/v1/analyze` | POST     | トーク履歴解析 |
 
 ### 4.2 解析APIリクエスト
 
@@ -299,14 +301,14 @@ line_talk_analyzer_frontend/
 // Content-Type: multipart/form-data
 
 interface AnalyzeRequestParams {
-  file: File;                    // LINEトーク履歴ファイル
-  top_n?: number;                // 取得する上位件数（デフォルト: 100）
-  min_word_length?: number;      // 最小単語長（デフォルト: 1）
-  max_word_length?: number;      // 最大単語長（デフォルト: 無制限）
-  min_message_length?: number;   // 最小メッセージ長（デフォルト: 2）
-  max_message_length?: number;   // 最大メッセージ長（デフォルト: 無制限）
-  start_date?: string;           // 解析開始日時（デフォルト：現在時刻を取得し、今年の1月1日に設定）
-  end_date?: string;             // 解析終了日時（デフォルト：現在時刻を取得し、今年の12月31日に設定）
+  file: File; // LINEトーク履歴ファイル
+  top_n?: number; // 取得する上位件数（デフォルト: 100）
+  min_word_length?: number; // 最小単語長（デフォルト: 1）
+  max_word_length?: number; // 最大単語長（デフォルト: 無制限）
+  min_message_length?: number; // 最小メッセージ長（デフォルト: 2）
+  max_message_length?: number; // 最大メッセージ長（デフォルト: 無制限）
+  start_date?: string; // 解析開始日時（デフォルト：現在時刻を取得し、今年の1月1日に設定）
+  end_date?: string; // 解析終了日時（デフォルト：現在時刻を取得し、今年の12月31日に設定）
 }
 ```
 
@@ -314,11 +316,11 @@ interface AnalyzeRequestParams {
 
 ```typescript
 interface AnalysisResponse {
-  status: "success";
+  status: 'success';
   data: {
     analysis_period: {
-      start_date: string;  // "YYYY-MM-DD"
-      end_date: string;    // "YYYY-MM-DD"
+      start_date: string; // "YYYY-MM-DD"
+      end_date: string; // "YYYY-MM-DD"
     };
     total_messages: number;
     total_users: number;
@@ -369,7 +371,7 @@ interface UserMessageAnalysis {
 
 ```typescript
 interface ErrorResponse {
-  status: "error";
+  status: 'error';
   error: {
     code: string;
     message: string;
@@ -411,23 +413,23 @@ interface ErrorResponse {
 
 本サービスはオープンソースで開発されており、処理内容を誰でも確認できます。
 
-| リポジトリ | 説明 |
-|-----------|------|
+| リポジトリ                                                                             | 説明           |
+| -------------------------------------------------------------------------------------- | -------------- |
 | [line_talk_analyzer_frontend](https://github.com/yourname/line_talk_analyzer_frontend) | フロントエンド |
-| [line_talk_analyzer_backend](https://github.com/yourname/line_talk_analyzer_backend) | バックエンド |
+| [line_talk_analyzer_backend](https://github.com/yourname/line_talk_analyzer_backend)   | バックエンド   |
 
 ### 5.2 データの取り扱い
 
 #### 5.2.1 サーバー側での処理
 
-| 項目 | 内容 |
-|------|------|
-| ファイルの保存 | ❌ しない（ディスクに書き込まない） |
-| データベースへの保存 | ❌ しない（DBを使用しない） |
-| メモリ上での処理 | ✅ 解析処理中のみ一時的に保持 |
-| 解析後のデータ | ✅ 即座にメモリから破棄 |
-| アクセスログ | ✅ IPアドレス・時刻のみ記録（トーク内容は記録しない） |
-| 第三者への提供 | ❌ 一切行わない |
+| 項目                 | 内容                                                  |
+| -------------------- | ----------------------------------------------------- |
+| ファイルの保存       | ❌ しない（ディスクに書き込まない）                   |
+| データベースへの保存 | ❌ しない（DBを使用しない）                           |
+| メモリ上での処理     | ✅ 解析処理中のみ一時的に保持                         |
+| 解析後のデータ       | ✅ 即座にメモリから破棄                               |
+| アクセスログ         | ✅ IPアドレス・時刻のみ記録（トーク内容は記録しない） |
+| 第三者への提供       | ❌ 一切行わない                                       |
 
 #### 5.2.2 通信の保護
 
@@ -437,10 +439,10 @@ interface ErrorResponse {
 
 #### 5.2.3 フロントエンド側での処理
 
-| 項目 | 内容 |
-|------|------|
-| LocalStorage | ❌ トーク内容を保存しない |
-| Cookie | ❌ トーク内容を保存しない |
+| 項目           | 内容                                          |
+| -------------- | --------------------------------------------- |
+| LocalStorage   | ❌ トーク内容を保存しない                     |
+| Cookie         | ❌ トーク内容を保存しない                     |
 | 解析結果の保持 | ✅ ブラウザのメモリ上のみ（ページ離脱で消去） |
 
 ### 5.3 同意フロー
@@ -525,11 +527,11 @@ result = analyzer.analyze(content)  # 解析処理
 
 ### 7.1 テストレベル
 
-| レベル | ツール | 対象 |
-|--------|--------|------|
+| レベル         | ツール     | 対象                                   |
+| -------------- | ---------- | -------------------------------------- |
 | ユニットテスト | Jest + RTL | コンポーネント、フック、ユーティリティ |
-| 統合テスト | Jest + RTL | ページ、API連携 |
-| E2Eテスト | Playwright | ユーザーシナリオ |
+| 統合テスト     | Jest + RTL | ページ、API連携                        |
+| E2Eテスト      | Playwright | ユーザーシナリオ                       |
 
 ### 7.2 ユニットテスト対象
 
@@ -582,22 +584,23 @@ result = analyzer.analyze(content)  # 解析処理
 ### PRマージ前のチェックリスト
 
 1. **ローカルでCIと同じ処理を実行し、全て成功することを確認**
+
    ```bash
    # フォーマッタの適用
    npm run format
-   
+
    # フォーマットチェック（CIと同じ）
    npm run format:check
-   
+
    # Lint チェック
    npm run lint
-   
+
    # 型チェック
    npx tsc --noEmit
-   
+
    # テスト実行
    npm run test -- --passWithNoTests
-   
+
    # ビルド確認
    npm run build
    ```
@@ -610,9 +613,11 @@ result = analyzer.analyze(content)  # 解析処理
 ### Phase 1: プロジェクト基盤構築（並列実行不可）
 
 #### PR#1: プロジェクト初期設定
+
 **目的**: Next.js プロジェクトの作成と開発環境の構築
 
 **タスク**:
+
 - [x] Next.js 14+ プロジェクトの作成（App Router）
 - [x] TypeScript 設定（tsconfig.json）
 - [x] Tailwind CSS 設定（tailwind.config.ts）
@@ -634,6 +639,7 @@ result = analyzer.analyze(content)  # 解析処理
 - [x] README.md の初期化
 
 **テスト計画**:
+
 - [x] `npm run dev` でアプリが起動すること
 - [x] `npm run build` でビルドが成功すること
 - [x] `npm run lint` がエラーなく通ること
@@ -646,48 +652,53 @@ result = analyzer.analyze(content)  # 解析処理
 ### Phase 2: 共通基盤の実装（並列実行可能）
 
 #### PR#2: 共通コンポーネント・レイアウト
+
 **目的**: アプリ全体で使用する共通UIコンポーネントの実装
 
 **タスク**:
-- [ ] `src/components/common/Header.tsx` の実装
+
+- [x] `src/components/common/Header.tsx` の実装
   - ロゴ、タイトル表示
   - レスポンシブ対応
-- [ ] `src/components/common/Footer.tsx` の実装
+- [x] `src/components/common/Footer.tsx` の実装
   - コピーライト、リンク
-- [ ] `src/components/common/Button.tsx` の実装
+- [x] `src/components/common/Button.tsx` の実装
   - variant（primary, secondary, outline）
   - disabled 状態
   - ローディング状態
-- [ ] `src/components/common/Loading.tsx` の実装
+- [x] `src/components/common/Loading.tsx` の実装
   - スピナーアニメーション
   - オーバーレイ表示オプション
-- [ ] `src/components/common/Modal.tsx` の実装
+- [x] `src/components/common/Modal.tsx` の実装
   - オープン/クローズ制御
   - オーバーレイクリックで閉じる
-- [ ] `src/app/layout.tsx` の実装
+- [x] `src/app/layout.tsx` の実装
   - Header/Footer の配置
   - メタデータ設定
-- [ ] `src/app/globals.css` の実装
+- [x] `src/app/globals.css` の実装
   - Tailwind ベーススタイル
   - カスタムユーティリティ
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/components/`
-  - [ ] Button: クリックイベント発火
-  - [ ] Button: disabled 状態でクリック無効
-  - [ ] Button: ローディング表示
-  - [ ] Loading: スピナー表示
-  - [ ] Modal: オープン/クローズ動作
-  - [ ] Header/Footer: レンダリング確認
+  - [x] Button: クリックイベント発火
+  - [x] Button: disabled 状態でクリック無効
+  - [x] Button: ローディング表示
+  - [x] Loading: スピナー表示
+  - [x] Modal: オープン/クローズ動作
+  - [x] Header/Footer: レンダリング確認
 
 **依存**: PR#1
 
 ---
 
 #### PR#3: 型定義・APIクライアント
+
 **目的**: バックエンドAPIとの連携基盤の構築
 
 **タスク**:
+
 - [ ] `src/types/api.ts` の実装
   - AnalysisResponse 型
   - TopWord 型
@@ -709,6 +720,7 @@ result = analyzer.analyze(content)  # 解析処理
   - SUPPORTED_FILE_TYPES
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/lib/`
   - [ ] APIクライアント: 正常系リクエスト（モック使用）
   - [ ] APIクライアント: エラーレスポンスのハンドリング
@@ -720,9 +732,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#4: プライバシーポリシーページ
+
 **目的**: プライバシーポリシーの表示ページ作成
 
 **タスク**:
+
 - [ ] `src/app/privacy/page.tsx` の実装
   - プライバシーポリシー全文の表示
   - スクロール可能なレイアウト
@@ -734,6 +748,7 @@ result = analyzer.analyze(content)  # 解析処理
   - 推奨事項
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/app/privacy/`
   - [ ] ページのレンダリング確認
   - [ ] 必要な文言が表示されていること
@@ -746,9 +761,11 @@ result = analyzer.analyze(content)  # 解析処理
 ### Phase 3: メイン機能の実装（Phase 2 完了後）
 
 #### PR#5: ファイルアップロード機能
+
 **目的**: LINEトーク履歴ファイルのアップロード機能実装
 
 **タスク**:
+
 - [ ] `src/components/upload/DropZone.tsx` の実装
   - ドラッグ&ドロップ対応
   - ドラッグ中のビジュアルフィードバック
@@ -770,6 +787,7 @@ result = analyzer.analyze(content)  # 解析処理
   - ヘルプリンク
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/components/upload/`
   - [ ] DropZone: ドラッグイベントの処理
   - [ ] DropZone: ファイル選択イベント
@@ -784,9 +802,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#6: ヘルプページ
+
 **目的**: トーク履歴取得方法の説明ページ作成
 
 **タスク**:
+
 - [ ] `src/app/help/page.tsx` の実装
   - iPhone での手順説明
   - Android での手順説明
@@ -796,6 +816,7 @@ result = analyzer.analyze(content)  # 解析処理
 - [ ] スクリーンショット画像の準備（オプション）
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/app/help/`
   - [ ] ページのレンダリング確認
   - [ ] iPhone/Android 両方の手順が表示されること
@@ -806,9 +827,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#7: プライバシー同意機能
+
 **目的**: 解析実行前の同意取得機能実装
 
 **タスク**:
+
 - [ ] `src/components/upload/PrivacyConsent.tsx` の実装
   - チェックボックス
   - プライバシーポリシーへのリンク
@@ -822,6 +845,7 @@ result = analyzer.analyze(content)  # 解析処理
   - 「ファイル選択済み」かつ「同意済み」で有効化
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/components/upload/`
   - [ ] PrivacyConsent: チェック状態の切り替え
   - [ ] PrivacyConsent: リンクの表示
@@ -838,9 +862,11 @@ result = analyzer.analyze(content)  # 解析処理
 ### Phase 4: 結果表示の実装（Phase 3 完了後）
 
 #### PR#8: API連携・解析処理
+
 **目的**: バックエンドAPIとの連携と解析処理の実装
 
 **タスク**:
+
 - [ ] `src/hooks/useAnalyze.ts` の実装
   - 解析リクエスト送信
   - ローディング状態管理
@@ -855,6 +881,7 @@ result = analyzer.analyze(content)  # 解析処理
   - 結果データの受け渡し（状態管理 or URLパラメータ）
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/hooks/`
   - [ ] useAnalyze: 正常系の解析処理（モック使用）
   - [ ] useAnalyze: ローディング状態の変化
@@ -867,9 +894,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#9: 結果表示ページ（リストモード）
+
 **目的**: 解析結果のランキング表示機能実装
 
 **タスク**:
+
 - [ ] `src/components/result/RankingItem.tsx` の実装
   - 順位、ワード/メッセージ、出現回数の表示
   - スタイリング（1位は強調など）
@@ -893,6 +922,7 @@ result = analyzer.analyze(content)  # 解析処理
   - 「別のファイルを解析」ボタン
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/components/result/`
   - [ ] RankingItem: 各項目の表示
   - [ ] RankingList: 初期10件表示
@@ -910,9 +940,11 @@ result = analyzer.analyze(content)  # 解析処理
 ### Phase 5: 演出・仕上げ（Phase 4 完了後、並列実行可能）
 
 #### PR#10: アニメーション演出（オプション）
+
 **目的**: Apple Music風のランキング発表アニメーション実装
 
 **タスク**:
+
 - [ ] Framer Motion のセットアップ
 - [ ] `src/components/animation/StoryPresentation.tsx` の実装
   - スライド管理
@@ -932,6 +964,7 @@ result = analyzer.analyze(content)  # 解析処理
   - スキップボタン
 
 **テスト計画**:
+
 - 単体テスト: `tests/unit/components/animation/`
   - [ ] StoryPresentation: スライド遷移
   - [ ] StoryPresentation: スキップ機能
@@ -942,9 +975,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#11: E2Eテスト・統合テスト
+
 **目的**: アプリ全体の品質保証
 
 **タスク**:
+
 - [ ] E2Eテストシナリオの実装（Playwright）
   - 正常系: ファイルアップロード → 同意 → 解析 → 結果表示
   - 異常系: 不正ファイルのアップロード
@@ -960,6 +995,7 @@ result = analyzer.analyze(content)  # 解析処理
   - Playwrightブラウザキャッシュが正しく動作することを確認
 
 **テスト計画**:
+
 - E2Eテスト: `tests/e2e/`
   - [ ] 正常系シナリオ全通過
   - [ ] 異常系シナリオ全通過
@@ -970,9 +1006,11 @@ result = analyzer.analyze(content)  # 解析処理
 ---
 
 #### PR#12: 最終調整・リリース準備
+
 **目的**: 本番環境へのデプロイ準備
 
 **タスク**:
+
 - [ ] バグ修正（テストで発見された問題）
 - [ ] パフォーマンス最適化
   - 画像最適化
@@ -995,6 +1033,7 @@ result = analyzer.analyze(content)  # 解析処理
   - ビルド設定確認
 
 **テスト計画**:
+
 - [ ] 全テストの再実行・全通過
 - [ ] 本番ビルドの動作確認
 - [ ] Lighthouse スコア: Performance 90+, Accessibility 90+
@@ -1124,7 +1163,7 @@ docker-compose up
 
 ## 更新履歴
 
-| 日付 | バージョン | 内容 |
-|------|-----------|------|
-| 2025-12-16 | 1.0.0 | 初版作成 |
-| 2025-12-16 | 1.1.0 | プライバシーセクション強化、実装計画フォーマット改善 |
+| 日付       | バージョン | 内容                                                 |
+| ---------- | ---------- | ---------------------------------------------------- |
+| 2025-12-16 | 1.0.0      | 初版作成                                             |
+| 2025-12-16 | 1.1.0      | プライバシーセクション強化、実装計画フォーマット改善 |
