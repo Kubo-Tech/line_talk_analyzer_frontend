@@ -25,13 +25,21 @@ describe('Footer', () => {
   it('GitHubへのリンクが表示される', () => {
     render(<Footer />);
 
-    const githubLink = screen.getByRole('link', { name: 'GitHub' });
-    expect(githubLink).toHaveAttribute(
+    const githubFrontendLink = screen.getByRole('link', { name: 'GitHub (Frontend)' });
+    expect(githubFrontendLink).toHaveAttribute(
       'href',
-      'https://github.com/yourname/line_talk_analyzer_frontend'
+      'https://github.com/Kubo-Tech/line_talk_analyzer_frontend'
     );
-    expect(githubLink).toHaveAttribute('target', '_blank');
-    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(githubFrontendLink).toHaveAttribute('target', '_blank');
+    expect(githubFrontendLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+    const githubBackendLink = screen.getByRole('link', { name: 'GitHub (Backend)' });
+    expect(githubBackendLink).toHaveAttribute(
+      'href',
+      'https://github.com/Kubo-Tech/line_talk_analyzer_backend'
+    );
+    expect(githubBackendLink).toHaveAttribute('target', '_blank');
+    expect(githubBackendLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('コピーライトが表示される', () => {
