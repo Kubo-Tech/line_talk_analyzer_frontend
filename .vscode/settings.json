@@ -20,5 +20,5 @@
     "**/playwright-report": true
   },
   // Code Spell Checkerで除外する単語
-  "cSpell.words": ["flexbox"]
+  "cSpell.words": ["flexbox", "kuromoji"]
 }
