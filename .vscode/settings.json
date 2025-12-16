@@ -8,9 +8,7 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "tailwindCSS.experimental.classRegex": [
-    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ],
+  "tailwindCSS.experimental.classRegex": [["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]],
   "files.exclude": {
     "**/.next": true,
     "**/node_modules": true
@@ -20,5 +18,7 @@
     "**/node_modules": true,
     "**/coverage": true,
     "**/playwright-report": true
-  }
+  },
+  // Code Spell Checkerで除外する単語
+  "cSpell.words": ["flexbox"]
 }
