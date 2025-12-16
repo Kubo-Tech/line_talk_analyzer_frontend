@@ -21,12 +21,20 @@ export default function Footer() {
               ヘルプ
             </Link>
             <a
-              href="https://github.com/yourname/line_talk_analyzer_frontend"
+              href="https://github.com/Kubo-Tech/line_talk_analyzer_frontend"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
             >
-              GitHub
+              GitHub (Frontend)
+            </a>
+            <a
+              href="https://github.com/Kubo-Tech/line_talk_analyzer_backend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
+            >
+              GitHub (Backend)
             </a>
           </div>
           <p className="text-center text-xs text-gray-500 dark:text-gray-500">
