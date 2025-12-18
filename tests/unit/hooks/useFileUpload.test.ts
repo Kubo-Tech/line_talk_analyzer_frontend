@@ -146,7 +146,7 @@ describe('useFileUpload', () => {
       });
 
       expect(result.current.error).toBeNull();
-      expect(result.current.file).toBeNull(); // ファイルはそのまま
+      expect(result.current.file).toBeNull(); // ファイルはバリデーション失敗により既にnull
     });
   });
 });

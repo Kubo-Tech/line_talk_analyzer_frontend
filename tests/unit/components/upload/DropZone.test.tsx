@@ -97,6 +97,67 @@ describe('DropZone', () => {
     });
   });
 
+  describe('キーボードイベント', () => {
+    it('Enterキーでファイル選択ダイアログが開く', () => {
+      const { container } = render(
+        <DropZone
+          onFileSelect={mockOnFileSelect}
+          isDragActive={false}
+          onDragEnter={mockOnDragEnter}
+          onDragLeave={mockOnDragLeave}
+        />
+      );
+
+      const dropZone = screen.getByRole('button');
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+      const clickSpy = jest.spyOn(fileInput, 'click');
+
+      fireEvent.keyDown(dropZone, { key: 'Enter' });
+
+      expect(clickSpy).toHaveBeenCalled();
+    });
+
+    it('Spaceキーでファイル選択ダイアログが開く', () => {
+      const { container } = render(
+        <DropZone
+          onFileSelect={mockOnFileSelect}
+          isDragActive={false}
+          onDragEnter={mockOnDragEnter}
+          onDragLeave={mockOnDragLeave}
+        />
+      );
+
+      const dropZone = screen.getByRole('button');
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+      const clickSpy = jest.spyOn(fileInput, 'click');
+
+      fireEvent.keyDown(dropZone, { key: ' ' });
+
+      expect(clickSpy).toHaveBeenCalled();
+    });
+
+    it('無効状態ではキーボード操作できない', () => {
+      const { container } = render(
+        <DropZone
+          onFileSelect={mockOnFileSelect}
+          isDragActive={false}
+          onDragEnter={mockOnDragEnter}
+          onDragLeave={mockOnDragLeave}
+          disabled={true}
+        />
+      );
+
+      const dropZone = screen.getByRole('button');
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+      const clickSpy = jest.spyOn(fileInput, 'click');
+
+      fireEvent.keyDown(dropZone, { key: 'Enter' });
+      fireEvent.keyDown(dropZone, { key: ' ' });
+
+      expect(clickSpy).not.toHaveBeenCalled();
+    });
+  });
+
   describe('ファイル選択', () => {
     it('ファイルが選択されるとコールバックが呼ばれる', () => {
       const { container } = render(

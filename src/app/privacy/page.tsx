@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'プライバシーポリシー | LINE流行語大賞 2024',
-  description: 'LINE流行語大賞 2024のプライバシーポリシー・利用規約',
+  title: 'プライバシーポリシー | LINE流行語大賞 2025',
+  description: 'LINE流行語大賞 2025のプライバシーポリシー・利用規約',
 };
 
 export default function PrivacyPage() {

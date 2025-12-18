@@ -57,7 +57,7 @@ export const ERROR_MESSAGES = {
  */
 export const APP_INFO = {
   NAME: 'LINE流行語大賞',
-  YEAR: 2024,
+  YEAR: 2025,
   VERSION: '1.0.0',
   GITHUB_REPO_FRONTEND: 'https://github.com/Kubo-Tech/line_talk_analyzer_frontend',
   GITHUB_REPO_BACKEND: 'https://github.com/Kubo-Tech/line_talk_analyzer_backend',

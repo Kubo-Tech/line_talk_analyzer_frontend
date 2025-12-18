@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-4xl font-bold">LINE流行語大賞 2024</h1>
+        <h1 className="mb-2 text-4xl font-bold">LINE流行語大賞 2025</h1>
         <p className="text-gray-600">LINEトーク履歴から今年の流行語を分析します</p>
       </div>
 

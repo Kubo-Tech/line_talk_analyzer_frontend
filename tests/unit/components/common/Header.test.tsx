@@ -11,7 +11,7 @@ describe('Header', () => {
   it('タイトルが表示される', () => {
     render(<Header />);
 
-    expect(screen.getByText('LINE流行語大賞 2024')).toBeInTheDocument();
+    expect(screen.getByText('LINE流行語大賞 2025')).toBeInTheDocument();
   });
 
   it('ホームへのリンクが正しく設定されている', () => {
