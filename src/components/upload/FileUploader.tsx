@@ -1,0 +1,82 @@
+'use client';
+
+import { useFileUpload } from '@/hooks/useFileUpload';
+import { useState } from 'react';
+import DropZone from './DropZone';
+
+interface FileUploaderProps {
+  onFileChange?: (file: File | null) => void;
+}
+
+export default function FileUploader({ onFileChange }: FileUploaderProps) {
+  const { file, error, validateAndSetFile, clearFile, clearError } = useFileUpload();
+  const [isDragActive, setIsDragActive] = useState(false);
+
+  const handleFileSelect = (selectedFile: File) => {
+    const isValid = validateAndSetFile(selectedFile);
+    if (isValid) {
+      onFileChange?.(selectedFile);
+    } else {
+      onFileChange?.(null);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    clearFile();
+    onFileChange?.(null);
+  };
+
+  const handleDragEnter = () => {
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragActive(false);
+  };
+
+  return (
+    <div className="w-full">
+      <h2 className="mb-4 text-2xl font-bold">📁 ファイルアップロード</h2>
+
+      {!file ? (
+        <>
+          <DropZone
+            onFileSelect={handleFileSelect}
+            isDragActive={isDragActive}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+          />
+          {error && (
+            <div className="mt-4 rounded-md bg-red-50 p-4 text-red-800" role="alert">
+              <p className="font-semibold">エラー</p>
+              <p className="text-sm">{error}</p>
+              <button onClick={clearError} className="mt-2 text-sm underline hover:no-underline">
+                閉じる
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="rounded-lg border-2 border-green-300 bg-green-50 p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <span className="text-3xl">✅</span>
+              <div>
+                <p className="font-semibold text-green-800">ファイル選択済み</p>
+                <p className="text-sm text-green-700">{file.name}</p>
+                <p className="text-xs text-green-600">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+              </div>
+            </div>
+            <button
+              onClick={handleRemoveFile}
+              className="rounded-md bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
+              aria-label="ファイルを削除"
+            >
+              削除
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

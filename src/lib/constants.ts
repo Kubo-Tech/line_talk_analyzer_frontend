@@ -19,7 +19,7 @@ export const API_CONFIG = {
  */
 export const FILE_UPLOAD = {
   MAX_FILE_SIZE: 50 * 1024 * 1024, // 50MB
-  SUPPORTED_FILE_TYPES: ['.txt', 'text/plain'] as const,
+  SUPPORTED_FILE_TYPES: ['.txt'] as const,
   ACCEPT_ATTRIBUTE: '.txt,text/plain',
 } as const;
 
@@ -57,7 +57,7 @@ export const ERROR_MESSAGES = {
  */
 export const APP_INFO = {
   NAME: 'LINE流行語大賞',
-  YEAR: 2024,
+  YEAR: 2025,
   VERSION: '1.0.0',
   GITHUB_REPO_FRONTEND: 'https://github.com/Kubo-Tech/line_talk_analyzer_frontend',
   GITHUB_REPO_BACKEND: 'https://github.com/Kubo-Tech/line_talk_analyzer_backend',

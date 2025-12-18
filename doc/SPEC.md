@@ -131,7 +131,7 @@ line_talk_analyzer_frontend/
 ```
 ┌─────────────────────────────┐
 │         Header              │
-│    LINE流行語大賞 2024      │
+│    LINE流行語大賞 2025      │
 ├─────────────────────────────┤
 │                             │
 │    📁 ファイルアップロード    │
@@ -766,38 +766,40 @@ result = analyzer.analyze(content)  # 解析処理
 
 **タスク**:
 
-- [ ] `src/components/upload/DropZone.tsx` の実装
+- [x] `src/components/upload/DropZone.tsx` の実装
   - ドラッグ&ドロップ対応
   - ドラッグ中のビジュアルフィードバック
   - クリックでファイル選択
-- [ ] `src/components/upload/FileUploader.tsx` の実装
+- [x] `src/components/upload/FileUploader.tsx` の実装
   - DropZone の統合
   - ファイル名表示
   - ファイル削除機能
   - エラーメッセージ表示
-- [ ] `src/hooks/useFileUpload.ts` の実装
+- [x] `src/hooks/useFileUpload.ts` の実装
   - ファイル状態管理
   - バリデーション処理
   - エラー状態管理
-- [ ] ファイルバリデーション
+- [x] ファイルバリデーション
   - .txt 拡張子チェック
   - ファイルサイズチェック（50MB以下）
-- [ ] `src/app/page.tsx` の基本実装
+- [x] `src/app/page.tsx` の基本実装
   - FileUploader の配置
   - ヘルプリンク
 
 **テスト計画**:
 
 - 単体テスト: `tests/unit/components/upload/`
-  - [ ] DropZone: ドラッグイベントの処理
-  - [ ] DropZone: ファイル選択イベント
-  - [ ] FileUploader: ファイル名表示
-  - [ ] FileUploader: 削除機能
-  - [ ] useFileUpload: 正常なファイルの受け入れ
-  - [ ] useFileUpload: 不正な拡張子の拒否
-  - [ ] useFileUpload: サイズ超過の拒否
+  - [x] DropZone: ドラッグイベントの処理
+  - [x] DropZone: ファイル選択イベント
+  - [x] FileUploader: ファイル名表示
+  - [x] FileUploader: 削除機能
+  - [x] useFileUpload: 正常なファイルの受け入れ
+  - [x] useFileUpload: 不正な拡張子の拒否
+  - [x] useFileUpload: サイズ超過の拒否
 
 **依存**: PR#2, PR#3
+
+**完了**: ✅ 2025年（全31テスト成功、品質チェック完了）
 
 ---
 
