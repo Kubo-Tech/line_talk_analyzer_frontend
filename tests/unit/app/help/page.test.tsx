@@ -84,10 +84,22 @@ describe('HelpPage', () => {
         expect(screen.getByText(/しばらくお待ちください/)).toBeInTheDocument();
       });
 
-      it('準備中のアイコンが表示される', () => {
+      it('準備中セクションが適切なスタイルで表示される', () => {
         render(<HelpPage />);
 
+        // 🔧アイコンが表示される
         expect(screen.getByText('🔧')).toBeInTheDocument();
+
+        // 準備中メッセージを含む親要素を取得
+        const comingSoonMessage = screen.getByText('現在準備中です');
+        const comingSoonSection = comingSoonMessage.closest('div');
+
+        // 準備中セクションのスタイルを検証
+        expect(comingSoonSection).toHaveClass('rounded-lg');
+        expect(comingSoonSection).toHaveClass('border');
+        expect(comingSoonSection).toHaveClass('border-gray-200');
+        expect(comingSoonSection).toHaveClass('bg-gray-50');
+        expect(comingSoonSection).toHaveClass('text-center');
       });
     });
 
