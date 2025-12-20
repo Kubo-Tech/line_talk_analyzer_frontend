@@ -58,8 +58,7 @@ export function useAnalyze(): UseAnalyzeResult {
       setResult(response);
       return response;
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : '解析中にエラーが発生しました';
+      const errorMessage = err instanceof Error ? err.message : '解析中にエラーが発生しました';
       setError(errorMessage);
       return null;
     } finally {

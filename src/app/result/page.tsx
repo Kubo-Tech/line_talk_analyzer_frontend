@@ -39,7 +39,13 @@ export default function ResultPage() {
   }
 
   const { data } = result;
-  const { analysis_period, total_messages, total_users, morphological_analysis, full_message_analysis } = data;
+  const {
+    analysis_period,
+    total_messages,
+    total_users,
+    morphological_analysis,
+    full_message_analysis,
+  } = data;
 
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
@@ -58,8 +64,8 @@ export default function ResultPage() {
             {new Date(analysis_period.end_date).toLocaleDateString('ja-JP')}
           </p>
           <p>
-            <span className="font-semibold">総メッセージ数:</span>{' '}
-            {total_messages.toLocaleString()}件
+            <span className="font-semibold">総メッセージ数:</span> {total_messages.toLocaleString()}
+            件
           </p>
           <p>
             <span className="font-semibold">参加者数:</span> {total_users}人
@@ -115,9 +121,7 @@ export default function ResultPage() {
             <div
               key={index}
               className={`flex items-center justify-between rounded-lg p-4 ${
-                index === 0
-                  ? 'bg-gradient-to-r from-blue-100 to-blue-50 font-bold'
-                  : 'bg-gray-50'
+                index === 0 ? 'bg-gradient-to-r from-blue-100 to-blue-50 font-bold' : 'bg-gray-50'
               }`}
             >
               <div className="flex items-center space-x-4">
