@@ -6,7 +6,7 @@
  * API関連の定数
  */
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000',
+  BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
   ENDPOINTS: {
     HEALTH: '/api/v1/health',
     ANALYZE: '/api/v1/analyze',

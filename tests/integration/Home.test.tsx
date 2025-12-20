@@ -11,7 +11,24 @@ jest.mock('next/link', () => {
   return MockLink;
 });
 
+// next/navigationのモック
+const mockPush = jest.fn();
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}));
+
+// API のモック
+jest.mock('@/lib/api', () => ({
+  analyzeFile: jest.fn(),
+}));
+
 describe('Home (トップページ)', () => {
+  beforeEach(() => {
+    mockPush.mockClear();
+  });
+
   describe('基本レンダリング', () => {
     it('ページタイトルが表示される', () => {
       render(<Home />);
