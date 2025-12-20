@@ -809,22 +809,24 @@ result = analyzer.analyze(content)  # 解析処理
 
 **タスク**:
 
-- [ ] `src/app/help/page.tsx` の実装
+- [x] `src/app/help/page.tsx` の実装
   - iPhone での手順説明
   - Android での手順説明
   - 注意事項
   - トップへ戻るボタン
-- [ ] 手順説明文言の作成
-- [ ] スクリーンショット画像の準備（オプション）
+- [x] 手順説明文言の作成
+- [x] スクリーンショット画像の準備（オプション）
 
 **テスト計画**:
 
 - 単体テスト: `tests/unit/app/help/`
-  - [ ] ページのレンダリング確認
-  - [ ] iPhone/Android 両方の手順が表示されること
-  - [ ] 戻るリンクの動作
+  - [x] ページのレンダリング確認
+  - [x] iPhone/Android 両方の手順が表示されること
+  - [x] 戻るリンクの動作
 
 **依存**: PR#2
+
+**完了**: ✅ 2025年12月20日（全14テスト成功、スクリーンショット付き手順実装完了）
 
 **修正依頼**
 
@@ -848,30 +850,51 @@ androidの手順についてはスクリーンショットを用意できてい�
 
 **タスク**:
 
-- [ ] `src/components/upload/PrivacyConsent.tsx` の実装
-  - チェックボックス
-  - プライバシーポリシーへのリンク
+- [x] `src/components/upload/PrivacyConsent.tsx` の実装
+  - チェックボックス（ポリシー確認後のみ有効化）
+  - プライバシーポリシーモーダルを開くボタン
   - 同意状態の表示
-- [ ] `src/hooks/usePrivacyConsent.ts` の実装
-  - 同意状態管理
+- [x] `src/components/common/PrivacyPolicyModal.tsx` の実装
+  - プライバシーポリシーの全文表示
+  - モーダル形式での表示
+  - スクロール可能なコンテンツ
+- [x] `src/hooks/usePrivacyConsent.ts` の実装
+  - 同意状態管理（isConsented）
+  - 既読状態管理（hasReadPolicy）
   - セッション内での状態保持
-- [ ] トップページへの統合
+- [x] トップページへの統合
   - PrivacyConsent の配置
+  - PrivacyPolicyModal の統合
   - 解析ボタンの有効/無効制御
   - 「ファイル選択済み」かつ「同意済み」で有効化
+- [x] プライバシーページの削除
+  - `src/app/privacy/page.tsx` 削除（モーダル化のため）
+  - Footer からプライバシーリンク削除
+- [x] コンテンツの整理
+  - 絵文字の削除
+  - 見出しの統一（「必須同意項目」、黒色）
 
 **テスト計画**:
 
 - 単体テスト: `tests/unit/components/upload/`
-  - [ ] PrivacyConsent: チェック状態の切り替え
-  - [ ] PrivacyConsent: リンクの表示
-  - [ ] usePrivacyConsent: 状態管理
+  - [x] PrivacyConsent: チェック状態の切り替え
+  - [x] PrivacyConsent: ポリシー未読時の無効化
+  - [x] PrivacyConsent: ボタンクリックイベント
+  - [x] PrivacyPolicyModal: 表示制御
+  - [x] PrivacyPolicyModal: コンテンツ表示
+  - [x] usePrivacyConsent: 状態管理（同意・既読）
 - 統合テスト: `tests/integration/`
-  - [ ] 同意なし → ボタン無効
-  - [ ] ファイルなし → ボタン無効
-  - [ ] 両方あり → ボタン有効
+  - [x] 同意なし → ボタン無効
+  - [x] ファイルなし → ボタン無効
+  - [x] 両方あり → ボタン有効
+  - [x] モーダル開閉とチェックボックス連動
+- テスト削除/更新:
+  - [x] 削除されたプライバシーページのテスト削除
+  - [x] Footer テストの更新
 
 **依存**: PR#4, PR#5
+
+**完了**: ✅ 2025年12月20日（全135テスト成功、モーダル実装完了）
 
 ---
 

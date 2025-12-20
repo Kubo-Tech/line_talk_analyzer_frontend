@@ -8,13 +8,6 @@ describe('Footer', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
 
-  it('プライバシーポリシーへのリンクが表示される', () => {
-    render(<Footer />);
-
-    const privacyLink = screen.getByRole('link', { name: 'プライバシーポリシー' });
-    expect(privacyLink).toHaveAttribute('href', '/privacy');
-  });
-
   it('ヘルプへのリンクが表示される', () => {
     render(<Footer />);
 

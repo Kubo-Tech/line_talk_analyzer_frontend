@@ -9,12 +9,6 @@ export default function Footer() {
         <div className="flex flex-col items-center space-y-3">
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <Link
-              href="/privacy"
-              className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
-            >
-              プライバシーポリシー
-            </Link>
-            <Link
               href="/help"
               className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
             >
