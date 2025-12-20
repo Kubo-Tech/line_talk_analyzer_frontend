@@ -111,10 +111,7 @@ export default function Home() {
           )}
           {/* エラー表示 */}
           {error && (
-            <div
-              role="alert"
-              className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4"
-            >
+            <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4">
               <p className="text-sm font-semibold text-red-800">エラーが発生しました</p>
               <p className="mt-1 text-sm text-red-700">{error}</p>
             </div>
