@@ -84,7 +84,7 @@ export default function Home() {
         </section>
       </div>
       {/* プライバシーポリシーモーダル */}
-      <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />{' '}
+      <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </main>
   );
 }

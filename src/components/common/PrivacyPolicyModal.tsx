@@ -12,8 +12,14 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
   if (!isOpen) return null;
 
   return (
-    <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-      <div className="max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-xl">
+    <div
+      className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4"
+      onClick={onClose}
+    >
+      <div
+        className="max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-xl"
+        onClick={(event) => event.stopPropagation()}
+      >
         {/* ヘッダー */}
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
           <h2 className="text-2xl font-bold text-gray-900">プライバシーポリシー</h2>
