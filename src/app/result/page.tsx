@@ -79,7 +79,7 @@ export default function ResultPage() {
         <div className="space-y-2">
           {morphological_analysis.top_words.slice(0, 10).map((word, index) => (
             <div
-              key={index}
+              key={`${word.word}-${word.count}`}
               className={`flex items-center justify-between rounded-lg p-4 ${
                 index === 0
                   ? 'bg-gradient-to-r from-yellow-100 to-yellow-50 font-bold'
@@ -119,7 +119,7 @@ export default function ResultPage() {
         <div className="space-y-2">
           {full_message_analysis.top_messages.slice(0, 10).map((message, index) => (
             <div
-              key={index}
+              key={`${message.message}-${message.count}`}
               className={`flex items-center justify-between rounded-lg p-4 ${
                 index === 0 ? 'bg-gradient-to-r from-blue-100 to-blue-50 font-bold' : 'bg-gray-50'
               }`}
