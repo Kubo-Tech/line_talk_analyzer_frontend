@@ -180,7 +180,14 @@ describe('トップページ - 解析フロー統合テスト', () => {
 
       // API呼び出しが行われる
       await waitFor(() => {
-        expect(mockAnalyzeFile).toHaveBeenCalledWith({ file });
+        expect(mockAnalyzeFile).toHaveBeenCalledWith({
+          file,
+          top_n: 100,
+          min_word_length: 1,
+          min_message_length: 2,
+          start_date: expect.stringMatching(/^\d{4}-01-01 00:00:00$/),
+          end_date: expect.stringMatching(/^\d{4}-12-31 23:59:59$/),
+        });
       });
 
       // sessionStorageに結果が保存される

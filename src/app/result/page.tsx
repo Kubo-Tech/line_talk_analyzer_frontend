@@ -1,13 +1,17 @@
 'use client';
 
 import Button from '@/components/common/Button';
-import { AnalysisResponse } from '@/types/api';
+import RankingList from '@/components/result/RankingList';
+import ResultSummary from '@/components/result/ResultSummary';
+import UserTabs from '@/components/result/UserTabs';
+import { AnalysisResponse, TopMessage, TopWord } from '@/types/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function ResultPage() {
   const [result, setResult] = useState<AnalysisResponse | null>(null);
+  const [activeUser, setActiveUser] = useState('全体');
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +32,38 @@ export default function ResultPage() {
     }
   }, [router]);
 
+  // ユーザー名リストを取得
+  const users = useMemo(() => {
+    if (!result || !result.data.user_analysis?.word_analysis) return [];
+    const wordUsers = result.data.user_analysis.word_analysis.map((ua) => ua.user);
+    return Array.from(new Set(wordUsers));
+  }, [result]);
+
+  // 現在選択されているユーザーのランキングデータを取得
+  const currentWordRanking: TopWord[] = useMemo(() => {
+    if (!result) return [];
+    if (activeUser === '全体') {
+      return result.data.morphological_analysis?.top_words || [];
+    }
+    if (!result.data.user_analysis?.word_analysis) return [];
+    const userWordData = result.data.user_analysis.word_analysis.find(
+      (ua) => ua.user === activeUser
+    );
+    return userWordData?.top_words || [];
+  }, [activeUser, result]);
+
+  const currentMessageRanking: TopMessage[] = useMemo(() => {
+    if (!result) return [];
+    if (activeUser === '全体') {
+      return result.data.full_message_analysis?.top_messages || [];
+    }
+    if (!result.data.user_analysis?.message_analysis) return [];
+    const userMessageData = result.data.user_analysis.message_analysis.find(
+      (ua) => ua.user === activeUser
+    );
+    return userMessageData?.top_messages || [];
+  }, [activeUser, result]);
+
   if (!result) {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-8">
@@ -39,13 +75,7 @@ export default function ResultPage() {
   }
 
   const { data } = result;
-  const {
-    analysis_period,
-    total_messages,
-    total_users,
-    morphological_analysis,
-    full_message_analysis,
-  } = data;
+  const { analysis_period, total_messages, total_users } = data;
 
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
@@ -55,100 +85,21 @@ export default function ResultPage() {
       </div>
 
       {/* 解析期間と統計情報 */}
-      <section className="mb-8 rounded-lg bg-gray-50 p-6">
-        <h2 className="mb-4 text-xl font-bold">解析情報</h2>
-        <div className="space-y-2 text-sm">
-          <p>
-            <span className="font-semibold">期間:</span>{' '}
-            {new Date(analysis_period.start_date).toLocaleDateString('ja-JP')} 〜{' '}
-            {new Date(analysis_period.end_date).toLocaleDateString('ja-JP')}
-          </p>
-          <p>
-            <span className="font-semibold">総メッセージ数:</span> {total_messages.toLocaleString()}
-            件
-          </p>
-          <p>
-            <span className="font-semibold">参加者数:</span> {total_users}人
-          </p>
-        </div>
-      </section>
+      <ResultSummary
+        startDate={analysis_period.start_date}
+        endDate={analysis_period.end_date}
+        totalMessages={total_messages}
+        totalUsers={total_users}
+      />
 
-      {/* 流行語大賞 TOP10 */}
-      <section className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold">🏆 流行語大賞 TOP10</h2>
-        <div className="space-y-2">
-          {morphological_analysis.top_words.slice(0, 10).map((word, index) => (
-            <div
-              key={`${word.word}-${word.count}`}
-              className={`flex items-center justify-between rounded-lg p-4 ${
-                index === 0
-                  ? 'bg-gradient-to-r from-yellow-100 to-yellow-50 font-bold'
-                  : 'bg-gray-50'
-              }`}
-            >
-              <div className="flex items-center space-x-4">
-                <span
-                  className={`text-2xl font-bold ${
-                    index === 0
-                      ? 'text-yellow-600'
-                      : index === 1
-                        ? 'text-gray-500'
-                        : index === 2
-                          ? 'text-orange-600'
-                          : 'text-gray-400'
-                  }`}
-                >
-                  {index + 1}
-                </span>
-                <div>
-                  <p className="text-lg font-semibold">{word.word}</p>
-                  <p className="text-xs text-gray-500">{word.part_of_speech}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xl font-bold text-blue-600">{word.count}回</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ユーザータブ */}
+      <UserTabs users={users} activeUser={activeUser} onUserChange={setActiveUser} />
 
-      {/* 流行メッセージ TOP10 */}
-      <section className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold">💬 流行メッセージ TOP10</h2>
-        <div className="space-y-2">
-          {full_message_analysis.top_messages.slice(0, 10).map((message, index) => (
-            <div
-              key={`${message.message}-${message.count}`}
-              className={`flex items-center justify-between rounded-lg p-4 ${
-                index === 0 ? 'bg-gradient-to-r from-blue-100 to-blue-50 font-bold' : 'bg-gray-50'
-              }`}
-            >
-              <div className="flex items-center space-x-4">
-                <span
-                  className={`text-2xl font-bold ${
-                    index === 0
-                      ? 'text-blue-600'
-                      : index === 1
-                        ? 'text-gray-500'
-                        : index === 2
-                          ? 'text-orange-600'
-                          : 'text-gray-400'
-                  }`}
-                >
-                  {index + 1}
-                </span>
-                <div className="flex-1">
-                  <p className="text-base">{message.message}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xl font-bold text-blue-600">{message.count}回</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 流行語大賞ランキング */}
+      <RankingList items={currentWordRanking} type="word" title="🏆 流行語大賞 TOP10" />
+
+      {/* 流行メッセージランキング */}
+      <RankingList items={currentMessageRanking} type="message" title="💬 流行メッセージ TOP10" />
 
       {/* アクション */}
       <section className="space-y-4">
