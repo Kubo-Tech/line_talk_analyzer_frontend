@@ -120,9 +120,15 @@ export default function Home() {
           )}
           {/* エラー表示 */}
           {error && (
-            <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4">
-              <p className="text-sm font-semibold text-red-800">エラーが発生しました</p>
-              <p className="mt-1 text-sm text-red-700">{error}</p>
+            <div role="alert" className="mt-4 rounded-lg border-2 border-red-400 bg-red-50 p-6">
+              <p className="mb-2 text-lg font-bold text-red-900">⚠️ エラーが発生しました</p>
+              <p className="text-sm whitespace-pre-line text-red-800">{error}</p>
+              <button
+                onClick={resetError}
+                className="mt-4 rounded-md bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+              >
+                エラーを閉じる
+              </button>
             </div>
           )}
         </section>
