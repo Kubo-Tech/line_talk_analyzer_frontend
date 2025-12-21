@@ -6,6 +6,7 @@ import FileUploader from '@/components/upload/FileUploader';
 import { PrivacyConsent } from '@/components/upload/PrivacyConsent';
 import { useAnalyze } from '@/hooks/useAnalyze';
 import { usePrivacyConsent } from '@/hooks/usePrivacyConsent';
+import { ANALYSIS_DEFAULTS } from '@/lib/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -41,8 +42,16 @@ export default function Home() {
       resetError();
     }
 
-    // 解析実行
-    const result = await analyze({ file: uploadedFile });
+    // 解析実行（今年全体を指定）
+    const currentYear = new Date().getFullYear();
+    const result = await analyze({
+      file: uploadedFile,
+      top_n: ANALYSIS_DEFAULTS.TOP_N,
+      min_word_length: ANALYSIS_DEFAULTS.MIN_WORD_LENGTH,
+      min_message_length: ANALYSIS_DEFAULTS.MIN_MESSAGE_LENGTH,
+      start_date: `${currentYear}-01-01 00:00:00`,
+      end_date: `${currentYear}-12-31 23:59:59`,
+    });
 
     // 解析成功時に結果ページへ遷移
     if (result) {

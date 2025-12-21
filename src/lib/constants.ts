@@ -36,9 +36,18 @@ export const ANALYSIS_DEFAULTS = {
  * ランキング表示関連の定数
  */
 export const RANKING_DISPLAY = {
+  /** 初期表示件数（トップN） */
   INITIAL_DISPLAY_COUNT: 10,
+  /** 「もっと見る」展開時の最大表示件数 */
   MAX_DISPLAY_COUNT: 100,
 } as const;
+
+// ランキング表示定数の検証
+if (RANKING_DISPLAY.INITIAL_DISPLAY_COUNT >= RANKING_DISPLAY.MAX_DISPLAY_COUNT) {
+  throw new Error(
+    `INITIAL_DISPLAY_COUNT (${RANKING_DISPLAY.INITIAL_DISPLAY_COUNT}) must be less than MAX_DISPLAY_COUNT (${RANKING_DISPLAY.MAX_DISPLAY_COUNT})`
+  );
+}
 
 /**
  * エラーメッセージ

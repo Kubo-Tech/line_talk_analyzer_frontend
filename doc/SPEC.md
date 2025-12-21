@@ -947,39 +947,43 @@ androidの手順についてはスクリーンショットを用意できてい�
 
 **タスク**:
 
-- [ ] `src/components/result/RankingItem.tsx` の実装
+- [x] `src/components/result/RankingItem.tsx` の実装
   - 順位、ワード/メッセージ、出現回数の表示
   - スタイリング（1位は強調など）
-- [ ] `src/components/result/RankingList.tsx` の実装
+- [x] `src/components/result/RankingList.tsx` の実装
   - RankingItem のリスト表示
   - 初期表示10件
   - 「もっと見る」ボタン
   - 100件まで展開
-- [ ] `src/components/result/UserTabs.tsx` の実装
+- [x] `src/components/result/UserTabs.tsx` の実装
   - 「全体」タブ
-  - ユーザー別タブ
+  - ユーザー別タブ（発言者ごと）
   - 横スクロール対応
   - タブ切り替えイベント
-- [ ] `src/components/result/ResultSummary.tsx` の実装
+  - タブ切り替え時のランキングデータ更新
+- [x] `src/components/result/ResultSummary.tsx` の実装
   - 解析期間表示
   - 総メッセージ数表示
-- [ ] `src/app/result/page.tsx` の実装
+- [x] `src/app/result/page.tsx` の実装
   - 各コンポーネントの統合
-  - 流行語ランキング
-  - 流行メッセージランキング
+  - 履歴全体の流行語ランキング TOP10（もっと見るで100位まで）
+  - 履歴全体の流行メッセージランキング TOP10（もっと見るで100位まで）
+  - 発言者ごとの流行語ランキング TOP10（もっと見るで100位まで）
+  - 発言者ごとの流行メッセージランキング TOP10（もっと見るで100位まで）
+  - タブ切り替えによる表示データの切り替え
   - 「別のファイルを解析」ボタン
 
 **テスト計画**:
 
 - 単体テスト: `tests/unit/components/result/`
-  - [ ] RankingItem: 各項目の表示
-  - [ ] RankingList: 初期10件表示
-  - [ ] RankingList: 展開機能
-  - [ ] UserTabs: タブ切り替え
-  - [ ] ResultSummary: 情報表示
+  - [x] RankingItem: 各項目の表示
+  - [x] RankingList: 初期10件表示
+  - [x] RankingList: 展開機能
+  - [x] UserTabs: タブ切り替え
+  - [x] ResultSummary: 情報表示
 - 統合テスト: `tests/integration/`
-  - [ ] 結果ページ全体のレンダリング
-  - [ ] タブ切り替えでデータ更新
+  - [x] 結果ページ全体のレンダリング
+  - [x] タブ切り替えでデータ更新
 
 **依存**: PR#8
 
