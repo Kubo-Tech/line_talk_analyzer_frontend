@@ -31,13 +31,16 @@ export default function RankingList({ items, type, title }: RankingListProps) {
     <section className="mb-8">
       <h2 className="mb-4 text-2xl font-bold">{title}</h2>
       <div className="space-y-2">
-        {displayItems.map((item, index) => (
-          <RankingItem key={`${index}-${item.count}`} rank={index + 1} item={item} type={type} />
-        ))}
+        {displayItems.map((item, index) => {
+          const itemKey =
+            type === 'word' ? (item as TopWord).word : (item as TopMessage).message;
+          return <RankingItem key={`${index}-${itemKey}`} rank={index + 1} item={item} type={type} />;
+        })}
       </div>
       {showButton && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
+          aria-expanded={isExpanded}
           className="mt-4 w-full rounded-lg border-2 border-blue-600 bg-white px-6 py-3 text-blue-600 transition-colors hover:bg-blue-50"
         >
           {isExpanded ? '閉じる' : `もっと見る（${RANKING_DISPLAY.MAX_DISPLAY_COUNT}位まで）`}

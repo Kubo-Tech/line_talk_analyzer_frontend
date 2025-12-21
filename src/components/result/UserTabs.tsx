@@ -15,12 +15,14 @@ export default function UserTabs({ users, activeUser, onUserChange }: UserTabsPr
 
   return (
     <div className="mb-6 overflow-x-auto">
-      <div className="flex space-x-2 border-b border-gray-200">
+      <div className="flex space-x-2 border-b border-gray-200" role="tablist">
         {tabs.map((tab) => {
           const isActive = tab === activeUser;
           return (
             <button
               key={tab}
+              role="tab"
+              aria-selected={isActive}
               onClick={() => onUserChange(tab)}
               className={`border-b-2 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
                 isActive
