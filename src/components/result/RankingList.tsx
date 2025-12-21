@@ -32,9 +32,10 @@ export default function RankingList({ items, type, title }: RankingListProps) {
       <h2 className="mb-4 text-2xl font-bold">{title}</h2>
       <div className="space-y-2">
         {displayItems.map((item, index) => {
-          const itemKey =
-            type === 'word' ? (item as TopWord).word : (item as TopMessage).message;
-          return <RankingItem key={`${index}-${itemKey}`} rank={index + 1} item={item} type={type} />;
+          const itemKey = type === 'word' ? (item as TopWord).word : (item as TopMessage).message;
+          return (
+            <RankingItem key={`${index}-${itemKey}`} rank={index + 1} item={item} type={type} />
+          );
         })}
       </div>
       {showButton && (
