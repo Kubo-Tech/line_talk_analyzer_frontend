@@ -7,19 +7,64 @@ import { PrivacyConsent } from '@/components/upload/PrivacyConsent';
 import { useAnalyze } from '@/hooks/useAnalyze';
 import { usePrivacyConsent } from '@/hooks/usePrivacyConsent';
 import { ANALYSIS_DEFAULTS } from '@/lib/constants';
+import { extractWithStats } from '@/lib/fileUtils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [extractedFile, setExtractedFile] = useState<File | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [extractionStats, setExtractionStats] = useState<{
+    originalMessageCount: number;
+    extractedMessageCount: number;
+  } | null>(null);
+  const [extractionError, setExtractionError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isConsented, hasReadPolicy, toggleConsent, markAsRead } = usePrivacyConsent();
-  const { isLoading, error, analyze, resetError } = useAnalyze();
+  const { isLoading, statusMessage, error, analyze, resetError } = useAnalyze();
   const router = useRouter();
 
-  const handleFileChange = (file: File | null) => {
+  const handleFileChange = async (file: File | null) => {
     setUploadedFile(file);
+    setExtractedFile(null);
+    setExtractionStats(null);
+    setExtractionError(null);
+
+    if (!file) return;
+
+    // ファイル選択時に期間抽出を実行
+    setIsExtracting(true);
+    try {
+      const content = await file.text();
+      const currentYear = new Date().getFullYear();
+      const startDate = new Date(`${currentYear}-01-01`);
+      const endDate = new Date(`${currentYear}-12-31`);
+
+      const extraction = extractWithStats(content, startDate, endDate);
+
+      setExtractionStats({
+        originalMessageCount: extraction.originalMessageCount,
+        extractedMessageCount: extraction.extractedMessageCount,
+      });
+
+      if (extraction.extractedMessageCount === 0) {
+        setExtractionError(`${currentYear}年のメッセージが見つかりませんでした。`);
+        return;
+      }
+
+      // 抽出した内容で新しいFileオブジェクトを作成
+      const blob = new Blob([extraction.content], { type: 'text/plain' });
+      const extracted = new File([blob], file.name, { type: 'text/plain' });
+      setExtractedFile(extracted);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'ファイルの処理中にエラーが発生しました';
+      setExtractionError(errorMessage);
+    } finally {
+      setIsExtracting(false);
+    }
   };
 
   const handleOpenPolicy = () => {
@@ -35,22 +80,19 @@ export default function Home() {
    * 解析開始ボタンがクリックされたときの処理
    */
   const handleAnalyzeClick = async () => {
-    if (!uploadedFile) return;
+    if (!extractedFile) return;
 
     // エラーがある場合はリセット
     if (error) {
       resetError();
     }
 
-    // 解析実行（今年全体を指定）
-    const currentYear = new Date().getFullYear();
+    // 解析実行（抽出済みファイルを使用、期間指定は不要）
     const result = await analyze({
-      file: uploadedFile,
+      file: extractedFile,
       top_n: ANALYSIS_DEFAULTS.TOP_N,
       min_word_length: ANALYSIS_DEFAULTS.MIN_WORD_LENGTH,
       min_message_length: ANALYSIS_DEFAULTS.MIN_MESSAGE_LENGTH,
-      start_date: `${currentYear}-01-01 00:00:00`,
-      end_date: `${currentYear}-12-31 23:59:59`,
     });
 
     // 解析成功時に結果ページへ遷移
@@ -61,8 +103,9 @@ export default function Home() {
     }
   };
 
-  // ファイル選択済み かつ プライバシー同意済みでボタンを有効化
-  const isAnalyzeButtonEnabled = uploadedFile !== null && isConsented && !isLoading;
+  // 抽出済みファイルがあり、プライバシー同意済みでボタンを有効化
+  const isAnalyzeButtonEnabled =
+    extractedFile !== null && isConsented && !isLoading && !isExtracting;
 
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
@@ -104,21 +147,30 @@ export default function Home() {
                 : 'cursor-not-allowed bg-gray-400'
             }`}
           >
-            {isLoading ? '解析中...' : '解析を開始する'}
+            {isLoading ? '解析中...' : isExtracting ? '準備中...' : '解析を開始する'}
           </button>
-          {uploadedFile && !isLoading && (
+          {uploadedFile && !isLoading && !isExtracting && (
             <p className="mt-2 text-center text-sm text-gray-600">ファイル: {uploadedFile.name}</p>
           )}
-          {!isAnalyzeButtonEnabled && !isLoading && (
+          {!isAnalyzeButtonEnabled && !isLoading && !isExtracting && (
             <p className="mt-2 text-center text-sm text-gray-500">
               {!uploadedFile && !isConsented
                 ? 'ファイルを選択し、プライバシーポリシーに同意してください'
                 : !uploadedFile
                   ? 'ファイルを選択してください'
-                  : 'プライバシーポリシーに同意してください'}
+                  : extractionError
+                    ? extractionError
+                    : 'プライバシーポリシーに同意してください'}
             </p>
           )}
-          {/* エラー表示 */}
+          {/* 抽出エラー表示 */}
+          {extractionError && !isExtracting && (
+            <div role="alert" className="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4">
+              <p className="text-sm font-semibold text-yellow-800">注意</p>
+              <p className="mt-1 text-sm text-yellow-700">{extractionError}</p>
+            </div>
+          )}
+          {/* 解析エラー表示 */}
           {error && (
             <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4">
               <p className="text-sm font-semibold text-red-800">エラーが発生しました</p>
@@ -129,8 +181,10 @@ export default function Home() {
       </div>
       {/* プライバシーポリシーモーダル */}
       <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />
-      {/* ローディングオーバーレイ */}
-      {isLoading && <Loading overlay />}
+      {/* ファイル抽出中のローディング */}
+      {isExtracting && <Loading overlay message="期間を抽出しています..." />}
+      {/* 解析中のローディングオーバーレイ */}
+      {isLoading && <Loading overlay message={statusMessage || '解析中...'} />}
     </main>
   );
 }

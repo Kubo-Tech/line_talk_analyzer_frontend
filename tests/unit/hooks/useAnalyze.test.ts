@@ -4,13 +4,18 @@
 
 import { useAnalyze } from '@/hooks/useAnalyze';
 import * as api from '@/lib/api';
+import * as fileUtils from '@/lib/fileUtils';
 import { AnalysisResponse, AnalyzeRequestParams } from '@/types/api';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
 // APIモジュールをモック
 jest.mock('@/lib/api');
+jest.mock('@/lib/fileUtils');
 
 const mockAnalyzeFile = api.analyzeFile as jest.MockedFunction<typeof api.analyzeFile>;
+const mockExtractWithStats = fileUtils.extractWithStats as jest.MockedFunction<
+  typeof fileUtils.extractWithStats
+>;
 
 describe('useAnalyze', () => {
   beforeEach(() => {
@@ -22,8 +27,10 @@ describe('useAnalyze', () => {
       const { result } = renderHook(() => useAnalyze());
 
       expect(result.current.isLoading).toBe(false);
+      expect(result.current.statusMessage).toBeNull();
       expect(result.current.error).toBeNull();
       expect(result.current.result).toBeNull();
+      expect(result.current.extractionStats).toBeNull();
       expect(typeof result.current.analyze).toBe('function');
       expect(typeof result.current.resetError).toBe('function');
     });
@@ -195,6 +202,98 @@ describe('useAnalyze', () => {
       // 2回目の解析でエラーになった場合、結果はクリアされる
       expect(result.current.result).toBeNull();
       expect(result.current.error).toBe(errorMessage);
+    });
+
+    it('期間指定がある場合、ファイル抽出処理を実行する', async () => {
+      const mockFileContent = `[LINE] テストのトーク履歴
+保存日時：2024/08/01 00:00
+
+2024/08/01(木)
+22:12	user1	メッセージ1`;
+
+      const extractedContent = `[LINE] テストのトーク履歴
+保存日時：2024/08/01 00:00
+
+2024/08/01(木)
+22:12	user1	メッセージ1`;
+
+      // File.text()メソッドを持つモックオブジェクトを作成
+      const mockFile = {
+        text: jest.fn().mockResolvedValue(mockFileContent),
+        name: 'test.txt',
+        type: 'text/plain',
+      } as unknown as File;
+
+      const paramsWithDate: AnalyzeRequestParams = {
+        file: mockFile,
+        start_date: '2024-08-01 00:00:00',
+        end_date: '2024-08-31 23:59:59',
+      };
+
+      mockExtractWithStats.mockReturnValue({
+        content: extractedContent,
+        originalMessageCount: 100,
+        extractedMessageCount: 50,
+      });
+
+      mockAnalyzeFile.mockResolvedValue(mockResponse);
+
+      const { result } = renderHook(() => useAnalyze());
+
+      await act(async () => {
+        await result.current.analyze(paramsWithDate);
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(mockExtractWithStats).toHaveBeenCalled();
+      expect(result.current.extractionStats).toEqual({
+        originalMessageCount: 100,
+        extractedMessageCount: 50,
+      });
+      expect(result.current.result).toEqual(mockResponse);
+    });
+
+    it('抽出されたメッセージが0件の場合、エラーを返す', async () => {
+      const mockFileContent = `[LINE] テストのトーク履歴
+保存日時：2024/08/01 00:00
+
+2024/07/01(月)
+22:12	user1	メッセージ1`;
+
+      // File.text()メソッドを持つモックオブジェクトを作成
+      const mockFile = {
+        text: jest.fn().mockResolvedValue(mockFileContent),
+        name: 'test.txt',
+        type: 'text/plain',
+      } as unknown as File;
+
+      const paramsWithDate: AnalyzeRequestParams = {
+        file: mockFile,
+        start_date: '2024-08-01 00:00:00',
+        end_date: '2024-08-31 23:59:59',
+      };
+
+      mockExtractWithStats.mockReturnValue({
+        content: '',
+        originalMessageCount: 100,
+        extractedMessageCount: 0,
+      });
+
+      const { result } = renderHook(() => useAnalyze());
+
+      await act(async () => {
+        await result.current.analyze(paramsWithDate);
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(result.current.error).toBe('指定された期間にメッセージが見つかりませんでした。');
+      expect(result.current.result).toBeNull();
     });
   });
 

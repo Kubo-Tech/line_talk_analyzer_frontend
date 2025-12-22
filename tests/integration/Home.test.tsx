@@ -24,6 +24,15 @@ jest.mock('@/lib/api', () => ({
   analyzeFile: jest.fn(),
 }));
 
+// fileUtilsのモック
+jest.mock('@/lib/fileUtils', () => ({
+  extractWithStats: jest.fn().mockReturnValue({
+    content: 'extracted content',
+    originalMessageCount: 1000,
+    extractedMessageCount: 500,
+  }),
+}));
+
 describe('Home (トップページ)', () => {
   beforeEach(() => {
     mockPush.mockClear();
@@ -186,6 +195,11 @@ describe('Home (トップページ)', () => {
       const fileInput = dropZone.querySelector('input[type="file"]') as HTMLInputElement;
 
       const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+      // File.text()メソッドをモック
+      Object.defineProperty(file, 'text', {
+        value: jest.fn().mockResolvedValue('test file content'),
+        writable: true,
+      });
 
       // ファイル入力要素に直接ファイルを設定
       Object.defineProperty(fileInput, 'files', {
@@ -196,6 +210,9 @@ describe('Home (トップページ)', () => {
       // change イベントを発火
       const changeEvent = new Event('change', { bubbles: true });
       fileInput.dispatchEvent(changeEvent);
+
+      // 抽出処理が完了するまで待つ
+      await screen.findByText('ファイル: test.txt');
 
       const button = screen.getByRole('button', { name: '解析を開始する' });
       expect(button).toBeDisabled();
@@ -211,6 +228,11 @@ describe('Home (トップページ)', () => {
       const fileInput = dropZone.querySelector('input[type="file"]') as HTMLInputElement;
 
       const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+      // File.text()メソッドをモック
+      Object.defineProperty(file, 'text', {
+        value: jest.fn().mockResolvedValue('test file content'),
+        writable: true,
+      });
 
       Object.defineProperty(fileInput, 'files', {
         value: [file],
@@ -219,6 +241,9 @@ describe('Home (トップページ)', () => {
 
       const changeEvent = new Event('change', { bubbles: true });
       fileInput.dispatchEvent(changeEvent);
+
+      // 抽出処理が完了するまで待つ
+      await screen.findByText('ファイル: test.txt');
 
       // モーダルを開いて閉じる
       const policyButton = screen.getByRole('button', { name: 'プライバシーポリシー' });
@@ -251,6 +276,11 @@ describe('Home (トップページ)', () => {
       const fileInput = dropZone.querySelector('input[type="file"]') as HTMLInputElement;
 
       const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+      // File.text()メソッドをモック
+      Object.defineProperty(file, 'text', {
+        value: jest.fn().mockResolvedValue('test file content'),
+        writable: true,
+      });
 
       Object.defineProperty(fileInput, 'files', {
         value: [file],
@@ -259,6 +289,9 @@ describe('Home (トップページ)', () => {
 
       const changeEvent = new Event('change', { bubbles: true });
       fileInput.dispatchEvent(changeEvent);
+
+      // 抽出処理が完了するまで待つ
+      await screen.findByText('ファイル: test.txt');
 
       // モーダルを開いて閉じる
       const policyButton = screen.getByRole('button', { name: 'プライバシーポリシー' });

@@ -27,6 +27,15 @@ jest.mock('next/link', () => {
 // APIモジュールをモック
 jest.mock('@/lib/api');
 
+// fileUtilsモジュールをモック
+jest.mock('@/lib/fileUtils', () => ({
+  extractWithStats: jest.fn().mockReturnValue({
+    content: 'extracted content',
+    originalMessageCount: 1000,
+    extractedMessageCount: 500,
+  }),
+}));
+
 const mockPush = jest.fn();
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockAnalyzeFile = api.analyzeFile as jest.MockedFunction<typeof api.analyzeFile>;
@@ -35,6 +44,12 @@ const mockAnalyzeFile = api.analyzeFile as jest.MockedFunction<typeof api.analyz
  * ファイル入力要素を取得してファイルを変更するヘルパー関数
  */
 async function uploadFile(user: ReturnType<typeof userEvent.setup>, file: File) {
+  // File.text()メソッドをモック
+  Object.defineProperty(file, 'text', {
+    value: jest.fn().mockResolvedValue('test file content'),
+    writable: true,
+  });
+
   const dropZone = screen.getByRole('button', { name: /ファイルをアップロード/ });
   const fileInput = dropZone.querySelector('input[type="file"]') as HTMLInputElement;
   await user.upload(fileInput, file);
@@ -178,16 +193,19 @@ describe('トップページ - 解析フロー統合テスト', () => {
       // 解析ボタンをクリック
       await user.click(analyzeButton);
 
-      // API呼び出しが行われる
+      // API呼び出しが行われる（期間指定なし、抽出済みファイルを使用）
       await waitFor(() => {
-        expect(mockAnalyzeFile).toHaveBeenCalledWith({
-          file,
-          top_n: 100,
-          min_word_length: 1,
-          min_message_length: 2,
-          start_date: expect.stringMatching(/^\d{4}-01-01 00:00:00$/),
-          end_date: expect.stringMatching(/^\d{4}-12-31 23:59:59$/),
-        });
+        expect(mockAnalyzeFile).toHaveBeenCalledWith(
+          expect.objectContaining({
+            top_n: 100,
+            min_word_length: 1,
+            min_message_length: 2,
+          })
+        );
+        // start_dateとend_dateが指定されていないことを確認
+        const callArgs = mockAnalyzeFile.mock.calls[0][0];
+        expect(callArgs.start_date).toBeUndefined();
+        expect(callArgs.end_date).toBeUndefined();
       });
 
       // sessionStorageに結果が保存される
@@ -301,7 +319,7 @@ describe('トップページ - 解析フロー統合テスト', () => {
 
       // ローディング中はボタンが無効化され、テキストが変わる
       await waitFor(() => {
-        expect(screen.getByText(/解析中\.\.\./)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /解析中/ })).toBeInTheDocument();
         expect(analyzeButton).toBeDisabled();
       });
     });
