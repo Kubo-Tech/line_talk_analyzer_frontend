@@ -19,6 +19,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleFileChange = (file: File | null) => {
+    console.log('[DEBUG] handleFileChange:', { fileName: file?.name, size: file?.size });
     setUploadedFile(file);
   };
 
@@ -35,6 +36,7 @@ export default function Home() {
    * 解析開始ボタンがクリックされたときの処理
    */
   const handleAnalyzeClick = async () => {
+    console.log('[DEBUG] handleAnalyzeClick: 開始');
     if (!uploadedFile) return;
 
     // エラーがある場合はリセット
@@ -44,6 +46,7 @@ export default function Home() {
 
     // 解析実行（今年全体を指定）
     const currentYear = new Date().getFullYear();
+    console.log('[DEBUG] analyze呼び出し開始', { fileName: uploadedFile.name, size: uploadedFile.size });
     const result = await analyze({
       file: uploadedFile,
       top_n: ANALYSIS_DEFAULTS.TOP_N,
@@ -53,10 +56,13 @@ export default function Home() {
       end_date: `${currentYear}-12-31 23:59:59`,
     });
 
+    console.log('[DEBUG] analyze呼び出し完了', { hasResult: !!result });
     // 解析成功時に結果ページへ遷移
     if (result) {
       // 結果データをsessionStorageに保存
+      console.log('[DEBUG] sessionStorage保存開始');
       sessionStorage.setItem('analysisResult', JSON.stringify(result));
+      console.log('[DEBUG] 結果ページへ遷移');
       router.push('/result');
     }
   };

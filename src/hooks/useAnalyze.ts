@@ -49,19 +49,24 @@ export function useAnalyze(): UseAnalyzeResult {
    * @returns 解析結果（エラー時はnull）
    */
   const analyze = async (params: AnalyzeRequestParams): Promise<AnalysisResponse | null> => {
+    console.log('[DEBUG useAnalyze] analyze開始', { fileName: params.file.name, size: params.file.size });
     setIsLoading(true);
     setError(null);
     setResult(null);
 
     try {
+      console.log('[DEBUG useAnalyze] analyzeFile呼び出し開始');
       const response = await analyzeFile(params);
+      console.log('[DEBUG useAnalyze] analyzeFile呼び出し完了');
       setResult(response);
       return response;
     } catch (err) {
+      console.error('[DEBUG useAnalyze] エラー発生', err);
       const errorMessage = err instanceof Error ? err.message : '解析中にエラーが発生しました';
       setError(errorMessage);
       return null;
     } finally {
+      console.log('[DEBUG useAnalyze] isLoading = false');
       setIsLoading(false);
     }
   };
