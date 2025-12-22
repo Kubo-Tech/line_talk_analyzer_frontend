@@ -99,11 +99,9 @@ export async function healthCheck(): Promise<HealthCheckResponse> {
  * トーク履歴ファイルを解析
  */
 export async function analyzeFile(params: AnalyzeRequestParams): Promise<AnalysisResponse> {
-  console.log('[DEBUG api] analyzeFile開始', { fileName: params.file.name, size: params.file.size });
   try {
     const formData = new FormData();
     formData.append('file', params.file);
-    console.log('[DEBUG api] FormData作成完了');
 
     // オプションパラメータの追加
     if (params.top_n !== undefined) {
@@ -129,16 +127,12 @@ export async function analyzeFile(params: AnalyzeRequestParams): Promise<Analysi
     }
 
     const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.ANALYZE}`;
-    console.log('[DEBUG api] fetch開始', { url });
     const response = await fetchWithTimeout(url, {
       method: 'POST',
       body: formData,
     });
-    console.log('[DEBUG api] fetch完了', { status: response.status, ok: response.ok });
 
-    console.log('[DEBUG api] レスポンスJSON解析開始');
     const data: AnalysisResponse | ErrorResponse = await response.json();
-    console.log('[DEBUG api] レスポンスJSON解析完了');
 
     if (!response.ok || data.status === 'error') {
       handleErrorResponse(response, data as ErrorResponse);
@@ -146,7 +140,7 @@ export async function analyzeFile(params: AnalyzeRequestParams): Promise<Analysi
 
     return data as AnalysisResponse;
   } catch (error) {
-    console.error('[DEBUG api] エラー発生', error);
+    console.error('APIエラー:', error);
     if (error instanceof ApiError) {
       throw error;
     }

@@ -19,7 +19,6 @@ export default function Home() {
   const router = useRouter();
 
   const handleFileChange = (file: File | null) => {
-    console.log('[DEBUG] handleFileChange:', { fileName: file?.name, size: file?.size });
     setUploadedFile(file);
   };
 
@@ -36,7 +35,6 @@ export default function Home() {
    * 解析開始ボタンがクリックされたときの処理
    */
   const handleAnalyzeClick = async () => {
-    console.log('[DEBUG] handleAnalyzeClick: 開始');
     if (!uploadedFile) return;
 
     // エラーがある場合はリセット
@@ -46,7 +44,6 @@ export default function Home() {
 
     // 解析実行（今年全体を指定）
     const currentYear = new Date().getFullYear();
-    console.log('[DEBUG] analyze呼び出し開始', { fileName: uploadedFile.name, size: uploadedFile.size });
     const result = await analyze({
       file: uploadedFile,
       top_n: ANALYSIS_DEFAULTS.TOP_N,
@@ -56,19 +53,20 @@ export default function Home() {
       end_date: `${currentYear}-12-31 23:59:59`,
     });
 
-    console.log('[DEBUG] analyze呼び出し完了', { hasResult: !!result });
     // 解析成功時に結果ページへ遷移
     if (result) {
       try {
         // 結果データをsessionStorageに保存
-        console.log('[DEBUG] sessionStorage保存開始');
         const resultJson = JSON.stringify(result);
         const sizeInBytes = new Blob([resultJson]).size;
         const sizeInMB = sizeInBytes / (1024 * 1024);
-        console.log('[DEBUG] 結果データサイズ: ' + sizeInMB.toFixed(2) + 'MB (' + sizeInBytes + ' bytes)');
+        
+        // 大きなデータの場合は警告を表示
+        if (sizeInMB > 2) {
+          console.warn(`大きなデータ: ${sizeInMB.toFixed(2)}MB - appearancesを削除します`);
+        }
         
         // appearances（出現箇所の詳細）を削除して容量を削減
-        console.log('[DEBUG] appearances を削除してデータを圧縮します');
         const compressedResult = {
           ...result,
           data: {
@@ -104,13 +102,8 @@ export default function Home() {
           },
         };
         const compressedJson = JSON.stringify(compressedResult);
-        const compressedBytes = new Blob([compressedJson]).size;
-        const compressedMB = compressedBytes / (1024 * 1024);
-        console.log('[DEBUG] 圧縮後のサイズ: ' + compressedMB.toFixed(2) + 'MB (' + compressedBytes + ' bytes)');
         
         sessionStorage.setItem('analysisResult', compressedJson);
-        console.log('[DEBUG] sessionStorage保存完了');
-        console.log('[DEBUG] 結果ページへ遷移');
         router.push('/result');
       } catch (storageError) {
         console.error('[DEBUG] sessionStorage保存エラー', storageError);
