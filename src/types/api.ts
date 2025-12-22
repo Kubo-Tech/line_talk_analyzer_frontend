@@ -18,22 +18,12 @@ export interface AnalyzeRequestParams {
 }
 
 /**
- * 出現情報
- */
-export interface Appearance {
-  date: string;
-  user: string;
-  message: string;
-}
-
-/**
  * 流行語（単語）
  */
 export interface TopWord {
   word: string;
   count: number;
   part_of_speech: string;
-  appearances: Appearance[];
 }
 
 /**
@@ -42,7 +32,6 @@ export interface TopWord {
 export interface TopMessage {
   message: string;
   count: number;
-  appearances: Appearance[];
 }
 
 /**

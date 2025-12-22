@@ -48,13 +48,6 @@ describe('useAnalyze', () => {
               word: 'テスト',
               count: 10,
               part_of_speech: '名詞',
-              appearances: [
-                {
-                  date: '2024-01-01T00:00:00',
-                  user: 'ユーザー1',
-                  message: 'テストメッセージ',
-                },
-              ],
             },
           ],
         },
@@ -63,13 +56,6 @@ describe('useAnalyze', () => {
             {
               message: 'こんにちは',
               count: 5,
-              appearances: [
-                {
-                  date: '2024-01-01T00:00:00',
-                  user: 'ユーザー1',
-                  message: 'こんにちは',
-                },
-              ],
             },
           ],
         },

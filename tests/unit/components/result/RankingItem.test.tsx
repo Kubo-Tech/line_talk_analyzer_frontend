@@ -7,13 +7,11 @@ describe('RankingItem', () => {
     word: 'テスト',
     count: 42,
     part_of_speech: '名詞',
-    appearances: [],
   };
 
   const mockMessage: TopMessage = {
     message: 'こんにちは',
     count: 10,
-    appearances: [],
   };
 
   describe('word type', () => {
