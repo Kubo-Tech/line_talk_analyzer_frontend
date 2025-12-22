@@ -59,11 +59,25 @@ export default function Home() {
     console.log('[DEBUG] analyze呼び出し完了', { hasResult: !!result });
     // 解析成功時に結果ページへ遷移
     if (result) {
-      // 結果データをsessionStorageに保存
-      console.log('[DEBUG] sessionStorage保存開始');
-      sessionStorage.setItem('analysisResult', JSON.stringify(result));
-      console.log('[DEBUG] 結果ページへ遷移');
-      router.push('/result');
+      try {
+        // 結果データをsessionStorageに保存
+        console.log('[DEBUG] sessionStorage保存開始');
+        const resultJson = JSON.stringify(result);
+        const sizeInMB = new Blob([resultJson]).size / (1024 * 1024);
+        console.log('[DEBUG] 結果データサイズ', { sizeInMB: sizeInMB.toFixed(2) + 'MB' });
+        
+        sessionStorage.setItem('analysisResult', resultJson);
+        console.log('[DEBUG] sessionStorage保存完了');
+        console.log('[DEBUG] 結果ページへ遷移');
+        router.push('/result');
+      } catch (storageError) {
+        console.error('[DEBUG] sessionStorage保存エラー', storageError);
+        // sessionStorageに保存できない場合は、エラーメッセージを表示
+        alert(
+          'データが大きすぎて保存できませんでした。\n' +
+            'より小さいファイルをお試しください。'
+        );
+      }
     }
   };
 
