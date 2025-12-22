@@ -63,10 +63,55 @@ export default function Home() {
         // 結果データをsessionStorageに保存
         console.log('[DEBUG] sessionStorage保存開始');
         const resultJson = JSON.stringify(result);
-        const sizeInMB = new Blob([resultJson]).size / (1024 * 1024);
-        console.log('[DEBUG] 結果データサイズ', { sizeInMB: sizeInMB.toFixed(2) + 'MB' });
+        const sizeInBytes = new Blob([resultJson]).size;
+        const sizeInMB = sizeInBytes / (1024 * 1024);
+        console.log('[DEBUG] 結果データサイズ: ' + sizeInMB.toFixed(2) + 'MB (' + sizeInBytes + ' bytes)');
         
-        sessionStorage.setItem('analysisResult', resultJson);
+        // データが大きすぎる場合は、appearances（出現箇所）を削減
+        if (sizeInMB > 5) {
+          console.log('[DEBUG] データが大きいため、appearances を削減します');
+          const compressedResult = {
+            ...result,
+            data: {
+              ...result.data,
+              morphological_analysis: {
+                top_words: result.data.morphological_analysis.top_words.map((word) => ({
+                  ...word,
+                  appearances: [], // 出現箇所を削除
+                })),
+              },
+              full_message_analysis: {
+                top_messages: result.data.full_message_analysis.top_messages.map((msg) => ({
+                  ...msg,
+                  appearances: [], // 出現箇所を削除
+                })),
+              },
+              user_analysis: {
+                word_analysis: result.data.user_analysis.word_analysis.map((user) => ({
+                  ...user,
+                  top_words: user.top_words.map((word) => ({
+                    ...word,
+                    appearances: [], // 出現箇所を削除
+                  })),
+                })),
+                message_analysis: result.data.user_analysis.message_analysis.map((user) => ({
+                  ...user,
+                  top_messages: user.top_messages.map((msg) => ({
+                    ...msg,
+                    appearances: [], // 出現箇所を削除
+                  })),
+                })),
+              },
+            },
+          };
+          const compressedJson = JSON.stringify(compressedResult);
+          const compressedSize = new Blob([compressedJson]).size / (1024 * 1024);
+          console.log('[DEBUG] 圧縮後のサイズ: ' + compressedSize.toFixed(2) + 'MB');
+          sessionStorage.setItem('analysisResult', compressedJson);
+        } else {
+          sessionStorage.setItem('analysisResult', resultJson);
+        }
+        
         console.log('[DEBUG] sessionStorage保存完了');
         console.log('[DEBUG] 結果ページへ遷移');
         router.push('/result');
