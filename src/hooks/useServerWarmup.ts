@@ -89,7 +89,13 @@ export function useServerWarmup() {
     }
   }, []);
 
-  return { warmup, waitForWarmup };
+  /**
+   * ウォームアップが実行中かどうかを取得する
+   * @returns ウォームアップ実行中の場合true
+   */
+  const getIsWarmingUp = useCallback(() => isWarmingUp, []);
+
+  return { warmup, waitForWarmup, getIsWarmingUp };
 }
 
 /**

@@ -11,6 +11,8 @@ import { useServerWarmup } from './useServerWarmup';
 interface UseAnalyzeResult {
   /** 解析中かどうか */
   isLoading: boolean;
+  /** サーバーウォームアップ待機中かどうか */
+  isWaitingForWarmup: boolean;
   /** エラーメッセージ */
   error: string | null;
   /** 解析結果データ */
@@ -40,6 +42,7 @@ interface UseAnalyzeResult {
  */
 export function useAnalyze(): UseAnalyzeResult {
   const [isLoading, setIsLoading] = useState(false);
+  const [isWaitingForWarmup, setIsWaitingForWarmup] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
   const { waitForWarmup } = useServerWarmup();
@@ -51,16 +54,18 @@ export function useAnalyze(): UseAnalyzeResult {
    * @returns 解析結果（エラー時はnull）
    */
   const analyze = async (params: AnalyzeRequestParams): Promise<AnalysisResponse | null> => {
+    setIsLoading(true);
+    setError(null);
+    setResult(null);
+
     // ウォームアップの完了を待つ
+    setIsWaitingForWarmup(true);
     await waitForWarmup();
+    setIsWaitingForWarmup(false);
 
     const startTimestamp = new Date().toISOString();
     // eslint-disable-next-line no-console
     console.log(`[${startTimestamp}] [Analyze] 解析処理を開始`);
-
-    setIsLoading(true);
-    setError(null);
-    setResult(null);
 
     try {
       const startTime = Date.now();
@@ -79,6 +84,7 @@ export function useAnalyze(): UseAnalyzeResult {
       return null;
     } finally {
       setIsLoading(false);
+      setIsWaitingForWarmup(false);
     }
   };
 
@@ -91,6 +97,7 @@ export function useAnalyze(): UseAnalyzeResult {
 
   return {
     isLoading,
+    isWaitingForWarmup,
     error,
     result,
     analyze,

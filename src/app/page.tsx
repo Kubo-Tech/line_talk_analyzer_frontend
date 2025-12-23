@@ -16,7 +16,7 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isConsented, hasReadPolicy, toggleConsent, markAsRead } = usePrivacyConsent();
-  const { isLoading, error, analyze, resetError } = useAnalyze();
+  const { isLoading, isWaitingForWarmup, error, analyze, resetError } = useAnalyze();
   const { warmup } = useServerWarmup();
   const router = useRouter();
 
@@ -137,7 +137,9 @@ export default function Home() {
       {/* プライバシーポリシーモーダル */}
       <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {/* ローディングオーバーレイ */}
-      {isLoading && <Loading overlay />}
+      {isLoading && (
+        <Loading overlay message={isWaitingForWarmup ? 'サーバー起動中...' : '解析中...'} />
+      )}
     </main>
   );
 }
