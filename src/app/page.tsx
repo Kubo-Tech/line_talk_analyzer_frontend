@@ -6,6 +6,7 @@ import FileUploader from '@/components/upload/FileUploader';
 import { PrivacyConsent } from '@/components/upload/PrivacyConsent';
 import { useAnalyze } from '@/hooks/useAnalyze';
 import { usePrivacyConsent } from '@/hooks/usePrivacyConsent';
+import { useServerWarmup } from '@/hooks/useServerWarmup';
 import { ANALYSIS_DEFAULTS } from '@/lib/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,6 +17,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isConsented, hasReadPolicy, toggleConsent, markAsRead } = usePrivacyConsent();
   const { isLoading, error, analyze, resetError } = useAnalyze();
+  const { warmup } = useServerWarmup();
   const router = useRouter();
 
   const handleFileChange = (file: File | null) => {
@@ -24,6 +26,8 @@ export default function Home() {
 
   const handleOpenPolicy = () => {
     setIsModalOpen(true);
+    // プライバシーポリシーを読んでいる間にサーバーをウォームアップ
+    warmup();
   };
 
   const handleCloseModal = () => {
