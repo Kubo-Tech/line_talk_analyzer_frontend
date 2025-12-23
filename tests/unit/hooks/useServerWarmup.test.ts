@@ -52,8 +52,10 @@ describe('useServerWarmup', () => {
       expect(mockHealthCheck).toHaveBeenCalledTimes(1); // 増えない
     });
 
-    it('エラー時も例外をスローせず、フラグは立てたままにする', async () => {
-      mockHealthCheck.mockRejectedValueOnce(new Error('Network Error'));
+    it('エラー時も例外をスローせず、再試行を許可する', async () => {
+      mockHealthCheck
+        .mockRejectedValueOnce(new Error('Network Error'))
+        .mockResolvedValueOnce({ status: 'ok' });
 
       const { result } = renderHook(() => useServerWarmup());
 
@@ -62,9 +64,9 @@ describe('useServerWarmup', () => {
 
       expect(mockHealthCheck).toHaveBeenCalledTimes(1);
 
-      // 2回目の呼び出しでもスキップされる（エラー後もフラグは立っている）
+      // 2回目の呼び出しで再試行される（エラー後はフラグがリセットされる）
       await result.current.warmup();
-      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      expect(mockHealthCheck).toHaveBeenCalledTimes(2);
     });
 
     it('複数のコンポーネントで同じフックインスタンスを使用した場合、グローバルに1回だけ実行される', async () => {
