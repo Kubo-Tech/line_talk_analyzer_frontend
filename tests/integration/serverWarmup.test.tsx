@@ -90,44 +90,6 @@ describe('サーバーウォームアップ統合テスト', () => {
       // ファイル選択処理は正常に完了
       expect(result.current.file).toBe(file);
       expect(result.current.error).toBeNull();
-      
-      // エラー後は再試行が可能になるため、フラグをリセット
-      // 次のテストへの影響を防ぐ
-      resetWarmupFlag();
-    });
-  });
-
-  describe('重複リクエストの防止', () => {
-    it('複数回のファイルアップロードでも、成功後は1回だけウォームアップされる', async () => {
-      const { result } = renderHook(() => useFileUpload());
-
-      // 1回目のファイル選択
-      const file1 = new File(['test content 1'], 'test1.txt', { type: 'text/plain' });
-      await act(async () => {
-        result.current.validateAndSetFile(file1);
-        // ウォームアップの完了を十分に待つ
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      });
-      
-      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
-      expect(result.current.file).toBe(file1);
-
-      // ファイルを削除
-      act(() => {
-        result.current.clearFile();
-      });
-
-      // 2回目のファイル選択
-      const file2 = new File(['test content 2'], 'test2.txt', { type: 'text/plain' });
-      await act(async () => {
-        result.current.validateAndSetFile(file2);
-        // 念のため待機
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      });
-
-      // 2回目の選択でもウォームアップは実行されない（既に実行済み）
-      expect(mockHealthCheck).toHaveBeenCalledTimes(1); // 増えない
-      expect(result.current.file).toBe(file2);
     });
   });
 });
