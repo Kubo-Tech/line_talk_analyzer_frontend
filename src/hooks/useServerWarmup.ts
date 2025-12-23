@@ -80,7 +80,6 @@ export function useServerWarmup() {
    * - ウォームアップが実行されていない、または既に完了している場合は即座に返る
    */
   const waitForWarmup = useCallback(async () => {
-  warmupPromise = null;
     if (warmupPromise) {
       const timestamp = new Date().toISOString();
       // eslint-disable-next-line no-console
