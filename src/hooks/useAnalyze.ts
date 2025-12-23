@@ -49,16 +49,27 @@ export function useAnalyze(): UseAnalyzeResult {
    * @returns 解析結果（エラー時はnull）
    */
   const analyze = async (params: AnalyzeRequestParams): Promise<AnalysisResponse | null> => {
+    const startTimestamp = new Date().toISOString();
+    // eslint-disable-next-line no-console
+    console.log(`[${startTimestamp}] [Analyze] 解析処理を開始`);
+
     setIsLoading(true);
     setError(null);
     setResult(null);
 
     try {
+      const startTime = Date.now();
       const response = await analyzeFile(params);
+      const duration = Date.now() - startTime;
+      const endTimestamp = new Date().toISOString();
+      // eslint-disable-next-line no-console
+      console.log(`[${endTimestamp}] [Analyze] 解析処理が完了（所要時間: ${duration}ms）`);
       setResult(response);
       return response;
     } catch (err) {
+      const errorTimestamp = new Date().toISOString();
       const errorMessage = err instanceof Error ? err.message : '解析中にエラーが発生しました';
+      console.error(`[${errorTimestamp}] [Analyze] 解析処理でエラーが発生:`, err);
       setError(errorMessage);
       return null;
     } finally {

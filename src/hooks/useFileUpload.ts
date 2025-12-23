@@ -54,6 +54,9 @@ export function useFileUpload(): UseFileUploadReturn {
 
       // ファイルアップロード成功時にサーバーをウォームアップ
       // ユーザーがプライバシーポリシーを読んでいる間にサーバーを起動
+      const timestamp = new Date().toISOString();
+      // eslint-disable-next-line no-console
+      console.log(`[${timestamp}] [FileUpload] ファイルアップロード成功、ウォームアップを開始`);
       warmup();
 
       return true;

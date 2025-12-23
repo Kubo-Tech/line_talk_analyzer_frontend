@@ -27,6 +27,9 @@ export default function Home() {
   const handleOpenPolicy = () => {
     setIsModalOpen(true);
     // プライバシーポリシーを読んでいる間にサーバーをウォームアップ
+    const timestamp = new Date().toISOString();
+    // eslint-disable-next-line no-console
+    console.log(`[${timestamp}] [Page] プライバシーポリシーを開く、ウォームアップを開始`);
     warmup();
   };
 

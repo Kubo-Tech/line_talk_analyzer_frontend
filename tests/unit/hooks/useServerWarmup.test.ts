@@ -106,7 +106,10 @@ describe('useServerWarmup', () => {
       await result.current.warmup();
 
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[ServerWarmup] サーバーのウォームアップ完了'
+        expect.stringContaining('[ServerWarmup] ウォームアップ開始')
+      );
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/\[ServerWarmup\] ウォームアップ完了.*ms/)
       );
 
       consoleSpy.mockRestore();
@@ -124,7 +127,10 @@ describe('useServerWarmup', () => {
       // 1回目
       await result.current.warmup();
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[ServerWarmup] サーバーのウォームアップ完了'
+        expect.stringContaining('[ServerWarmup] ウォームアップ開始')
+      );
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/\[ServerWarmup\] ウォームアップ完了.*ms/)
       );
 
       consoleSpy.mockClear();
@@ -132,7 +138,7 @@ describe('useServerWarmup', () => {
       // 2回目（スキップ）
       await result.current.warmup();
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[ServerWarmup] 既にウォームアップ済みのためスキップ'
+        expect.stringContaining('[ServerWarmup] 既にウォームアップ済みのためスキップ')
       );
 
       consoleSpy.mockRestore();
@@ -150,14 +156,14 @@ describe('useServerWarmup', () => {
       await result.current.warmup();
 
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[ServerWarmup] ウォームアップ失敗（解析処理には影響しません）:',
+        expect.stringContaining('[ServerWarmup] ウォームアップ失敗（解析処理には影響しません）:'),
         error
       );
 
       consoleSpy.mockRestore();
     });
 
-    it('本番環境ではログを出力しない', async () => {
+    it('本番環境でもデバッグのためログを出力する', async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (process.env as any).NODE_ENV = 'production';
       mockHealthCheck.mockResolvedValueOnce({ status: 'ok' });
@@ -167,7 +173,12 @@ describe('useServerWarmup', () => {
       const { result } = renderHook(() => useServerWarmup());
       await result.current.warmup();
 
-      expect(consoleSpy).not.toHaveBeenCalled();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[ServerWarmup] ウォームアップ開始')
+      );
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/\[ServerWarmup\] ウォームアップ完了.*ms/)
+      );
 
       consoleSpy.mockRestore();
     });
