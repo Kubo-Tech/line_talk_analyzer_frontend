@@ -6,6 +6,7 @@
 import { analyzeFile } from '@/lib/api';
 import { AnalysisResponse, AnalyzeRequestParams } from '@/types/api';
 import { useState } from 'react';
+import { useServerWarmup } from './useServerWarmup';
 
 interface UseAnalyzeResult {
   /** 解析中かどうか */
@@ -41,6 +42,7 @@ export function useAnalyze(): UseAnalyzeResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
+  const { waitForWarmup } = useServerWarmup();
 
   /**
    * 解析を実行する
@@ -49,6 +51,9 @@ export function useAnalyze(): UseAnalyzeResult {
    * @returns 解析結果（エラー時はnull）
    */
   const analyze = async (params: AnalyzeRequestParams): Promise<AnalysisResponse | null> => {
+    // ウォームアップの完了を待つ
+    await waitForWarmup();
+
     const startTimestamp = new Date().toISOString();
     // eslint-disable-next-line no-console
     console.log(`[${startTimestamp}] [Analyze] 解析処理を開始`);
