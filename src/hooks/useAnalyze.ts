@@ -45,7 +45,7 @@ export function useAnalyze(): UseAnalyzeResult {
   const [isWaitingForWarmup, setIsWaitingForWarmup] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
-  const { waitForWarmup } = useServerWarmup();
+  const { waitForWarmup, getIsWarmingUp } = useServerWarmup();
 
   /**
    * 解析を実行する
@@ -58,9 +58,13 @@ export function useAnalyze(): UseAnalyzeResult {
     setError(null);
     setResult(null);
 
-    // ウォームアップの完了を待つ
-    setIsWaitingForWarmup(true);
+    // ウォームアップの完了を待つ（実行中の場合のみフラグを立てる）
+    const isWarming = getIsWarmingUp();
+    if (isWarming) {
+      setIsWaitingForWarmup(true);
+    }
     await waitForWarmup();
+    setIsWaitingForWarmup(false);
 
     try {
       const response = await analyzeFile(params);
