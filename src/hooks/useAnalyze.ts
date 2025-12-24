@@ -6,10 +6,13 @@
 import { analyzeFile } from '@/lib/api';
 import { AnalysisResponse, AnalyzeRequestParams } from '@/types/api';
 import { useState } from 'react';
+import { useServerWarmup } from './useServerWarmup';
 
 interface UseAnalyzeResult {
   /** 解析中かどうか */
   isLoading: boolean;
+  /** サーバーウォームアップ待機中かどうか */
+  isWaitingForWarmup: boolean;
   /** エラーメッセージ */
   error: string | null;
   /** 解析結果データ */
@@ -39,8 +42,10 @@ interface UseAnalyzeResult {
  */
 export function useAnalyze(): UseAnalyzeResult {
   const [isLoading, setIsLoading] = useState(false);
+  const [isWaitingForWarmup, setIsWaitingForWarmup] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
+  const { waitForWarmup } = useServerWarmup();
 
   /**
    * 解析を実行する
@@ -53,16 +58,23 @@ export function useAnalyze(): UseAnalyzeResult {
     setError(null);
     setResult(null);
 
+    // ウォームアップの完了を待つ
+    setIsWaitingForWarmup(true);
+    await waitForWarmup();
+    setIsWaitingForWarmup(false);
+
     try {
       const response = await analyzeFile(params);
       setResult(response);
       return response;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '解析中にエラーが発生しました';
+      console.error('[Analyze] 解析処理でエラーが発生:', err);
       setError(errorMessage);
       return null;
     } finally {
       setIsLoading(false);
+      setIsWaitingForWarmup(false);
     }
   };
 
@@ -75,6 +87,7 @@ export function useAnalyze(): UseAnalyzeResult {
 
   return {
     isLoading,
+    isWaitingForWarmup,
     error,
     result,
     analyze,

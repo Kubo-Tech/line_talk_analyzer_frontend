@@ -1,5 +1,6 @@
 import { ERROR_MESSAGES, FILE_UPLOAD } from '@/lib/constants';
 import { useCallback, useState } from 'react';
+import { useServerWarmup } from './useServerWarmup';
 
 interface UseFileUploadReturn {
   file: File | null;
@@ -15,6 +16,7 @@ export function useFileUpload(): UseFileUploadReturn {
   const [file, setFileState] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
+  const { warmup } = useServerWarmup();
 
   const validateFile = useCallback((file: File): string | null => {
     // 拡張子チェック
@@ -49,9 +51,14 @@ export function useFileUpload(): UseFileUploadReturn {
 
       setError(null);
       setFileState(file);
+
+      // ファイルアップロード成功時にサーバーをウォームアップ
+      // ユーザーがプライバシーポリシーを読んでいる間にサーバーを起動
+      warmup();
+
       return true;
     },
-    [validateFile]
+    [validateFile, warmup]
   );
 
   const setFile = useCallback((file: File | null) => {
