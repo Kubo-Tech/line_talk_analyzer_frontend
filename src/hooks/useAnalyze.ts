@@ -61,7 +61,6 @@ export function useAnalyze(): UseAnalyzeResult {
     // ウォームアップの完了を待つ
     setIsWaitingForWarmup(true);
     await waitForWarmup();
-    setIsWaitingForWarmup(false);
 
     try {
       const response = await analyzeFile(params);

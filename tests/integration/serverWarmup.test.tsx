@@ -8,7 +8,7 @@
 import { healthCheck } from '@/lib/api';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { resetWarmupFlag } from '@/hooks/useServerWarmup';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 
 // healthCheck関数をモック
 jest.mock('@/lib/api', () => ({
@@ -47,8 +47,9 @@ describe('サーバーウォームアップ統合テスト', () => {
       });
 
       // ウォームアップが実行されることを確認
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      await waitFor(() => {
+        expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      });
       expect(result.current.file).toBe(file);
     });
 
@@ -64,8 +65,8 @@ describe('サーバーウォームアップ統合テスト', () => {
         result.current.validateAndSetFile(file);
       });
 
-      // ウォームアップは実行されない
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // ウォームアップは実行されない（少し待機してから確認）
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(mockHealthCheck).not.toHaveBeenCalled();
       expect(result.current.file).toBeNull();
       expect(result.current.error).toBeTruthy();
@@ -84,8 +85,9 @@ describe('サーバーウォームアップ統合テスト', () => {
       });
 
       // ウォームアップは実行される（失敗する）
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      await waitFor(() => {
+        expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      });
 
       // ファイル選択処理は正常に完了
       expect(result.current.file).toBe(file);

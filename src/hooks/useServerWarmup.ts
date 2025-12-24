@@ -39,10 +39,12 @@ export function useServerWarmup() {
       return;
     }
 
+    // フラグを先に立てる（競合状態を防ぐため、Promise作成前に設定）
+    isWarmingUp = true;
+
     // Promiseを保存（解析開始時に待つため）
     warmupPromise = (async () => {
       try {
-        isWarmingUp = true;
         await healthCheck();
 
         // 成功時のみ完了フラグを立てる
@@ -84,4 +86,5 @@ export function useServerWarmup() {
 export function resetWarmupFlag() {
   hasWarmedUp = false;
   isWarmingUp = false;
+  warmupPromise = null;
 }
