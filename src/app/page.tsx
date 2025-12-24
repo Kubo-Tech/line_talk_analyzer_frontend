@@ -135,7 +135,12 @@ export default function Home() {
       <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {/* ローディングオーバーレイ */}
       {isLoading && (
-        <Loading overlay message={isWaitingForWarmup ? 'サーバー起動中...' : '解析中...'} />
+        <Loading
+          overlay
+          message={
+            isWaitingForWarmup ? 'サーバー起動中…\n（初回のみ時間がかかります）' : '解析中...'
+          }
+        />
       )}
     </main>
   );
