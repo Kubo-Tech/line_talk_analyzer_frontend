@@ -1404,41 +1404,45 @@ export function PrivacyConsent() {
 
 **デザイン仕様**:
 
-| 順位範囲 | 縦幅（padding） | 順位表示 | 単語/メッセージ | カウント表示 | ボーダー | 背景色 |
-| -------- | --------------- | -------- | --------------- | ------------ | -------- | ------ |
-| 1位      | py-6 (24px)     | text-3xl | text-2xl / text-xl | text-xl | border-b-2（太線） | 金色グラデーション |
-| 2位      | py-6 (24px)     | text-3xl | text-2xl / text-xl | text-xl | border-b-2（太線） | 銀色グラデーション |
-| 3位      | py-6 (24px)     | text-3xl | text-2xl / text-xl | text-xl | border-b-2（太線） | 銅色グラデーション |
-| 4位〜10位 | py-2 (8px)     | text-lg  | text-base / text-sm | text-sm | border-b（細線） | 灰色背景 |
+| 順位範囲 | 縦幅（padding） | 順位表示 | 単語/メッセージ | カウント表示 | ボーダー | 背景色 | 品詞表示 |
+| -------- | --------------- | -------- | --------------- | ------------ | -------- | ------ | -------- |
+| 1位      | py-4 (16px)     | text-3xl（金色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 金色グラデーション | 横並び（括弧付き） |
+| 2位      | py-4 (16px)     | text-3xl（銀色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 銀色グラデーション | 横並び（括弧付き） |
+| 3位      | py-4 (16px)     | text-3xl（銅色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 銅色グラデーション | 横並び（括弧付き） |
+| 4位〜10位 | py-2 (8px)     | text-lg  | text-base / text-sm | text-sm | border-b（細線） | 灰色背景 | 横並び（括弧付き） |
 
 **詳細スタイル**:
 
 ```tsx
-// 1位（金色背景）
-<div className="py-6 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-yellow-100 to-yellow-50">
-  <span className="text-3xl font-bold text-yellow-600">{rank}位</span>
+// 1位（金色背景、単語・メッセージ共通）
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-yellow-100 to-yellow-50">
+  <span className="text-3xl font-bold text-yellow-600">{rank}</span>
   <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
   <span className="text-xl ml-auto">{count}回</span>
 </div>
 
 // 2位（銀色背景）
-<div className="py-6 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-gray-200 to-gray-100">
-  <span className="text-3xl font-bold text-gray-500">{rank}位</span>
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-gray-200 to-gray-100">
+  <span className="text-3xl font-bold text-gray-500">{rank}</span>
   <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
   <span className="text-xl ml-auto">{count}回</span>
 </div>
 
 // 3位（銅色背景）
-<div className="py-6 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-orange-200 to-orange-100">
-  <span className="text-3xl font-bold text-orange-600">{rank}位</span>
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-orange-200 to-orange-100">
+  <span className="text-3xl font-bold text-orange-600">{rank}</span>
   <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
   <span className="text-xl ml-auto">{count}回</span>
 </div>
 
 // 4位〜10位（コンパクト）
 <div className="py-2 px-4 border-b border-gray-200 bg-gray-50">
-  <span className="text-lg font-semibold text-gray-400">{rank}位</span>
+  <span className="text-lg font-semibold text-gray-400">{rank}</span>
   <span className="text-base ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
   <span className="text-sm ml-auto">{count}回</span>
 </div>
 ```
@@ -1447,9 +1451,11 @@ export function PrivacyConsent() {
 
 - [x] `src/components/result/RankingItem.tsx` の修正
   - 順位に応じてスタイルを切り替えるロジック追加
-  - 1〜3位: 大きめのpadding（py-6）、大きめの文字、それぞれ金・銀・銅の背景色
+  - 1〜3位: 中程度のpadding（py-4）、大きめの文字、それぞれ金・銀・銅の背景色
   - 4〜10位: 小さめのpadding（py-2）、小サイズの文字
   - ボーダーの太さも差別化
+  - メッセージランキング1位も金色背景・金色順位番号に統一
+  - 品詞表示を下から横（括弧付き）に変更して縦幅を削減
 
 - [x] レスポンシブ対応の確認
   - スマホ画面（320px〜428px）で10位まで1画面に収まることを確認
@@ -1470,8 +1476,9 @@ export function PrivacyConsent() {
 
 **期待される効果**:
 
-- スマホで開いた際、TOP10が1画面に収まる
+- スマホで開いた際、TOP10が1画面に収まる（単語・メッセージ両方）
 - 重要な上位3位は目立つまま、4位以下はコンパクトに表示
+- 品詞を横並びにすることで、単語ランキングも10位まで1画面に収まる
 - スクロール量が削減され、ユーザビリティが向上
 - 一目でランキング全体を把握しやすくなる
 

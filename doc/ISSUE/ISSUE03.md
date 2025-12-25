@@ -24,13 +24,16 @@
 ### 問題のフロー
 
 ```
-現在の表示:
+改善前の表示:
 ┌──────────────────┐
 │ 1位 おうち 42回  │ ← 金色背景（目立つ）
+│    名詞          │ ← 品詞が下に表示
 ├──────────────────┤
 │ 2位 草    38回  │ ← 灰色背景（目立たない）
+│    名詞          │ ← 品詞が下に表示
 ├──────────────────┤
 │ 3位 了解  35回  │ ← 灰色背景（目立たない）
+│    名詞          │ ← 品詞が下に表示
 ├──────────────────┤
 │ 4位 ...         │
 │ 5位 ...         │
@@ -42,9 +45,11 @@
 └──────────────────┘
 
 問題点:
-- スマホでは8位までしか見えない
+- 品詞が下に表示されて縦幅を取る
+- スマホでは8〜9位までしか見えない
 - スクロールが必要で使いにくい
-- 2位・3位が目立たない
+- 2位・3位が目立たない（灰色背景）
+- メッセージランキングは10位まで見えるのに、単語ランキングだけ9位まで
 ```
 
 ### 解決策のフロー
@@ -82,41 +87,50 @@
 
 **修正内容**:
 
-#### 4位以降のコンパクト化
+#### 4位以降のコンパクト化と品詞の横並び化
 
 ```typescript
 // Issue#03: 1〜3位と4位以降でスタイルを変える
-const paddingClass = isTopThree ? 'py-6 px-4' : 'py-2 px-4';  // py-3 → py-2
+const paddingClass = isTopThree ? 'py-4 px-4' : 'py-2 px-4';  // 1-3位: py-4, 4位+: py-2
 const borderClass = isTopThree ? 'border-b-2 border-gray-300' : 'border-b border-gray-200';
-const rankSizeClass = isTopThree ? 'text-3xl' : 'text-lg';  // text-xl → text-lg
+const rankSizeClass = isTopThree ? 'text-3xl' : 'text-lg';
 const itemSizeClass = isTopThree
   ? type === 'word'
     ? 'text-2xl'
     : 'text-xl'
   : type === 'word'
-    ? 'text-base'   // text-lg → text-base
-    : 'text-sm';    // text-base → text-sm
-const countSizeClass = isTopThree ? 'text-xl' : 'text-sm';  // text-base → text-sm
+    ? 'text-base'
+    : 'text-sm';
+const countSizeClass = isTopThree ? 'text-xl' : 'text-sm';
+```
+
+```tsx
+// 品詞表示を横並び（括弧付き）に変更
+<div className={`flex items-center gap-2 ${type === 'message' ? 'flex-1' : ''}`}>
+  <p className={`${itemSizeClass} font-semibold`}>{itemText}</p>
+  {type === 'word' && 'part_of_speech' in item && (
+    <span className="text-xs text-gray-500">({item.part_of_speech})</span>  // ← 横並び
+  )}
+</div>
 ```
 
 **変更サマリー**:
 
-| 項目 | 1〜3位 | 4位以降（変更前） | 4位以降（変更後） | 削減率 |
-|------|--------|------------------|------------------|--------|
-| padding | py-6 (24px) | py-3 (12px) | py-2 (8px) | **約67%削減** |
-| 順位表示 | text-3xl | text-xl | text-lg | 小型化 |
-| 単語サイズ | text-2xl | text-lg | text-base | 小型化 |
-| カウント | text-xl | text-base | text-sm | 小型化 |
+| 項目 | 1〜3位（変更前） | 1〜3位（変更後） | 4位以降 | 削減率 |
+|------|---------------------|---------------------|------------|--------|
+| padding | py-6 (24px) | py-4 (16px) | py-2 (8px) | **1-3位: 33%削減 / 4位+: 67%削減** |
+| 順位表示 | text-3xl | text-3xl | text-lg | 小型化 |
+| 単語サイズ | text-2xl | text-2xl | text-base | 小型化 |
+| カウント | text-xl | text-xl | text-sm | 小型化 |
+| 品詞表示 | 下に表示 | 横並び（括弧付き） | 横並び（括弧付き） | **縦幅削減** |
 
-#### 2位・3位の背景色追加
+#### 2位・3位の背景色追加とメッセージランキング1位の金色統一
 
 ```typescript
 // 背景色を取得
 const getBackgroundColor = () => {
   if (isFirstPlace) {
-    return type === 'word'
-      ? 'bg-gradient-to-r from-yellow-100 to-yellow-50'
-      : 'bg-gradient-to-r from-blue-100 to-blue-50';
+    return 'bg-gradient-to-r from-yellow-100 to-yellow-50';  // ✅ 単語・メッセージ共に金色
   }
   if (isSecondPlace) {
     return 'bg-gradient-to-r from-gray-200 to-gray-100';  // ✅ 銀色
@@ -126,11 +140,20 @@ const getBackgroundColor = () => {
   }
   return 'bg-gray-50';
 };
+
+// 順位番号の色も統一
+const getRankColor = () => {
+  if (isFirstPlace) return 'text-yellow-600';  // ✅ 単語・メッセージ共に金色
+  if (isSecondPlace) return 'text-gray-500';
+  if (isThirdPlace) return 'text-orange-600';
+  return 'text-gray-400';
+};
+```
 ```
 
 **背景色の選定理由**:
 
-- **1位（金）**: `from-yellow-100 to-yellow-50` - 明るい黄色グラデーション
+- **1位（金）**: `from-yellow-100 to-yellow-50` - 単語・メッセージ共に明るい黄色グラデーション（統一）
 - **2位（銀）**: `from-gray-200 to-gray-100` - グレーのグラデーションで銀メダルを表現
 - **3位（銅）**: `from-orange-200 to-orange-100` - オレンジのグラデーションで銅メダルを表現
 - **4位以降**: `bg-gray-50` - 控えめな背景
