@@ -27,9 +27,7 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
   // 背景色を取得
   const getBackgroundColor = () => {
     if (isFirstPlace) {
-      return type === 'word'
-        ? 'bg-gradient-to-r from-yellow-100 to-yellow-50'
-        : 'bg-gradient-to-r from-blue-100 to-blue-50';
+      return 'bg-gradient-to-r from-yellow-100 to-yellow-50';
     }
     if (isSecondPlace) {
       return 'bg-gradient-to-r from-gray-200 to-gray-100';
@@ -44,7 +42,7 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
   const itemText = 'word' in item ? item.word : item.message;
 
   // Issue#03: 1〜3位と4位以降でスタイルを変える
-  const paddingClass = isTopThree ? 'py-6 px-4' : 'py-2 px-4';
+  const paddingClass = isTopThree ? 'py-4 px-4' : 'py-2 px-4';
   const borderClass = isTopThree ? 'border-b-2 border-gray-300' : 'border-b border-gray-200';
   const rankSizeClass = isTopThree ? 'text-3xl' : 'text-lg';
   const itemSizeClass = isTopThree

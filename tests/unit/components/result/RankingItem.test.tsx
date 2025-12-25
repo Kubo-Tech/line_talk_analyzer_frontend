@@ -49,14 +49,14 @@ describe('RankingItem', () => {
     });
 
     // Issue#03: 1〜3位と4位以降でスタイルが異なる
-    it('1〜3位の場合、大きなpadding（py-6）を適用する', () => {
+    it('1〜3位の場合、中くらいのpadding（py-4）を適用する', () => {
       const { container: container1 } = render(<RankingItem rank={1} item={mockWord} type="word" />);
       const { container: container2 } = render(<RankingItem rank={2} item={mockWord} type="word" />);
       const { container: container3 } = render(<RankingItem rank={3} item={mockWord} type="word" />);
 
-      expect(container1.querySelector('.py-6')).toBeInTheDocument();
-      expect(container2.querySelector('.py-6')).toBeInTheDocument();
-      expect(container3.querySelector('.py-6')).toBeInTheDocument();
+      expect(container1.querySelector('.py-4')).toBeInTheDocument();
+      expect(container2.querySelector('.py-4')).toBeInTheDocument();
+      expect(container3.querySelector('.py-4')).toBeInTheDocument();
     });
 
     it('4位以降の場合、小さなpadding（py-2）を適用する', () => {
@@ -108,9 +108,9 @@ describe('RankingItem', () => {
       expect(screen.getByText('10回')).toBeInTheDocument();
     });
 
-    it('1位の場合、青のグラデーション背景を適用する', () => {
+    it('1位の場合、黄色のグラデーション背景を適用する', () => {
       const { container } = render(<RankingItem rank={1} item={mockMessage} type="message" />);
-      const itemDiv = container.querySelector('.from-blue-100');
+      const itemDiv = container.querySelector('.from-yellow-100');
       expect(itemDiv).toBeInTheDocument();
     });
 
