@@ -1090,6 +1090,8 @@ androidの手順についてはスクリーンショットを用意できてい�
 
 ---
 
+### Issue修正・改善タスク
+
 #### Issue#01: バックエンド側のappearancesフィールドの削除に対応
 
 **目的**: バックエンド側のISSUE01対応に伴う、フロントエンド側の型定義の修正
@@ -1370,6 +1372,125 @@ export function PrivacyConsent() {
 3. **差別化されたローディング表示**: サーバー起動中は「サーバー起動中...」、解析中は「解析中...」と表示
 4. **Silent fail**: ウォームアップ失敗時も解析処理に影響なし（console.warnのみ）
 5. **テストの堅牢性**: フレーキーなテストを削除し、100%成功率を達成
+
+---
+
+#### Issue#03: ランキング表示の改善
+
+**目的**: スマホ画面での視認性向上とスクロール量の削減
+
+**背景**:
+- 現在のランキング表示では、単語1つ当たりの縦の幅が大きすぎる
+- スマホで開いた際、TOP10が1画面に収まらず、スクロールが必要になる
+- ユーザーが一目でランキング全体を把握しにくい
+
+**問題点**:
+
+```
+現在の表示:
+1位〜10位まで同じサイズで表示
+→ スマホでは8位までしか見えない
+→ スクロールが必要で使いにくい
+```
+
+**解決策**:
+
+ランキングの重要度に応じて表示サイズを差別化し、TOP10を1画面に収める：
+
+1. **1位〜3位（表彰台）**: 現在のサイズを維持（大きく目立つ表示）
+2. **4位〜10位**: 縦幅を短く、文字サイズを小さく表示（コンパクト）
+
+これにより、重要な上位3位は目立たせつつ、10位までを1画面に収めることができる。
+
+**デザイン仕様**:
+
+| 順位範囲 | 縦幅（padding） | 順位表示 | 単語/メッセージ | カウント表示 | ボーダー | 背景色 | 品詞表示 |
+| -------- | --------------- | -------- | --------------- | ------------ | -------- | ------ | -------- |
+| 1位      | py-4 (16px)     | text-3xl（金色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 金色グラデーション | 横並び（括弧付き） |
+| 2位      | py-4 (16px)     | text-3xl（銀色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 銀色グラデーション | 横並び（括弧付き） |
+| 3位      | py-4 (16px)     | text-3xl（銅色） | text-2xl / text-xl | text-xl | border-b-2（太線） | 銅色グラデーション | 横並び（括弧付き） |
+| 4位〜10位 | py-2 (8px)     | text-lg  | text-base / text-sm | text-sm | border-b（細線） | 灰色背景 | 横並び（括弧付き） |
+
+**詳細スタイル**:
+
+```tsx
+// 1位（金色背景、単語・メッセージ共通）
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-yellow-100 to-yellow-50">
+  <span className="text-3xl font-bold text-yellow-600">{rank}</span>
+  <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
+  <span className="text-xl ml-auto">{count}回</span>
+</div>
+
+// 2位（銀色背景）
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-gray-200 to-gray-100">
+  <span className="text-3xl font-bold text-gray-500">{rank}</span>
+  <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
+  <span className="text-xl ml-auto">{count}回</span>
+</div>
+
+// 3位（銅色背景）
+<div className="py-4 px-4 border-b-2 border-gray-300 bg-gradient-to-r from-orange-200 to-orange-100">
+  <span className="text-3xl font-bold text-orange-600">{rank}</span>
+  <span className="text-2xl ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
+  <span className="text-xl ml-auto">{count}回</span>
+</div>
+
+// 4位〜10位（コンパクト）
+<div className="py-2 px-4 border-b border-gray-200 bg-gray-50">
+  <span className="text-lg font-semibold text-gray-400">{rank}</span>
+  <span className="text-base ml-4">{word}</span>
+  <span className="text-xs text-gray-500">({partOfSpeech})</span> {/* 品詞は横並び */}
+  <span className="text-sm ml-auto">{count}回</span>
+</div>
+```
+
+**タスク**:
+
+- [x] `src/components/result/RankingItem.tsx` の修正
+  - 順位に応じてスタイルを切り替えるロジック追加
+  - 1〜3位: 中程度のpadding（py-4）、大きめの文字、それぞれ金・銀・銅の背景色
+  - 4〜10位: 小さめのpadding（py-2）、小サイズの文字
+  - ボーダーの太さも差別化
+  - メッセージランキング1位も金色背景・金色順位番号に統一
+  - 品詞表示を下から横（括弧付き）に変更して縦幅を削減
+
+- [x] レスポンシブ対応の確認
+  - スマホ画面（320px〜428px）で10位まで1画面に収まることを確認
+  - タブレット・PCでも違和感のない表示になることを確認
+
+**テスト計画**:
+
+- 単体テスト: `tests/unit/components/result/`
+  - [x] RankingItem: 1〜3位のスタイル適用確認
+  - [x] RankingItem: 4位以下のスタイル適用確認
+  - [x] RankingItem: 各順位で正しいクラス名が適用されること
+  - [x] RankingItem: 2位・3位の背景色確認
+
+- E2Eテスト: `tests/e2e/`
+  - [x] スマホビューポート（375px × 667px）で10位まで表示確認
+  - [x] スクロールなしで10位まで見えることを確認
+  - [x] 「もっと見る」展開後も適切に表示されること
+
+**期待される効果**:
+
+- スマホで開いた際、TOP10が1画面に収まる（単語・メッセージ両方）
+- 重要な上位3位は目立つまま、4位以下はコンパクトに表示
+- 品詞を横並びにすることで、単語ランキングも10位まで1画面に収まる
+- スクロール量が削減され、ユーザビリティが向上
+- 一目でランキング全体を把握しやすくなる
+
+**注意事項**:
+
+- 文字サイズは読みやすさを保つこと（最小16px以上推奨）
+- タップ領域は十分に確保すること（最小44px × 44px）
+- 「もっと見る」で展開した11位以降も4位以下と同じスタイルを適用
+
+**依存**: PR#9（結果表示ページ）
+
+**優先度**: 中（ユーザビリティ改善）
 
 ---
 
