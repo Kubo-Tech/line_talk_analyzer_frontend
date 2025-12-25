@@ -18,7 +18,7 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
 
   // 順位の色を取得
   const getRankColor = () => {
-    if (isFirstPlace) return type === 'word' ? 'text-yellow-600' : 'text-blue-600';
+    if (isFirstPlace) return 'text-yellow-600';
     if (isSecondPlace) return 'text-gray-500';
     if (isThirdPlace) return 'text-orange-600';
     return 'text-gray-400';
@@ -62,10 +62,10 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
     >
       <div className="flex items-center space-x-4">
         <span className={`${rankSizeClass} font-bold ${getRankColor()}`}>{rank}</span>
-        <div className={type === 'message' ? 'flex-1' : ''}>
+        <div className={`flex items-center gap-2 ${type === 'message' ? 'flex-1' : ''}`}>
           <p className={`${itemSizeClass} font-semibold`}>{itemText}</p>
           {type === 'word' && 'part_of_speech' in item && (
-            <p className="text-xs text-gray-500">{item.part_of_speech}</p>
+            <span className="text-xs text-gray-500">({item.part_of_speech})</span>
           )}
         </div>
       </div>

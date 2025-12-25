@@ -20,7 +20,7 @@ describe('RankingItem', () => {
 
       expect(screen.getByText('1')).toBeInTheDocument();
       expect(screen.getByText('テスト')).toBeInTheDocument();
-      expect(screen.getByText('名詞')).toBeInTheDocument();
+      expect(screen.getByText('(名詞)')).toBeInTheDocument();
       expect(screen.getByText('42回')).toBeInTheDocument();
     });
 
@@ -112,6 +112,12 @@ describe('RankingItem', () => {
       const { container } = render(<RankingItem rank={1} item={mockMessage} type="message" />);
       const itemDiv = container.querySelector('.from-yellow-100');
       expect(itemDiv).toBeInTheDocument();
+    });
+
+    it('1位の場合、順位番号が金色（text-yellow-600）で表示される', () => {
+      render(<RankingItem rank={1} item={mockMessage} type="message" />);
+      const rankSpan = screen.getByText('1');
+      expect(rankSpan).toHaveClass('text-yellow-600');
     });
 
     it('品詞は表示しない', () => {
