@@ -97,7 +97,8 @@ describe('RankingItem', () => {
       const { container } = render(<RankingItem rank={3} item={mockWord} type="word" />);
       const itemDiv = container.querySelector('.from-orange-200');
       expect(itemDiv).toBeInTheDocument();
-    });  });
+    });
+});
 
   describe('message type', () => {
     it('順位、メッセージ、回数を表示する', () => {
