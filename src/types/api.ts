@@ -13,6 +13,8 @@ export interface AnalyzeRequestParams {
   max_word_length?: number;
   min_message_length?: number;
   max_message_length?: number;
+  min_word_count?: number;
+  min_message_count?: number;
   start_date?: string;
   end_date?: string;
 }

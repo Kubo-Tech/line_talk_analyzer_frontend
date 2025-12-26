@@ -1,5 +1,6 @@
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
+import { FileProvider } from '@/contexts/FileContext';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
@@ -36,9 +37,11 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className="bg-background text-foreground flex min-h-screen flex-col antialiased">
-        <Header />
-        <main className="container mx-auto flex-1 px-4 py-8">{children}</main>
-        <Footer />
+        <FileProvider>
+          <Header />
+          <main className="container mx-auto flex-1 px-4 py-8">{children}</main>
+          <Footer />
+        </FileProvider>
       </body>
     </html>
   );
