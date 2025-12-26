@@ -33,7 +33,7 @@ describe('RankingContainer', () => {
   describe('モバイル表示（lg未満）', () => {
     beforeEach(() => {
       // モバイルサイズをシミュレート
-      window.matchMedia = createMatchMedia(false) as any;
+      window.matchMedia = createMatchMedia(false) as unknown as typeof window.matchMedia;
     });
 
     it('初期状態では流行語大賞を表示する', () => {
@@ -130,7 +130,7 @@ describe('RankingContainer', () => {
   describe('PC表示（lg以上）', () => {
     beforeEach(() => {
       // PC サイズをシミュレート
-      window.matchMedia = createMatchMedia(true) as any;
+      window.matchMedia = createMatchMedia(true) as unknown as typeof window.matchMedia;
     });
 
     it('流行語大賞と流行メッセージが横並びで表示される', () => {
@@ -150,7 +150,6 @@ describe('RankingContainer', () => {
 
       // モバイル用の要素は存在するがhiddenクラスで非表示
       const prevButtons = screen.queryAllByLabelText('前へ');
-      const nextButtons = screen.queryAllByLabelText('次へ');
 
       // ボタンは存在するが、親要素にhiddenクラスが付いている
       if (prevButtons.length > 0) {
