@@ -87,27 +87,39 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                 <label htmlFor="startDate" className="mb-1 block text-sm font-medium text-gray-700">
                   開始日
                 </label>
-                <input
-                  type="date"
-                  id="startDate"
-                  value={localSettings.startDate}
-                  onChange={(e) =>
-                    setLocalSettings({ ...localSettings, startDate: e.target.value })
-                  }
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    type="date"
+                    id="startDate"
+                    value={localSettings.startDate}
+                    onChange={(e) =>
+                      setLocalSettings({ ...localSettings, startDate: e.target.value })
+                    }
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  />
+                  <span className="invisible w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
+                </div>
               </div>
               <div>
                 <label htmlFor="endDate" className="mb-1 block text-sm font-medium text-gray-700">
                   終了日
                 </label>
-                <input
-                  type="date"
-                  id="endDate"
-                  value={localSettings.endDate}
-                  onChange={(e) => setLocalSettings({ ...localSettings, endDate: e.target.value })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    type="date"
+                    id="endDate"
+                    value={localSettings.endDate}
+                    onChange={(e) =>
+                      setLocalSettings({ ...localSettings, endDate: e.target.value })
+                    }
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  />
+                  <span className="invisible w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
+                </div>
               </div>
             </div>
           </section>
@@ -142,7 +154,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">文字</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
                 </div>
               </div>
               <div>
@@ -171,7 +185,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">文字</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
                 </div>
               </div>
             </div>
@@ -203,7 +219,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     placeholder="未指定"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">文字</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
                 </div>
               </div>
               <div>
@@ -228,7 +246,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     placeholder="未指定"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">文字</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    文字
+                  </span>
                 </div>
               </div>
             </div>
@@ -264,7 +284,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">回</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    回
+                  </span>
                 </div>
               </div>
               <div>
@@ -293,7 +315,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
-                  <span className="text-sm text-gray-600">回</span>
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                    回
+                  </span>
                 </div>
               </div>
             </div>
