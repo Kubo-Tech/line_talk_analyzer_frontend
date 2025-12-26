@@ -21,9 +21,10 @@ export interface AnalysisSettings {
 }
 
 /**
- * デフォルト設定
+ * デフォルト設定を取得する関数
+ * 呼び出すたびに現在の日付に基づいて期間を計算する
  */
-export const DEFAULT_SETTINGS: AnalysisSettings = (() => {
+export function getDefaultSettings(): AnalysisSettings {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1; // 0-indexed なので +1
@@ -40,4 +41,4 @@ export const DEFAULT_SETTINGS: AnalysisSettings = (() => {
     minWordCount: 2,
     minMessageCount: 2,
   };
-})();
+}

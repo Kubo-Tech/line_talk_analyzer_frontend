@@ -25,8 +25,8 @@ export default function Home() {
   const { settings, isLoaded, updateSettings } = useSettings();
   const router = useRouter();
 
-  const handleFileChange = (file: File | null) => {
-    setUploadedFile(file);
+  const handleFileChange = async (file: File | null) => {
+    await setUploadedFile(file);
   };
 
   const handleOpenPolicy = () => {

@@ -1,4 +1,4 @@
-import { AnalysisSettings, DEFAULT_SETTINGS } from '@/types/settings';
+import { AnalysisSettings, getDefaultSettings } from '@/types/settings';
 import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'analysis_settings';
@@ -7,7 +7,7 @@ const STORAGE_KEY = 'analysis_settings';
  * 解析設定を管理するカスタムフック
  */
 export function useSettings() {
-  const [settings, setSettings] = useState<AnalysisSettings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<AnalysisSettings>(getDefaultSettings);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // 初回マウント時にlocalStorageから設定を読み込む
@@ -37,7 +37,8 @@ export function useSettings() {
 
   // 設定をデフォルトに戻す
   const resetSettings = useCallback(() => {
-    setSettings(DEFAULT_SETTINGS);
+    const defaultSettings = getDefaultSettings();
+    setSettings(defaultSettings);
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {

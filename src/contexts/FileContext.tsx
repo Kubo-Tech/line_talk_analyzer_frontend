@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 
 interface FileContextType {
   uploadedFile: File | null;
-  setUploadedFile: (file: File | null) => void;
+  setUploadedFile: (file: File | null) => Promise<void>;
   lastFileName: string | null;
 }
 
@@ -44,7 +44,7 @@ export function FileProvider({ children }: { children: ReactNode }) {
     }
   }, [isInitialized]);
 
-  const setUploadedFile = (file: File | null) => {
+  const setUploadedFile = async (file: File | null) => {
     setUploadedFileState(file);
 
     if (file) {
@@ -62,15 +62,14 @@ export function FileProvider({ children }: { children: ReactNode }) {
       if (file.size < 5 * 1024 * 1024) {
         // テスト環境でfile.textが存在しない場合を考慮
         if (typeof file.text === 'function') {
-          file.text().then((content) => {
-            try {
-              localStorage.setItem(FILE_CONTENT_KEY, content);
-            } catch (error) {
-              console.warn('ファイル内容の保存に失敗しました（容量制限）:', error);
-              // ファイル内容は保存できないが、ファイル情報は保存済み
-              localStorage.removeItem(FILE_CONTENT_KEY);
-            }
-          });
+          try {
+            const content = await file.text();
+            localStorage.setItem(FILE_CONTENT_KEY, content);
+          } catch (error) {
+            console.warn('ファイル内容の保存に失敗しました（容量制限）:', error);
+            // ファイル内容は保存できないが、ファイル情報は保存済み
+            localStorage.removeItem(FILE_CONTENT_KEY);
+          }
         }
       } else {
         // 大きいファイルは内容を保存しない

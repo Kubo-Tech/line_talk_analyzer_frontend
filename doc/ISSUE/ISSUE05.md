@@ -95,24 +95,22 @@
 **型定義**:
 ```typescript
 export interface AnalysisSettings {
-  period: {
-    startDate: string;  // YYYY-MM-DD形式
-    endDate: string;    // YYYY-MM-DD形式
-  };
-  wordLength: {
-    min: number;        // 1以上
-    max: number;        // 1以上
-  };
-  messageLength: {
-    min: number;        // 1以上
-    max: number;        // 1以上
-  };
-  wordCount: {
-    min: number;        // 1以上
-  };
-  messageCount: {
-    min: number;        // 1以上
-  };
+  /** 解析開始日（yyyy-MM-dd形式） */
+  startDate: string;
+  /** 解析終了日（yyyy-MM-dd形式） */
+  endDate: string;
+  /** 単語の最小文字数 */
+  minWordLength: number | '';
+  /** 単語の最大文字数（未指定の場合はnull） */
+  maxWordLength: number | null;
+  /** メッセージの最小文字数 */
+  minMessageLength: number | '';
+  /** メッセージの最大文字数（未指定の場合はnull） */
+  maxMessageLength: number | null;
+  /** 単語の最小出現回数 */
+  minWordCount: number | '';
+  /** メッセージの最小出現回数 */
+  minMessageCount: number | '';
 }
 ```
 
@@ -221,9 +219,9 @@ export interface AnalysisSettings {
 **主要API**:
 ```typescript
 {
-  file: File | null;              // 現在のファイル
-  setFile: (file: File) => void;  // ファイル設定
-  clearFile: () => void;           // ファイルクリア
+  uploadedFile: File | null;                      // 現在のファイル
+  setUploadedFile: (file: File | null) => Promise<void>;  // ファイル設定（非同期）
+  lastFileName: string | null;                    // 最後にアップロードされたファイル名
 }
 ```
 
@@ -250,14 +248,14 @@ export interface AnalysisSettings {
 **設定の反映**:
 ```typescript
 {
-  period_start_date: settings.period.startDate,
-  period_end_date: settings.period.endDate,
-  min_word_length: settings.wordLength.min,
-  max_word_length: settings.wordLength.max,
-  min_message_length: settings.messageLength.min,
-  max_message_length: settings.messageLength.max,
-  min_word_count: settings.wordCount.min,
-  min_message_count: settings.messageCount.min,
+  period_start_date: settings.startDate,
+  period_end_date: settings.endDate,
+  min_word_length: settings.minWordLength,
+  max_word_length: settings.maxWordLength,
+  min_message_length: settings.minMessageLength,
+  max_message_length: settings.maxMessageLength,
+  min_word_count: settings.minWordCount,
+  min_message_count: settings.minMessageCount,
 }
 ```
 
@@ -436,7 +434,7 @@ CSSモジュールのTypeScript型定義を追加しました。
 
 #### 2. SettingsModalコンポーネント（tests/unit/components/settings/SettingsModal.test.tsx）
 
-**実装済みテスト（17件）**:
+**実装済みテスト（24件）**:
 
 **レンダリング**:
 1. ✅ モーダルが正しく表示される
@@ -461,15 +459,22 @@ CSSモジュールのTypeScript型定義を追加しました。
 
 **バリデーション**:
 12. ✅ 不正な数値を入力すると元の値に戻る
+13. ✅ 単語の最大文字数が最小文字数より小さい場合、アラートが表示され保存されない
+14. ✅ メッセージの最大文字数が最小文字数より小さい場合、アラートが表示され保存されない
+15. ✅ 開始日が終了日より後の場合、アラートが表示され保存されない
+16. ✅ 開始日と終了日が同じ場合、正常に保存される
+17. ✅ 最大文字数が最小文字数以上の場合、正常に保存される
+18. ✅ 最大文字数が未指定（null）の場合、バリデーションをスキップして保存される
+19. ✅ 最大文字数と最小文字数が同じ値の場合、正常に保存される
 
 **保存とキャンセル**:
-13. ✅ 保存ボタンで設定を保存してモーダルを閉じる
-14. ✅ キャンセルボタンで変更を破棄してモーダルを閉じる
-15. ✅ 未保存の変更があるとキャンセル時に確認ダイアログが表示される
-16. ✅ 確認ダイアログでキャンセルするとモーダルが開いたまま
+20. ✅ 保存ボタンで設定を保存してモーダルを閉じる
+21. ✅ キャンセルボタンで変更を破棄してモーダルを閉じる
+22. ✅ 未保存の変更があるとキャンセル時に確認ダイアログが表示される
+23. ✅ 確認ダイアログでキャンセルするとモーダルが開いたまま
 
 **リセット**:
-17. ✅ リセットボタンでデフォルト値に戻る
+24. ✅ リセットボタンでデフォルト値に戻る
 
 **技術的工夫**:
 - `getElementById`を使用した一意な要素選択（複数の"単語"ラベル問題の回避）
@@ -516,7 +521,7 @@ CSSモジュールのTypeScript型定義を追加しました。
 
 **最終テスト結果**:
 - テストスイート: 26件 すべてパス
-- テストケース: 235件（231件パス、4件スキップ）
+- テストケース: 242件（238件パス、4件スキップ）
 - カバレッジ: 新規実装コードの主要ロジックをカバー
 
 **品質保証アプローチ**:

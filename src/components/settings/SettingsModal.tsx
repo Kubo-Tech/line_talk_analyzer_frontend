@@ -1,4 +1,4 @@
-import { AnalysisSettings, DEFAULT_SETTINGS } from '@/types/settings';
+import { AnalysisSettings, getDefaultSettings } from '@/types/settings';
 import { useEffect, useRef, useState } from 'react';
 
 interface SettingsModalProps {
@@ -24,8 +24,16 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
     prevIsOpenRef.current = isOpen;
   }, [isOpen, settings]);
 
-  // 設定が変更されたかを計算
-  const hasChanges = JSON.stringify(localSettings) !== JSON.stringify(settings);
+  // 設定が変更されたかを計算（個別プロパティの比較）
+  const hasChanges =
+    localSettings.startDate !== settings.startDate ||
+    localSettings.endDate !== settings.endDate ||
+    localSettings.minWordLength !== settings.minWordLength ||
+    localSettings.maxWordLength !== settings.maxWordLength ||
+    localSettings.minMessageLength !== settings.minMessageLength ||
+    localSettings.maxMessageLength !== settings.maxMessageLength ||
+    localSettings.minWordCount !== settings.minWordCount ||
+    localSettings.minMessageCount !== settings.minMessageCount;
 
   // 閉じるボタンがクリックされたときの処理
   const handleClose = () => {
@@ -42,14 +50,57 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
 
   // 設定反映ボタンがクリックされたときの処理
   const handleApply = () => {
-    // 空文字列の場合はデフォルト値(1)を設定
+    // 空文字列の場合はデフォルト値(1)を設定し、確実に数値型にする
+    const minWordLength =
+      localSettings.minWordLength === '' ? 1 : Number(localSettings.minWordLength);
+    const minMessageLength =
+      localSettings.minMessageLength === '' ? 1 : Number(localSettings.minMessageLength);
+    const minWordCount = localSettings.minWordCount === '' ? 1 : Number(localSettings.minWordCount);
+    const minMessageCount =
+      localSettings.minMessageCount === '' ? 1 : Number(localSettings.minMessageCount);
+
     const normalizedSettings: AnalysisSettings = {
       ...localSettings,
-      minWordLength: localSettings.minWordLength === '' ? 1 : localSettings.minWordLength,
-      minMessageLength: localSettings.minMessageLength === '' ? 1 : localSettings.minMessageLength,
-      minWordCount: localSettings.minWordCount === '' ? 1 : localSettings.minWordCount,
-      minMessageCount: localSettings.minMessageCount === '' ? 1 : localSettings.minMessageCount,
+      minWordLength,
+      minMessageLength,
+      minWordCount,
+      minMessageCount,
     };
+
+    // バリデーション: 期間の妥当性を確認
+    if (normalizedSettings.startDate && normalizedSettings.endDate) {
+      const startDate = new Date(normalizedSettings.startDate);
+      const endDate = new Date(normalizedSettings.endDate);
+
+      if (startDate > endDate) {
+        window.alert(
+          `開始日（${normalizedSettings.startDate}）は終了日（${normalizedSettings.endDate}）以前である必要があります。`
+        );
+        return;
+      }
+    }
+
+    // バリデーション: 最大文字数が最小文字数以上であることを確認
+    if (
+      normalizedSettings.maxWordLength !== null &&
+      normalizedSettings.maxWordLength < minWordLength
+    ) {
+      window.alert(
+        `単語の最大文字数（${normalizedSettings.maxWordLength}）は最小文字数（${minWordLength}）以上である必要があります。`
+      );
+      return;
+    }
+
+    if (
+      normalizedSettings.maxMessageLength !== null &&
+      normalizedSettings.maxMessageLength < minMessageLength
+    ) {
+      window.alert(
+        `メッセージの最大文字数（${normalizedSettings.maxMessageLength}）は最小文字数（${minMessageLength}）以上である必要があります。`
+      );
+      return;
+    }
+
     onApply(normalizedSettings);
     onClose();
   };
@@ -58,7 +109,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
   const handleReset = () => {
     const confirmed = window.confirm('設定をデフォルトに戻しますか？');
     if (confirmed) {
-      setLocalSettings(DEFAULT_SETTINGS);
+      setLocalSettings(getDefaultSettings());
     }
   };
 

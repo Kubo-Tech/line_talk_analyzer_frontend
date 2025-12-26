@@ -83,6 +83,12 @@ export default function ResultPage() {
 
   // 再解析を実行
   const handleReanalyze = async () => {
+    // 設定が読み込まれていない場合は何もしない
+    if (!isLoaded) {
+      console.warn('設定が読み込まれていません');
+      return;
+    }
+
     // ファイルがない場合はトップページへ
     if (!uploadedFile) {
       alert('ファイルが見つかりません。トップページから再度アップロードしてください。');

@@ -53,7 +53,7 @@ describe('useSettings', () => {
         minMessageCount: 3,
       };
 
-      localStorageMock.setItem('analysisSettings', JSON.stringify(savedSettings));
+      localStorageMock.setItem('analysis_settings', JSON.stringify(savedSettings));
 
       const { result } = renderHook(() => useSettings());
 
@@ -115,7 +115,7 @@ describe('useSettings', () => {
       });
 
       await waitFor(() => {
-        const saved = JSON.parse(localStorageMock.getItem('analysisSettings') || '{}');
+        const saved = JSON.parse(localStorageMock.getItem('analysis_settings') || '{}');
         expect(saved.minWordLength).toBe(5);
       });
     });
@@ -158,7 +158,7 @@ describe('useSettings', () => {
       });
 
       await waitFor(() => {
-        const saved = JSON.parse(localStorageMock.getItem('analysisSettings') || '{}');
+        const saved = JSON.parse(localStorageMock.getItem('analysis_settings') || '{}');
         expect(saved.minWordLength).toBe(1);
       });
     });
@@ -166,7 +166,7 @@ describe('useSettings', () => {
 
   describe('エラーハンドリング', () => {
     it('不正なlocalStorageデータの場合はデフォルト設定を使用', () => {
-      localStorageMock.setItem('analysisSettings', 'invalid json');
+      localStorageMock.setItem('analysis_settings', 'invalid json');
 
       const { result } = renderHook(() => useSettings());
 
