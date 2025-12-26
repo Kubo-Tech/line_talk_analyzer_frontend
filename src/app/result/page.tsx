@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/common/Button';
-import RankingList from '@/components/result/RankingList';
+import RankingContainer from '@/components/result/RankingContainer';
 import ResultSummary from '@/components/result/ResultSummary';
 import UserTabs from '@/components/result/UserTabs';
 import { AnalysisResponse, TopMessage, TopWord } from '@/types/api';
@@ -95,11 +95,8 @@ export default function ResultPage() {
       {/* ユーザータブ */}
       <UserTabs users={users} activeUser={activeUser} onUserChange={setActiveUser} />
 
-      {/* 流行語大賞ランキング */}
-      <RankingList items={currentWordRanking} type="word" title="🏆 流行語大賞 TOP10" />
-
-      {/* 流行メッセージランキング */}
-      <RankingList items={currentMessageRanking} type="message" title="💬 流行メッセージ TOP10" />
+      {/* ランキング表示 */}
+      <RankingContainer wordRanking={currentWordRanking} messageRanking={currentMessageRanking} />
 
       {/* アクション */}
       <section className="space-y-4">
