@@ -10,6 +10,7 @@ interface RankingContainerProps {
 }
 
 const RANKING_TITLES = ['🏆 流行語大賞 TOP10', '💬 流行メッセージ TOP10'] as const;
+const RANKING_TITLES_MOBILE = ['🏆', '💬'] as const;
 
 /**
  * ランキングを表示するコンテナコンポーネント
@@ -35,7 +36,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
         <div className="mb-4 flex items-center justify-between">
           <button
             onClick={handlePrevious}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
             aria-label="前へ"
           >
             <svg
@@ -44,15 +45,17 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="h-6 w-6"
+              className="h-4 w-4"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <h2 className="flex-1 text-center text-xl font-bold">{RANKING_TITLES[activeIndex]}</h2>
+          <h2 className="flex-1 text-center text-lg font-semibold">
+            {RANKING_TITLES_MOBILE[activeIndex]}
+          </h2>
           <button
             onClick={handleNext}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
             aria-label="次へ"
           >
             <svg
@@ -61,7 +64,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="h-6 w-6"
+              className="h-4 w-4"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>

@@ -39,8 +39,8 @@ describe('RankingContainer', () => {
     it('初期状態では流行語大賞を表示する', () => {
       render(<RankingContainer wordRanking={mockWordRanking} messageRanking={mockMessageRanking} />);
 
-      // モバイル用のタイトルが表示される
-      const mobileTitles = screen.getAllByText('🏆 流行語大賞 TOP10');
+      // モバイル用のタイトルが表示される（絵文字のみ）
+      const mobileTitles = screen.getAllByText('🏆');
       expect(mobileTitles.length).toBeGreaterThan(0);
 
       // 流行語が表示される
@@ -68,30 +68,30 @@ describe('RankingContainer', () => {
       render(<RankingContainer wordRanking={mockWordRanking} messageRanking={mockMessageRanking} />);
 
       // 初期状態
-      expect(screen.getAllByText('🏆 流行語大賞 TOP10').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('🏆').length).toBeGreaterThan(0);
 
       // 次へボタンをクリック
       const nextButton = screen.getByLabelText('次へ');
       fireEvent.click(nextButton);
 
       // タイトルが流行メッセージに変わる（モバイル用のh2タイトル）
-      const mobileTitle = screen.getAllByText('💬 流行メッセージ TOP10')[0];
-      expect(mobileTitle).toHaveClass('text-xl');
+      const mobileTitle = screen.getAllByText('💬')[0];
+      expect(mobileTitle).toHaveClass('text-lg');
     });
 
     it('前へボタンをクリックするとスライドを切り替える', () => {
       render(<RankingContainer wordRanking={mockWordRanking} messageRanking={mockMessageRanking} />);
 
       // 初期状態は流行語大賞
-      expect(screen.getAllByText('🏆 流行語大賞 TOP10').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('🏆').length).toBeGreaterThan(0);
 
       // 前へボタンをクリック
       const prevButton = screen.getByLabelText('前へ');
       fireEvent.click(prevButton);
 
       // 流行メッセージに切り替わる
-      const mobileTitle = screen.getAllByText('💬 流行メッセージ TOP10')[0];
-      expect(mobileTitle).toHaveClass('text-xl');
+      const mobileTitle = screen.getAllByText('💬')[0];
+      expect(mobileTitle).toHaveClass('text-lg');
     });
 
     it('インジケーターをクリックして直接スライドを切り替えられる', () => {
@@ -102,8 +102,8 @@ describe('RankingContainer', () => {
       fireEvent.click(secondIndicator);
 
       // 流行メッセージに切り替わる
-      const mobileTitle = screen.getAllByText('💬 流行メッセージ TOP10')[0];
-      expect(mobileTitle).toHaveClass('text-xl');
+      const mobileTitle = screen.getAllByText('💬')[0];
+      expect(mobileTitle).toHaveClass('text-lg');
     });
 
     it('スライド位置に応じてtransformスタイルが変化する', () => {
