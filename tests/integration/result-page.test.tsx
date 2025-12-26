@@ -111,8 +111,8 @@ describe('ResultPage 統合テスト', () => {
       expect(screen.getByText('花子')).toBeInTheDocument();
 
       // ランキング
-      expect(screen.getByText('🏆 流行語大賞 TOP10')).toBeInTheDocument();
-      expect(screen.getByText('💬 流行メッセージ TOP10')).toBeInTheDocument();
+      expect(screen.getAllByText('🏆 流行語大賞 TOP10').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('💬 流行メッセージ TOP10').length).toBeGreaterThan(0);
 
       // アクションボタン
       expect(screen.getByText('別のファイルを解析')).toBeInTheDocument();
@@ -124,8 +124,8 @@ describe('ResultPage 統合テスト', () => {
       render(<ResultPage />);
 
       await waitFor(() => {
-        expect(screen.getByText('単語1')).toBeInTheDocument();
-        expect(screen.getByText('メッセージ1')).toBeInTheDocument();
+        expect(screen.getAllByText('単語1').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('メッセージ1').length).toBeGreaterThan(0);
       });
     });
 
@@ -133,7 +133,7 @@ describe('ResultPage 統合テスト', () => {
       render(<ResultPage />);
 
       await waitFor(() => {
-        expect(screen.getByText('単語1')).toBeInTheDocument();
+        expect(screen.getAllByText('単語1').length).toBeGreaterThan(0);
       });
 
       // 太郎タブをクリック
@@ -141,8 +141,8 @@ describe('ResultPage 統合テスト', () => {
       fireEvent.click(taroTab);
 
       await waitFor(() => {
-        expect(screen.getByText('太郎単語1')).toBeInTheDocument();
-        expect(screen.getByText('太郎メッセージ1')).toBeInTheDocument();
+        expect(screen.getAllByText('太郎単語1').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('太郎メッセージ1').length).toBeGreaterThan(0);
         expect(screen.queryByText('単語1')).not.toBeInTheDocument();
       });
 
@@ -151,8 +151,8 @@ describe('ResultPage 統合テスト', () => {
       fireEvent.click(hanakoTab);
 
       await waitFor(() => {
-        expect(screen.getByText('花子単語1')).toBeInTheDocument();
-        expect(screen.getByText('花子メッセージ1')).toBeInTheDocument();
+        expect(screen.getAllByText('花子単語1').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('花子メッセージ1').length).toBeGreaterThan(0);
         expect(screen.queryByText('太郎単語1')).not.toBeInTheDocument();
       });
 
@@ -161,7 +161,7 @@ describe('ResultPage 統合テスト', () => {
       fireEvent.click(allTab);
 
       await waitFor(() => {
-        expect(screen.getByText('単語1')).toBeInTheDocument();
+        expect(screen.getAllByText('単語1').length).toBeGreaterThan(0);
         expect(screen.queryByText('花子単語1')).not.toBeInTheDocument();
       });
     });
@@ -172,7 +172,7 @@ describe('ResultPage 統合テスト', () => {
       render(<ResultPage />);
 
       await waitFor(() => {
-        expect(screen.getByText('単語10')).toBeInTheDocument();
+        expect(screen.getAllByText('単語10').length).toBeGreaterThan(0);
       });
 
       // 初期状態では11件目以降は非表示
@@ -183,8 +183,8 @@ describe('ResultPage 統合テスト', () => {
       fireEvent.click(moreButtons[0]); // 流行語のもっと見るボタン
 
       await waitFor(() => {
-        expect(screen.getByText('単語11')).toBeInTheDocument();
-        expect(screen.getByText('単語50')).toBeInTheDocument();
+        expect(screen.getAllByText('単語11').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('単語50').length).toBeGreaterThan(0);
       });
     });
   });

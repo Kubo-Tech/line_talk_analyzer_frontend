@@ -29,7 +29,7 @@ export default function RankingList({ items, type, title }: RankingListProps) {
 
   return (
     <section className="mb-8">
-      <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+      <h2 className="mb-4 text-center text-2xl font-bold">{title}</h2>
       <div className="space-y-2">
         {displayItems.map((item, index) => {
           const itemKey = type === 'word' ? (item as TopWord).word : (item as TopMessage).message;
