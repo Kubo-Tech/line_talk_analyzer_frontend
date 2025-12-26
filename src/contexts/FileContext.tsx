@@ -60,15 +60,18 @@ export function FileProvider({ children }: { children: ReactNode }) {
       // ファイル内容の保存を試みる（小さいファイルのみ）
       // 5MB以下のファイルのみlocalStorageに保存
       if (file.size < 5 * 1024 * 1024) {
-        file.text().then((content) => {
-          try {
-            localStorage.setItem(FILE_CONTENT_KEY, content);
-          } catch (error) {
-            console.warn('ファイル内容の保存に失敗しました（容量制限）:', error);
-            // ファイル内容は保存できないが、ファイル情報は保存済み
-            localStorage.removeItem(FILE_CONTENT_KEY);
-          }
-        });
+        // テスト環境でfile.textが存在しない場合を考慮
+        if (typeof file.text === 'function') {
+          file.text().then((content) => {
+            try {
+              localStorage.setItem(FILE_CONTENT_KEY, content);
+            } catch (error) {
+              console.warn('ファイル内容の保存に失敗しました（容量制限）:', error);
+              // ファイル内容は保存できないが、ファイル情報は保存済み
+              localStorage.removeItem(FILE_CONTENT_KEY);
+            }
+          });
+        }
       } else {
         // 大きいファイルは内容を保存しない
         localStorage.removeItem(FILE_CONTENT_KEY);

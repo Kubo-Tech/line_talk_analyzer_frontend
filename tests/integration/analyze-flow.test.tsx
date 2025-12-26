@@ -6,9 +6,15 @@
 import Home from '@/app/page';
 import * as api from '@/lib/api';
 import { AnalysisResponse } from '@/types/api';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render as rtlRender, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
+import { FileProvider } from '@/contexts/FileContext';
+
+// カスタムrender関数
+function render(ui: React.ReactElement) {
+  return rtlRender(<FileProvider>{ui}</FileProvider>);
+}
 
 // Next.jsのルーターをモック
 jest.mock('next/navigation', () => ({
@@ -147,7 +153,7 @@ describe('トップページ - 解析フロー統合テスト', () => {
 
       // ファイル名が表示される
       await waitFor(() => {
-        expect(screen.getByText(/ファイル: test\.txt/)).toBeInTheDocument();
+        expect(screen.getByText('test.txt')).toBeInTheDocument();
       });
 
       // まだボタンは無効（同意していない）
@@ -169,10 +175,14 @@ describe('トップページ - 解析フロー統合テスト', () => {
         expect(mockAnalyzeFile).toHaveBeenCalledWith({
           file,
           top_n: 100,
+          start_date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+          end_date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
           min_word_length: 1,
+          max_word_length: undefined,
           min_message_length: 2,
-          start_date: expect.stringMatching(/^\d{4}-01-01 00:00:00$/),
-          end_date: expect.stringMatching(/^\d{4}-12-31 23:59:59$/),
+          max_message_length: undefined,
+          min_word_count: 2,
+          min_message_count: 2,
         });
       });
 

@@ -51,22 +51,18 @@ export default function Home() {
       resetError();
     }
 
-    // 設定から日時文字列を生成（時刻は00:00:00と23:59:59を付与）
-    const startDateStr = `${settings.startDate} 00:00:00`;
-    const endDateStr = `${settings.endDate} 23:59:59`;
-
     // 解析実行
     const result = await analyze({
       file: uploadedFile,
       top_n: ANALYSIS_DEFAULTS.TOP_N,
+      start_date: settings.startDate,
+      end_date: settings.endDate,
       min_word_length: settings.minWordLength === '' ? 1 : settings.minWordLength,
       max_word_length: settings.maxWordLength ?? undefined,
       min_message_length: settings.minMessageLength === '' ? 1 : settings.minMessageLength,
       max_message_length: settings.maxMessageLength ?? undefined,
       min_word_count: settings.minWordCount === '' ? 1 : settings.minWordCount,
       min_message_count: settings.minMessageCount === '' ? 1 : settings.minMessageCount,
-      start_date: startDateStr,
-      end_date: endDateStr,
     });
 
     // 解析成功時に結果ページへ遷移
