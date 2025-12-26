@@ -9,6 +9,8 @@ interface RankingContainerProps {
   messageRanking: TopMessage[];
 }
 
+const RANKING_TITLES = ['🏆 流行語大賞 TOP10', '💬 流行メッセージ TOP10'] as const;
+
 /**
  * ランキングを表示するコンテナコンポーネント
  * PC: 横並び表示
@@ -18,14 +20,12 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
   const [activeIndex, setActiveIndex] = useState(0); // 0: 流行語大賞, 1: 流行メッセージ
 
   const handlePrevious = () => {
-    setActiveIndex((prev) => (prev === 0 ? 1 : 0));
+    setActiveIndex((prev) => (prev === 0 ? RANKING_TITLES.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev === 0 ? 1 : 0));
+    setActiveIndex((prev) => (prev === RANKING_TITLES.length - 1 ? 0 : prev + 1));
   };
-
-  const titles = ['🏆 流行語大賞 TOP10', '💬 流行メッセージ TOP10'];
 
   return (
     <>
@@ -49,7 +49,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <h2 className="flex-1 text-center text-xl font-bold">{titles[activeIndex]}</h2>
+          <h2 className="flex-1 text-center text-xl font-bold">{RANKING_TITLES[activeIndex]}</h2>
           <button
             onClick={handleNext}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
@@ -70,7 +70,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
 
         {/* スライドインジケーター */}
         <div className="mb-4 flex justify-center gap-2">
-          {titles.map((_, index) => (
+          {RANKING_TITLES.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
@@ -78,6 +78,8 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
                 index === activeIndex ? 'w-8 bg-blue-600' : 'bg-gray-300'
               }`}
               aria-label={`${index + 1}番目のランキングへ移動`}
+              aria-pressed={index === activeIndex}
+              aria-current={index === activeIndex ? 'true' : undefined}
             />
           ))}
         </div>
