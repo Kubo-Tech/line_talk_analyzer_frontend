@@ -2,26 +2,31 @@
 
 import Loading from '@/components/common/Loading';
 import { PrivacyPolicyModal } from '@/components/common/PrivacyPolicyModal';
+import { SettingsModal } from '@/components/settings/SettingsModal';
 import FileUploader from '@/components/upload/FileUploader';
 import { PrivacyConsent } from '@/components/upload/PrivacyConsent';
+import { useFile } from '@/contexts/FileContext';
 import { useAnalyze } from '@/hooks/useAnalyze';
 import { usePrivacyConsent } from '@/hooks/usePrivacyConsent';
 import { useServerWarmup } from '@/hooks/useServerWarmup';
+import { useSettings } from '@/hooks/useSettings';
 import { ANALYSIS_DEFAULTS } from '@/lib/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const { uploadedFile, setUploadedFile } = useFile();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { isConsented, hasReadPolicy, toggleConsent, markAsRead } = usePrivacyConsent();
   const { isLoading, isWaitingForWarmup, error, analyze, resetError } = useAnalyze();
   const { warmup } = useServerWarmup();
+  const { settings, isLoaded, updateSettings } = useSettings();
   const router = useRouter();
 
-  const handleFileChange = (file: File | null) => {
-    setUploadedFile(file);
+  const handleFileChange = async (file: File | null) => {
+    await setUploadedFile(file);
   };
 
   const handleOpenPolicy = () => {
@@ -46,15 +51,18 @@ export default function Home() {
       resetError();
     }
 
-    // 解析実行（今年全体を指定）
-    const currentYear = new Date().getFullYear();
+    // 解析実行
     const result = await analyze({
       file: uploadedFile,
       top_n: ANALYSIS_DEFAULTS.TOP_N,
-      min_word_length: ANALYSIS_DEFAULTS.MIN_WORD_LENGTH,
-      min_message_length: ANALYSIS_DEFAULTS.MIN_MESSAGE_LENGTH,
-      start_date: `${currentYear}-01-01 00:00:00`,
-      end_date: `${currentYear}-12-31 23:59:59`,
+      start_date: settings.startDate,
+      end_date: settings.endDate,
+      min_word_length: settings.minWordLength === '' ? 1 : settings.minWordLength,
+      max_word_length: settings.maxWordLength ?? undefined,
+      min_message_length: settings.minMessageLength === '' ? 1 : settings.minMessageLength,
+      max_message_length: settings.maxMessageLength ?? undefined,
+      min_word_count: settings.minWordCount === '' ? 1 : settings.minWordCount,
+      min_message_count: settings.minMessageCount === '' ? 1 : settings.minMessageCount,
     });
 
     // 解析成功時に結果ページへ遷移
@@ -97,6 +105,17 @@ export default function Home() {
           />
         </section>
 
+        {/* 設定変更ボタン */}
+        <section className="text-center">
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+            disabled={!isLoaded}
+          >
+            ⚙️ 設定変更
+          </button>
+        </section>
+
         {/* 解析開始ボタン */}
         <section>
           <button
@@ -110,9 +129,6 @@ export default function Home() {
           >
             {isLoading ? '解析中...' : '解析を開始する'}
           </button>
-          {uploadedFile && !isLoading && (
-            <p className="mt-2 text-center text-sm text-gray-600">ファイル: {uploadedFile.name}</p>
-          )}
           {!isAnalyzeButtonEnabled && !isLoading && (
             <p className="mt-2 text-center text-sm text-gray-500">
               {!uploadedFile && !isConsented
@@ -133,6 +149,13 @@ export default function Home() {
       </div>
       {/* プライバシーポリシーモーダル */}
       <PrivacyPolicyModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      {/* 設定モーダル */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        settings={settings}
+        onClose={() => setIsSettingsOpen(false)}
+        onApply={updateSettings}
+      />
       {/* ローディングオーバーレイ */}
       {isLoading && (
         <Loading

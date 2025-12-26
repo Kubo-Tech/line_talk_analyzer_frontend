@@ -1,9 +1,15 @@
 'use client';
 
 import Button from '@/components/common/Button';
+import Loading from '@/components/common/Loading';
 import RankingContainer from '@/components/result/RankingContainer';
 import ResultSummary from '@/components/result/ResultSummary';
 import UserTabs from '@/components/result/UserTabs';
+import { SettingsModal } from '@/components/settings/SettingsModal';
+import { useFile } from '@/contexts/FileContext';
+import { useAnalyze } from '@/hooks/useAnalyze';
+import { useSettings } from '@/hooks/useSettings';
+import { ANALYSIS_DEFAULTS } from '@/lib/constants';
 import { AnalysisResponse, TopMessage, TopWord } from '@/types/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,7 +18,12 @@ import { useEffect, useMemo, useState } from 'react';
 export default function ResultPage() {
   const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [activeUser, setActiveUser] = useState('全体');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [hasSettingsChanged, setHasSettingsChanged] = useState(false);
   const router = useRouter();
+  const { settings, isLoaded, updateSettings } = useSettings();
+  const { uploadedFile } = useFile();
+  const { isLoading, analyze } = useAnalyze();
 
   useEffect(() => {
     // sessionStorageから解析結果を取得
@@ -64,6 +75,52 @@ export default function ResultPage() {
     return userMessageData?.top_messages || [];
   }, [activeUser, result]);
 
+  // 設定を適用（保存のみ）
+  const handleApplySettings = (newSettings: typeof settings) => {
+    updateSettings(newSettings);
+    setHasSettingsChanged(true);
+  };
+
+  // 再解析を実行
+  const handleReanalyze = async () => {
+    // 設定が読み込まれていない場合は何もしない
+    if (!isLoaded) {
+      console.warn('設定が読み込まれていません');
+      return;
+    }
+
+    // ファイルがない場合はトップページへ
+    if (!uploadedFile) {
+      alert('ファイルが見つかりません。トップページから再度アップロードしてください。');
+      router.push('/');
+      return;
+    }
+
+    // 再解析実行
+    const newResult = await analyze({
+      file: uploadedFile,
+      top_n: ANALYSIS_DEFAULTS.TOP_N,
+      start_date: settings.startDate,
+      end_date: settings.endDate,
+      min_word_length: settings.minWordLength === '' ? 1 : settings.minWordLength,
+      max_word_length: settings.maxWordLength ?? undefined,
+      min_message_length: settings.minMessageLength === '' ? 1 : settings.minMessageLength,
+      max_message_length: settings.maxMessageLength ?? undefined,
+      min_word_count: settings.minWordCount === '' ? 1 : settings.minWordCount,
+      min_message_count: settings.minMessageCount === '' ? 1 : settings.minMessageCount,
+    });
+
+    // 解析成功時に結果を更新
+    if (newResult) {
+      setResult(newResult);
+      sessionStorage.setItem('analysisResult', JSON.stringify(newResult));
+      // 全体タブに戻す
+      setActiveUser('全体');
+      // 設定変更フラグをリセット
+      setHasSettingsChanged(false);
+    }
+  };
+
   if (!result) {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-8">
@@ -92,6 +149,28 @@ export default function ResultPage() {
         totalUsers={total_users}
       />
 
+      {/* 設定変更ボタン */}
+      <section className="mb-6 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+          disabled={!isLoaded || isLoading}
+        >
+          ⚙️ 設定変更
+        </button>
+        <button
+          onClick={handleReanalyze}
+          disabled={isLoading || !uploadedFile || !hasSettingsChanged}
+          className={`rounded-lg px-6 py-2 font-semibold text-white transition-colors ${
+            isLoading || !uploadedFile || !hasSettingsChanged
+              ? 'cursor-not-allowed bg-gray-400'
+              : 'bg-blue-600 hover:bg-blue-700'
+          }`}
+        >
+          🔄 再解析
+        </button>
+      </section>
+
       {/* ユーザータブ */}
       <UserTabs users={users} activeUser={activeUser} onUserChange={setActiveUser} />
 
@@ -106,6 +185,17 @@ export default function ResultPage() {
           </Button>
         </Link>
       </section>
+
+      {/* 設定モーダル */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        settings={settings}
+        onClose={() => setIsSettingsOpen(false)}
+        onApply={handleApplySettings}
+      />
+
+      {/* ローディングオーバーレイ */}
+      {isLoading && <Loading overlay message="再解析中..." />}
     </main>
   );
 }

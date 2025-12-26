@@ -1,7 +1,13 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-library/react';
 import ResultPage from '@/app/result/page';
 import { useRouter } from 'next/navigation';
 import { AnalysisResponse } from '@/types/api';
+import { FileProvider } from '@/contexts/FileContext';
+
+// カスタムrender関数
+function render(ui: React.ReactElement) {
+  return rtlRender(<FileProvider>{ui}</FileProvider>);
+}
 
 // Next.jsのuseRouterをモック
 jest.mock('next/navigation', () => ({

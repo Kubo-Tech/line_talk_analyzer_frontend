@@ -28,8 +28,6 @@ export const FILE_UPLOAD = {
  */
 export const ANALYSIS_DEFAULTS = {
   TOP_N: 100,
-  MIN_WORD_LENGTH: 1,
-  MIN_MESSAGE_LENGTH: 2,
 } as const;
 
 /**
