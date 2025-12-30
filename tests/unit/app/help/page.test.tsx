@@ -31,14 +31,33 @@ describe('HelpPage', () => {
       expect(screen.getByRole('heading', { name: 'Androidの場合' })).toBeInTheDocument();
     });
 
+    it('目次セクションが表示される', () => {
+      render(<HelpPage />);
+
+      expect(screen.getByRole('heading', { name: '目次' })).toBeInTheDocument();
+    });
+
+    it('目次にiPhoneとAndroidへのリンクが表示される', () => {
+      render(<HelpPage />);
+
+      const iphoneLink = screen.getByRole('link', { name: /iPhoneの場合/ });
+      const androidLink = screen.getByRole('link', { name: /Androidの場合/ });
+
+      expect(iphoneLink).toBeInTheDocument();
+      expect(iphoneLink).toHaveAttribute('href', '#iphone');
+
+      expect(androidLink).toBeInTheDocument();
+      expect(androidLink).toHaveAttribute('href', '#android');
+    });
+
     describe('iPhone手順', () => {
       it('すべての手順が正しい順序で表示される', () => {
         render(<HelpPage />);
 
         // iPhone専用の手順を確認（新しい5ステップ）
-        expect(screen.getByText('トークの右上の三本線メニューをタップ')).toBeInTheDocument();
-        expect(screen.getByText('「設定」をタップ')).toBeInTheDocument();
-        expect(screen.getByText('「トーク履歴を送信」をタップ')).toBeInTheDocument();
+        expect(screen.getAllByText('トークの右上の三本線メニューをタップ').length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText('「設定」をタップ').length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText('「トーク履歴を送信」をタップ').length).toBeGreaterThanOrEqual(1);
         expect(screen.getByText('「ファイルに保存」をタップ')).toBeInTheDocument();
         expect(screen.getByText('「このiPhone内」で「保存」を選択')).toBeInTheDocument();
 
@@ -74,32 +93,43 @@ describe('HelpPage', () => {
     });
 
     describe('Android手順', () => {
-      it('「現在準備中です」メッセージが表示される', () => {
+      it('すべての手順が正しい順序で表示される', () => {
         render(<HelpPage />);
 
-        expect(screen.getByText('現在準備中です')).toBeInTheDocument();
-        expect(
-          screen.getByText(/Android向けのスクリーンショット付き手順を準備中です/)
-        ).toBeInTheDocument();
-        expect(screen.getByText(/しばらくお待ちください/)).toBeInTheDocument();
+        // Android専用の手順を確認（4ステップ）
+        const headings = screen.getAllByRole('heading', { level: 3 });
+        const androidHeadings = headings.filter((h) => 
+          h.textContent?.includes('任意のファイルアプリを選択して保存') ||
+          (h.textContent?.includes('トークの右上の三本線メニューをタップ') && h.closest('div')?.id === 'android') ||
+          (h.textContent?.includes('設定') && h.closest('div')?.id === 'android') ||
+          (h.textContent?.includes('トーク履歴を送信') && h.closest('div')?.id === 'android')
+        );
+
+        expect(androidHeadings.length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText('任意のファイルアプリを選択して保存')).toBeInTheDocument();
       });
 
-      it('準備中セクションが適切なスタイルで表示される', () => {
+      it('ファイルアプリについての注意書きが表示される', () => {
         render(<HelpPage />);
 
-        // 🔧アイコンが表示される
-        expect(screen.getByText('🔧')).toBeInTheDocument();
+        expect(screen.getByText('※ファイルアプリは端末の機種によって異なります')).toBeInTheDocument();
+      });
 
-        // 準備中メッセージを含む親要素を取得
-        const comingSoonMessage = screen.getByText('現在準備中です');
-        const comingSoonSection = comingSoonMessage.closest('div');
+      it('画像が適切に表示される', () => {
+        render(<HelpPage />);
 
-        // 準備中セクションのスタイルを検証
-        expect(comingSoonSection).toHaveClass('rounded-lg');
-        expect(comingSoonSection).toHaveClass('border');
-        expect(comingSoonSection).toHaveClass('border-gray-200');
-        expect(comingSoonSection).toHaveClass('bg-gray-50');
-        expect(comingSoonSection).toHaveClass('text-center');
+        // 4つの画像が表示されることを確認
+        const images = screen.getAllByRole('img');
+        const androidImages = images.filter((img) =>
+          img.getAttribute('alt')?.includes('Android手順')
+        );
+        expect(androidImages.length).toBe(4);
+
+        // 画像のソースパスが正しいことを確認
+        expect(
+          screen.getByAltText('Android手順1: トークの右上の三本線メニューをタップ')
+        ).toBeInTheDocument();
+        expect(screen.getByAltText('Android手順4: 任意のファイルアプリを選択して保存')).toBeInTheDocument();
       });
     });
 
@@ -129,29 +159,30 @@ describe('HelpPage', () => {
         // h1: メインタイトル
         expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('トーク履歴の取得方法');
 
-        // h2: OS別セクション
+        // h2: 目次 + OS別セクション = 3つ
+        expect(screen.getByRole('heading', { level: 2, name: '目次' })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: 'iPhoneの場合' })).toBeInTheDocument();
         expect(
           screen.getByRole('heading', { level: 2, name: 'Androidの場合' })
         ).toBeInTheDocument();
 
-        // h3: iPhone手順（5つ）+ Android「現在準備中」（1つ）= 6つ
-        expect(screen.getAllByRole('heading', { level: 3 }).length).toBe(6);
+        // h3: iPhone手順（5つ）+ Android手順（4つ）= 9つ
+        expect(screen.getAllByRole('heading', { level: 3 }).length).toBe(9);
       });
 
       it('重要な情報が適切に表示される', () => {
         render(<HelpPage />);
 
-        // iPhone手順の強調表示
-        expect(screen.getByText('トークの右上の三本線メニューをタップ')).toBeInTheDocument();
+        // iPhone手順の強調表示（複数存在する場合があるのでgetAllByTextを使用）
+        expect(screen.getAllByText('トークの右上の三本線メニューをタップ').length).toBeGreaterThanOrEqual(1);
       });
 
       it('絵文字でビジュアル的に情報が分類される', () => {
         render(<HelpPage />);
 
-        // OS別の絵文字
-        expect(screen.getByText('📱')).toBeInTheDocument(); // iPhone
-        expect(screen.getByText('🤖')).toBeInTheDocument(); // Android
+        // OS別の絵文字（目次と各セクションで複数存在する）
+        expect(screen.getAllByText('📱').length).toBeGreaterThanOrEqual(1); // iPhone
+        expect(screen.getAllByText('🤖').length).toBeGreaterThanOrEqual(1); // Android
       });
     });
   });
