@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -8,12 +6,14 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col items-center space-y-3">
           <div className="flex flex-wrap justify-center gap-4 text-sm">
-            <Link
-              href="/help"
+            <a
+              href="https://qiita.com/KuboTech/items/2f337b7dc5b39d88e08b"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
             >
-              ヘルプ
-            </Link>
+              Qiita
+            </a>
             <a
               href="https://github.com/Kubo-Tech/line_talk_analyzer_frontend"
               target="_blank"

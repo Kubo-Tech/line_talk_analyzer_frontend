@@ -8,11 +8,13 @@ describe('Footer', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
 
-  it('ヘルプへのリンクが表示される', () => {
+  it('Qiitaへのリンクが表示される', () => {
     render(<Footer />);
 
-    const helpLink = screen.getByRole('link', { name: 'ヘルプ' });
-    expect(helpLink).toHaveAttribute('href', '/help');
+    const qiitaLink = screen.getByRole('link', { name: 'Qiita' });
+    expect(qiitaLink).toHaveAttribute('href', 'https://qiita.com/KuboTech/items/2f337b7dc5b39d88e08b');
+    expect(qiitaLink).toHaveAttribute('target', '_blank');
+    expect(qiitaLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('GitHubへのリンクが表示される', () => {
