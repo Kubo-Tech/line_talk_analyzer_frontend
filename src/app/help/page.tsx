@@ -18,8 +18,29 @@ export default function HelpPage() {
           </p>
         </div>
 
+        {/* 目次 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-xl font-bold text-gray-900">目次</h2>
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
+            <a
+              href="#iphone"
+              className="flex items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-6 py-4 transition-all hover:border-blue-400 hover:bg-blue-100"
+            >
+              <span className="mr-3 text-2xl">📱</span>
+              <span className="font-semibold text-blue-700">iPhoneの場合</span>
+            </a>
+            <a
+              href="#android"
+              className="flex items-center rounded-lg border-2 border-green-200 bg-green-50 px-6 py-4 transition-all hover:border-green-400 hover:bg-green-100"
+            >
+              <span className="mr-3 text-2xl">🤖</span>
+              <span className="font-semibold text-green-700">Androidの場合</span>
+            </a>
+          </div>
+        </div>
+
         {/* iPhone版の手順 */}
-        <div className="mb-12 rounded-lg bg-white p-6 shadow-sm">
+        <div id="iphone" className="mb-12 rounded-lg bg-white p-6 shadow-sm">
           <div className="mb-6 flex items-center">
             <span className="mr-3 text-3xl">📱</span>
             <h2 className="text-2xl font-bold text-gray-900">iPhoneの場合</h2>
@@ -135,19 +156,95 @@ export default function HelpPage() {
         </div>
 
         {/* Android版の手順 */}
-        <div className="mb-12 rounded-lg bg-white p-6 shadow-sm">
+        <div id="android" className="mb-12 rounded-lg bg-white p-6 shadow-sm">
           <div className="mb-6 flex items-center">
             <span className="mr-3 text-3xl">🤖</span>
             <h2 className="text-2xl font-bold text-gray-900">Androidの場合</h2>
           </div>
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-            <div className="mb-3 text-4xl">🔧</div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-700">現在準備中です</h3>
-            <p className="text-gray-600">
-              Android向けのスクリーンショット付き手順を準備中です。
-              <br />
-              しばらくお待ちください。
-            </p>
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-start">
+              <span className="mr-4 mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 font-bold text-white md:mb-0">
+                1
+              </span>
+              <div className="flex-1">
+                <h3 className="mb-2 font-semibold text-gray-900">
+                  トークの右上の三本線メニューをタップ
+                </h3>
+                <p className="mb-3 text-gray-600">
+                  解析したいトークルームを開き、画面右上の「≡」（三本線）のメニューボタンをタップします。
+                </p>
+                <div className="w-fit rounded-lg border bg-gray-50 p-3">
+                  <Image
+                    src="/images/help/android/android01.png"
+                    alt="Android手順1: トークの右上の三本線メニューをタップ"
+                    width={300}
+                    height={600}
+                    className="h-auto w-full max-w-sm rounded-md shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-start">
+              <span className="mr-4 mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 font-bold text-white md:mb-0">
+                2
+              </span>
+              <div className="flex-1">
+                <h3 className="mb-2 font-semibold text-gray-900">「設定」をタップ</h3>
+                <p className="mb-3 text-gray-600">表示されたメニューから「設定」をタップします。</p>
+                <div className="w-fit rounded-lg border bg-gray-50 p-3">
+                  <Image
+                    src="/images/help/android/android02.png"
+                    alt="Android手順2: 設定をタップ"
+                    width={300}
+                    height={600}
+                    className="h-auto w-full max-w-sm rounded-md shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-start">
+              <span className="mr-4 mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 font-bold text-white md:mb-0">
+                3
+              </span>
+              <div className="flex-1">
+                <h3 className="mb-2 font-semibold text-gray-900">「トーク履歴を送信」をタップ</h3>
+                <p className="mb-3 text-gray-600">
+                  設定画面から「トーク履歴を送信」をタップします。
+                </p>
+                <div className="w-fit rounded-lg border bg-gray-50 p-3">
+                  <Image
+                    src="/images/help/android/android03.png"
+                    alt="Android手順3: トーク履歴を送信をタップ"
+                    width={300}
+                    height={600}
+                    className="h-auto w-full max-w-sm rounded-md shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-start">
+              <span className="mr-4 mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 font-bold text-white md:mb-0">
+                4
+              </span>
+              <div className="flex-1">
+                <h3 className="mb-2 font-semibold text-gray-900">
+                  任意のファイルアプリを選択して保存
+                </h3>
+                <p className="mb-3 text-gray-600">※ファイルアプリは端末の機種によって異なります</p>
+                <div className="w-fit rounded-lg border bg-gray-50 p-3">
+                  <Image
+                    src="/images/help/android/android04.png"
+                    alt="Android手順4: 任意のファイルアプリを選択して保存"
+                    width={300}
+                    height={600}
+                    className="h-auto w-full max-w-sm rounded-md shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
