@@ -9,18 +9,18 @@ export const metadata: Metadata = {
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
       <div className="mx-auto max-w-4xl px-4">
         <div className="mb-8">
-          <h1 className="mb-4 text-3xl font-bold text-gray-900">トーク履歴の取得方法</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">トーク履歴の取得方法</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             LINEアプリからトーク履歴をテキストファイルとして取得する方法をご説明します。
           </p>
         </div>
 
         {/* 目次 */}
-        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-xl font-bold text-gray-900">目次</h2>
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">目次</h2>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
             <a
               href="#iphone"

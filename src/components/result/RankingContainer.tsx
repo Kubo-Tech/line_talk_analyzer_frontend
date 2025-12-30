@@ -36,7 +36,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
         <div className="mb-4 flex items-center justify-between">
           <button
             onClick={handlePrevious}
-            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600"
             aria-label="前へ"
           >
             <svg
@@ -50,12 +50,12 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </button>
-          <h2 className="flex-1 text-center text-lg font-semibold">
+          <h2 className="flex-1 text-center text-lg font-semibold dark:text-gray-100">
             {RANKING_TITLES_MOBILE[activeIndex]}
           </h2>
           <button
             onClick={handleNext}
-            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600"
             aria-label="次へ"
           >
             <svg
@@ -78,7 +78,7 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               key={index}
               onClick={() => setActiveIndex(index)}
               className={`h-2 w-2 rounded-full transition-all ${
-                index === activeIndex ? 'w-8 bg-blue-600' : 'bg-gray-300'
+                index === activeIndex ? 'w-8 bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
               }`}
               aria-label={`${index + 1}番目のランキングへ移動`}
               aria-pressed={index === activeIndex}

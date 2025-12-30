@@ -83,10 +83,10 @@ export default function DropZone({
       onDrop={handleDrop}
       className={`flex min-h-50 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
         disabled
-          ? 'cursor-not-allowed border-gray-300 bg-gray-50 text-gray-400'
+          ? 'cursor-not-allowed border-gray-300 bg-gray-50 text-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-500'
           : isDragActive
-            ? 'border-blue-500 bg-blue-50 text-blue-600'
-            : 'border-gray-300 bg-white text-gray-600 hover:border-blue-400 hover:bg-blue-50'
+            ? 'border-blue-500 bg-blue-50 text-blue-600 dark:border-blue-400 dark:bg-blue-900/30 dark:text-blue-300'
+            : 'border-gray-300 bg-white text-gray-600 hover:border-blue-400 hover:bg-blue-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-blue-500 dark:hover:bg-blue-900/20'
       } `}
       role="button"
       tabIndex={disabled ? -1 : 0}

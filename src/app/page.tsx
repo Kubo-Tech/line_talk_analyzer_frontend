@@ -79,8 +79,8 @@ export default function Home() {
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-4xl font-bold">LINE流行語大賞 2025</h1>
-        <p className="text-gray-600">LINEトーク履歴から今年の流行語を分析します</p>
+        <h1 className="mb-2 text-4xl font-bold dark:text-gray-100">LINE流行語大賞 2025</h1>
+        <p className="text-gray-600 dark:text-gray-400">LINEトーク履歴から今年の流行語を分析します</p>
       </div>
       <div className="space-y-8">
         {/* ファイルアップロード */}
@@ -90,7 +90,7 @@ export default function Home() {
 
         {/* ヘルプリンク */}
         <section className="text-center">
-          <Link href="/help" className="inline-block text-blue-600 hover:underline">
+          <Link href="/help" className="inline-block text-blue-600 hover:underline dark:text-blue-400">
             📖 トーク履歴の取得方法
           </Link>
         </section>
@@ -109,7 +109,7 @@ export default function Home() {
         <section className="text-center">
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+            className="inline-flex items-center gap-2 text-blue-600 hover:underline dark:text-blue-400"
             disabled={!isLoaded}
           >
             ⚙️ 設定変更
@@ -123,14 +123,14 @@ export default function Home() {
             disabled={!isAnalyzeButtonEnabled}
             className={`w-full rounded-lg px-8 py-4 text-xl font-bold text-white transition-colors ${
               isAnalyzeButtonEnabled
-                ? 'bg-blue-600 hover:bg-blue-700'
-                : 'cursor-not-allowed bg-gray-400'
+                ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800'
+                : 'cursor-not-allowed bg-gray-400 dark:bg-gray-600'
             }`}
           >
             {isLoading ? '解析中...' : '解析を開始する'}
           </button>
           {!isAnalyzeButtonEnabled && !isLoading && (
-            <p className="mt-2 text-center text-sm text-gray-500">
+            <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
               {!uploadedFile && !isConsented
                 ? 'ファイルを選択し、プライバシーポリシーに同意してください'
                 : !uploadedFile
@@ -140,9 +140,9 @@ export default function Home() {
           )}
           {/* エラー表示 */}
           {error && (
-            <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4">
-              <p className="text-sm font-semibold text-red-800">エラーが発生しました</p>
-              <p className="mt-1 text-sm text-red-700">{error}</p>
+            <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-700 dark:bg-red-900/30">
+              <p className="text-sm font-semibold text-red-800 dark:text-red-200">エラーが発生しました</p>
+              <p className="mt-1 text-sm text-red-700 dark:text-red-300">{error}</p>
             </div>
           )}
         </section>
