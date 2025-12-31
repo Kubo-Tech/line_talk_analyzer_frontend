@@ -125,7 +125,7 @@ export default function ResultPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-8">
         <div className="text-center">
-          <p className="text-gray-600">読み込み中...</p>
+          <p className="text-gray-600 dark:text-gray-400">読み込み中...</p>
         </div>
       </main>
     );
@@ -137,8 +137,8 @@ export default function ResultPage() {
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-4xl font-bold">解析結果</h1>
-        <p className="text-gray-600">あなたのLINEトーク解析レポート</p>
+        <h1 className="mb-2 text-4xl font-bold dark:text-gray-100">解析結果</h1>
+        <p className="text-gray-600 dark:text-gray-400">あなたのLINEトーク解析レポート</p>
       </div>
 
       {/* 解析期間と統計情報 */}
@@ -153,7 +153,7 @@ export default function ResultPage() {
       <section className="mb-6 flex items-center justify-center gap-4">
         <button
           onClick={() => setIsSettingsOpen(true)}
-          className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+          className="inline-flex items-center gap-2 text-blue-600 hover:underline dark:text-blue-400"
           disabled={!isLoaded || isLoading}
         >
           ⚙️ 設定変更
@@ -163,8 +163,8 @@ export default function ResultPage() {
           disabled={isLoading || !uploadedFile || !hasSettingsChanged}
           className={`rounded-lg px-6 py-2 font-semibold text-white transition-colors ${
             isLoading || !uploadedFile || !hasSettingsChanged
-              ? 'cursor-not-allowed bg-gray-400'
-              : 'bg-blue-600 hover:bg-blue-700'
+              ? 'cursor-not-allowed bg-gray-400 dark:bg-gray-600'
+              : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800'
           }`}
         >
           🔄 再解析

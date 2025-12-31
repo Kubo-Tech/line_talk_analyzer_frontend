@@ -21,7 +21,7 @@ export function PrivacyConsent({
   onOpenPolicy,
 }: PrivacyConsentProps) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div>
         <label className="flex cursor-pointer items-start gap-3">
           <input
@@ -29,13 +29,17 @@ export function PrivacyConsent({
             checked={isConsented}
             onChange={onConsentChange}
             disabled={!hasReadPolicy}
-            className={`mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 ${
+            className={`mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 ${
               hasReadPolicy ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
             }`}
             aria-label="プライバシーポリシーに同意する"
           />
-          <span className="flex-1 text-sm text-gray-700">
-            <button type="button" onClick={onOpenPolicy} className="text-blue-600 hover:underline">
+          <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">
+            <button
+              type="button"
+              onClick={onOpenPolicy}
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
               プライバシーポリシー
             </button>
             に同意する

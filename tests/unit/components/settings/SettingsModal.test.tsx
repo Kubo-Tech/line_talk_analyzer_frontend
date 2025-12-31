@@ -604,4 +604,85 @@ describe('SettingsModal', () => {
       expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('ダークモード対応', () => {
+    it('モーダル背景にダークモードクラスが適用されている', () => {
+      const { container } = render(
+        <SettingsModal
+          isOpen={true}
+          settings={DEFAULT_SETTINGS}
+          onClose={mockOnClose}
+          onApply={mockOnApply}
+        />
+      );
+
+      const modal = container.querySelector('.dark\\:bg-gray-800');
+      expect(modal).toBeInTheDocument();
+    });
+
+    it('入力フィールドにダークモードクラスが適用されている', () => {
+      render(
+        <SettingsModal
+          isOpen={true}
+          settings={DEFAULT_SETTINGS}
+          onClose={mockOnClose}
+          onApply={mockOnApply}
+        />
+      );
+
+      const minWordLengthInput = document.getElementById('minWordLength') as HTMLInputElement;
+      expect(minWordLengthInput.className).toContain('dark:bg-gray-700');
+      expect(minWordLengthInput.className).toContain('dark:text-gray-200');
+    });
+
+    it('ラベルテキストにダークモードクラスが適用されている', () => {
+      render(
+        <SettingsModal
+          isOpen={true}
+          settings={DEFAULT_SETTINGS}
+          onClose={mockOnClose}
+          onApply={mockOnApply}
+        />
+      );
+
+      const labels = screen.getAllByText('単語');
+      const label = labels[0].closest('label');
+      expect(label?.className).toContain('dark:text-gray-300');
+    });
+
+    it('単位表示テキストにダークモードクラスが適用されている', () => {
+      render(
+        <SettingsModal
+          isOpen={true}
+          settings={DEFAULT_SETTINGS}
+          onClose={mockOnClose}
+          onApply={mockOnApply}
+        />
+      );
+
+      // 「文字」の単位表示を探す（invisibleでないもの）
+      const textUnits = screen.getAllByText('文字');
+      const unitSpan = textUnits.find(
+        (element) =>
+          element.tagName === 'SPAN' &&
+          element.className.includes('whitespace-nowrap') &&
+          !element.className.includes('invisible')
+      );
+      expect(unitSpan?.className).toContain('dark:text-gray-400');
+    });
+
+    it('セクション見出しにダークモードクラスが適用されている', () => {
+      render(
+        <SettingsModal
+          isOpen={true}
+          settings={DEFAULT_SETTINGS}
+          onClose={mockOnClose}
+          onApply={mockOnApply}
+        />
+      );
+
+      const heading = screen.getByText('期間');
+      expect(heading.className).toContain('dark:text-gray-200');
+    });
+  });
 });

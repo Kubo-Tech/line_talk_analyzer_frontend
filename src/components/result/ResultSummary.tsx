@@ -15,9 +15,9 @@ export default function ResultSummary({
   totalUsers,
 }: ResultSummaryProps) {
   return (
-    <section className="mb-8 rounded-lg bg-gray-50 p-6">
-      <h2 className="mb-4 text-xl font-bold">解析情報</h2>
-      <div className="space-y-2 text-sm">
+    <section className="mb-8 rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+      <h2 className="mb-4 text-xl font-bold dark:text-gray-100">解析情報</h2>
+      <div className="space-y-2 text-sm dark:text-gray-300">
         <p>
           <span className="font-semibold">期間:</span>{' '}
           {new Date(startDate).toLocaleDateString('ja-JP')} 〜{' '}

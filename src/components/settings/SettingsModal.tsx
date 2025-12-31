@@ -117,12 +117,12 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
 
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">解析設定</h2>
+          <h2 className="text-2xl font-bold dark:text-gray-100">解析設定</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             aria-label="閉じる"
           >
             ✕
@@ -132,10 +132,13 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
         <div className="space-y-6">
           {/* 期間設定 */}
           <section>
-            <h3 className="mb-3 text-lg font-semibold">期間</h3>
+            <h3 className="mb-3 text-lg font-semibold dark:text-gray-200">期間</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="startDate" className="mb-1 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="startDate"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   開始日
                 </label>
                 <div className="flex items-center gap-2">
@@ -146,7 +149,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     onChange={(e) =>
                       setLocalSettings({ ...localSettings, startDate: e.target.value })
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
                   <span className="invisible w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
                     文字
@@ -154,7 +157,10 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                 </div>
               </div>
               <div>
-                <label htmlFor="endDate" className="mb-1 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="endDate"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   終了日
                 </label>
                 <div className="flex items-center gap-2">
@@ -165,7 +171,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                     onChange={(e) =>
                       setLocalSettings({ ...localSettings, endDate: e.target.value })
                     }
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
                   <span className="invisible w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
                     文字
@@ -177,12 +183,12 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
 
           {/* 最小文字数 */}
           <section>
-            <h3 className="mb-3 text-lg font-semibold">最小文字数</h3>
+            <h3 className="mb-3 text-lg font-semibold dark:text-gray-200">最小文字数</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="minWordLength"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   単語
                 </label>
@@ -203,9 +209,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                         setLocalSettings({ ...localSettings, minWordLength: 1 });
                       }
                     }}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     文字
                   </span>
                 </div>
@@ -213,7 +219,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
               <div>
                 <label
                   htmlFor="minMessageLength"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   メッセージ
                 </label>
@@ -234,9 +240,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                         setLocalSettings({ ...localSettings, minMessageLength: 1 });
                       }
                     }}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     文字
                   </span>
                 </div>
@@ -246,12 +252,12 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
 
           {/* 最大文字数 */}
           <section>
-            <h3 className="mb-3 text-lg font-semibold">最大文字数</h3>
+            <h3 className="mb-3 text-lg font-semibold dark:text-gray-200">最大文字数</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="maxWordLength"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   単語（未指定の場合は空欄）
                 </label>
@@ -268,9 +274,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                       })
                     }
                     placeholder="未指定"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     文字
                   </span>
                 </div>
@@ -278,7 +284,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
               <div>
                 <label
                   htmlFor="maxMessageLength"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   メッセージ（未指定の場合は空欄）
                 </label>
@@ -295,9 +301,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                       })
                     }
                     placeholder="未指定"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     文字
                   </span>
                 </div>
@@ -307,12 +313,12 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
 
           {/* 最小出現回数 */}
           <section>
-            <h3 className="mb-3 text-lg font-semibold">最小出現回数</h3>
+            <h3 className="mb-3 text-lg font-semibold dark:text-gray-200">最小出現回数</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="minWordCount"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   単語
                 </label>
@@ -333,9 +339,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                         setLocalSettings({ ...localSettings, minWordCount: 1 });
                       }
                     }}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     回
                   </span>
                 </div>
@@ -343,7 +349,7 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
               <div>
                 <label
                   htmlFor="minMessageCount"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   メッセージ
                 </label>
@@ -364,9 +370,9 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                         setLocalSettings({ ...localSettings, minMessageCount: 1 });
                       }
                     }}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   />
-                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600">
+                  <span className="w-10 flex-shrink-0 text-sm whitespace-nowrap text-gray-600 dark:text-gray-400">
                     回
                   </span>
                 </div>

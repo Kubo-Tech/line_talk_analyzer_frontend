@@ -9,32 +9,36 @@ export const metadata: Metadata = {
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
       <div className="mx-auto max-w-4xl px-4">
         <div className="mb-8">
-          <h1 className="mb-4 text-3xl font-bold text-gray-900">トーク履歴の取得方法</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+            トーク履歴の取得方法
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             LINEアプリからトーク履歴をテキストファイルとして取得する方法をご説明します。
           </p>
         </div>
 
         {/* 目次 */}
-        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-xl font-bold text-gray-900">目次</h2>
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">目次</h2>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
             <a
               href="#iphone"
-              className="flex items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-6 py-4 transition-all hover:border-blue-400 hover:bg-blue-100"
+              className="flex items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-6 py-4 transition-all hover:border-blue-400 hover:bg-blue-100 dark:border-blue-600 dark:bg-blue-900/30 dark:hover:border-blue-400 dark:hover:bg-blue-800/40"
             >
               <span className="mr-3 text-2xl">📱</span>
-              <span className="font-semibold text-blue-700">iPhoneの場合</span>
+              <span className="font-semibold text-blue-700 dark:text-blue-300">iPhoneの場合</span>
             </a>
             <a
               href="#android"
-              className="flex items-center rounded-lg border-2 border-green-200 bg-green-50 px-6 py-4 transition-all hover:border-green-400 hover:bg-green-100"
+              className="flex items-center rounded-lg border-2 border-green-200 bg-green-50 px-6 py-4 transition-all hover:border-green-400 hover:bg-green-100 dark:border-green-600 dark:bg-green-900/30 dark:hover:border-green-400 dark:hover:bg-green-800/40"
             >
               <span className="mr-3 text-2xl">🤖</span>
-              <span className="font-semibold text-green-700">Androidの場合</span>
+              <span className="font-semibold text-green-700 dark:text-green-300">
+                Androidの場合
+              </span>
             </a>
           </div>
         </div>

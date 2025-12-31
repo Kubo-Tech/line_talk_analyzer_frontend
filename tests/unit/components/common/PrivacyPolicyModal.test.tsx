@@ -111,4 +111,70 @@ describe('PrivacyPolicyModal', () => {
       expect(modalContent).toHaveClass('shadow-xl');
     });
   });
+
+  describe('ダークモード対応', () => {
+    beforeEach(() => {
+      render(<PrivacyPolicyModal isOpen={true} onClose={mockOnClose} />);
+    });
+
+    it('モーダル背景にダークモードクラスが適用されている', () => {
+      const heading = screen.getByRole('heading', { name: 'プライバシーポリシー' });
+      const modal = heading.closest('.bg-white');
+      expect(modal?.className).toContain('dark:bg-gray-800');
+    });
+
+    it('タイトルにダークモードクラスが適用されている', () => {
+      const heading = screen.getByRole('heading', { name: 'プライバシーポリシー' });
+      expect(heading.className).toContain('dark:text-gray-100');
+    });
+
+    it('セクション見出しにダークモードクラスが適用されている', () => {
+      const sectionHeading = screen.getByText('必須同意項目');
+      expect(sectionHeading.className).toContain('dark:text-gray-100');
+    });
+
+    it('本文テキストにダークモードクラスが適用されている', () => {
+      const textElement = screen.getByText(/本サービスを利用する前に/);
+      expect(textElement.className).toContain('dark:text-gray-300');
+    });
+
+    it('リストアイテムにダークモードクラスが適用されている', () => {
+      const listItem = screen.getByText(/現状有姿/);
+      const list = listItem.closest('ul');
+      expect(list?.className).toContain('dark:text-gray-300');
+    });
+
+    it('テーブルにダークモードクラスが適用されている', () => {
+      const tableHeaders = screen.getAllByRole('columnheader');
+      const firstHeader = tableHeaders[0];
+      expect(firstHeader.className).toContain('dark:border-gray-600');
+      expect(firstHeader.className).toContain('dark:text-gray-200');
+    });
+
+    it('テーブルのデータセルにダークモードクラスが適用されている', () => {
+      const cells = screen.getAllByRole('cell');
+      const firstCell = cells[0];
+      expect(firstCell.className).toContain('dark:border-gray-600');
+      expect(firstCell.className).toContain('dark:text-gray-300');
+    });
+
+    it('リンクにダークモードクラスが適用されている', () => {
+      const links = screen.getAllByRole('link');
+      const githubLink = links.find((link) => link.textContent?.includes('line_talk_analyzer'));
+      expect(githubLink?.className).toContain('dark:text-blue-400');
+    });
+
+    it('閉じるボタンにダークモードクラスが適用されている', () => {
+      const closeButtons = screen.getAllByRole('button', { name: '閉じる' });
+      const headerCloseButton = closeButtons[0];
+      expect(headerCloseButton.className).toContain('dark:text-gray-400');
+      expect(headerCloseButton.className).toContain('dark:hover:bg-gray-700');
+    });
+
+    it('ボーダーにダークモードクラスが適用されている', () => {
+      const heading = screen.getByRole('heading', { name: 'プライバシーポリシー' });
+      const header = heading.closest('.border-b');
+      expect(header?.className).toContain('dark:border-gray-700');
+    });
+  });
 });

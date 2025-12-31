@@ -1,6 +1,7 @@
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import { FileProvider } from '@/contexts/FileContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
@@ -35,13 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <body className="bg-background text-foreground flex min-h-screen flex-col antialiased">
-        <FileProvider>
-          <Header />
-          <main className="container mx-auto flex-1 px-4 py-8">{children}</main>
-          <Footer />
-        </FileProvider>
+        <ThemeProvider>
+          <FileProvider>
+            <Header />
+            <main className="container mx-auto flex-1 px-4 py-8">{children}</main>
+            <Footer />
+          </FileProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
