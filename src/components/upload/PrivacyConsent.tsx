@@ -35,7 +35,11 @@ export function PrivacyConsent({
             aria-label="プライバシーポリシーに同意する"
           />
           <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">
-            <button type="button" onClick={onOpenPolicy} className="text-blue-600 hover:underline dark:text-blue-400">
+            <button
+              type="button"
+              onClick={onOpenPolicy}
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
               プライバシーポリシー
             </button>
             に同意する

@@ -47,7 +47,10 @@ export default function FileUploader({ onFileChange }: FileUploaderProps) {
             onDragLeave={handleDragLeave}
           />
           {error && (
-            <div className="mt-4 rounded-md bg-red-50 p-4 text-red-800 dark:bg-red-900/30 dark:text-red-200" role="alert">
+            <div
+              className="mt-4 rounded-md bg-red-50 p-4 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+              role="alert"
+            >
               <p className="font-semibold">エラー</p>
               <p className="text-sm">{error}</p>
               <button onClick={clearError} className="mt-2 text-sm underline hover:no-underline">
@@ -64,7 +67,9 @@ export default function FileUploader({ onFileChange }: FileUploaderProps) {
               <div>
                 <p className="font-semibold text-green-800 dark:text-green-200">ファイル選択済み</p>
                 <p className="text-sm text-green-700 dark:text-green-300">{file.name}</p>
-                <p className="text-xs text-green-600 dark:text-green-400">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p>
               </div>
             </div>
             <button

@@ -12,7 +12,9 @@ export default function HelpPage() {
     <div className="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
       <div className="mx-auto max-w-4xl px-4">
         <div className="mb-8">
-          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">トーク履歴の取得方法</h1>
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+            トーク履歴の取得方法
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             LINEアプリからトーク履歴をテキストファイルとして取得する方法をご説明します。
           </p>

@@ -80,7 +80,9 @@ export default function Home() {
     <main className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-4xl font-bold dark:text-gray-100">LINE流行語大賞 2025</h1>
-        <p className="text-gray-600 dark:text-gray-400">LINEトーク履歴から今年の流行語を分析します</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          LINEトーク履歴から今年の流行語を分析します
+        </p>
       </div>
       <div className="space-y-8">
         {/* ファイルアップロード */}
@@ -90,7 +92,10 @@ export default function Home() {
 
         {/* ヘルプリンク */}
         <section className="text-center">
-          <Link href="/help" className="inline-block text-blue-600 hover:underline dark:text-blue-400">
+          <Link
+            href="/help"
+            className="inline-block text-blue-600 hover:underline dark:text-blue-400"
+          >
             📖 トーク履歴の取得方法
           </Link>
         </section>
@@ -140,8 +145,13 @@ export default function Home() {
           )}
           {/* エラー表示 */}
           {error && (
-            <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-700 dark:bg-red-900/30">
-              <p className="text-sm font-semibold text-red-800 dark:text-red-200">エラーが発生しました</p>
+            <div
+              role="alert"
+              className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-700 dark:bg-red-900/30"
+            >
+              <p className="text-sm font-semibold text-red-800 dark:text-red-200">
+                エラーが発生しました
+              </p>
               <p className="mt-1 text-sm text-red-700 dark:text-red-300">{error}</p>
             </div>
           )}

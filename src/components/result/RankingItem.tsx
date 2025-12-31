@@ -43,7 +43,9 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
 
   // Issue#03: 1〜3位と4位以降でスタイルを変える
   const paddingClass = isTopThree ? 'py-4 px-4' : 'py-2 px-4';
-  const borderClass = isTopThree ? 'border-b-2 border-gray-300 dark:border-gray-600' : 'border-b border-gray-200 dark:border-gray-700';
+  const borderClass = isTopThree
+    ? 'border-b-2 border-gray-300 dark:border-gray-600'
+    : 'border-b border-gray-200 dark:border-gray-700';
   const rankSizeClass = isTopThree ? 'text-3xl' : 'text-lg';
   const itemSizeClass = isTopThree
     ? type === 'word'
@@ -65,12 +67,16 @@ export default function RankingItem({ rank, item, type }: RankingItemProps) {
         <div className={`flex items-center gap-2 ${type === 'message' ? 'flex-1' : ''}`}>
           <p className={`${itemSizeClass} font-semibold dark:text-gray-100`}>{itemText}</p>
           {type === 'word' && 'part_of_speech' in item && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">({item.part_of_speech})</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              ({item.part_of_speech})
+            </span>
           )}
         </div>
       </div>
       <div className="text-right">
-        <p className={`${countSizeClass} font-bold text-blue-600 dark:text-blue-400`}>{item.count}回</p>
+        <p className={`${countSizeClass} font-bold text-blue-600 dark:text-blue-400`}>
+          {item.count}回
+        </p>
       </div>
     </div>
   );

@@ -135,7 +135,10 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
             <h3 className="mb-3 text-lg font-semibold dark:text-gray-200">期間</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="startDate" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="startDate"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   開始日
                 </label>
                 <div className="flex items-center gap-2">
@@ -154,7 +157,10 @@ export function SettingsModal({ isOpen, settings, onClose, onApply }: SettingsMo
                 </div>
               </div>
               <div>
-                <label htmlFor="endDate" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="endDate"
+                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   終了日
                 </label>
                 <div className="flex items-center gap-2">

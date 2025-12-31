@@ -22,7 +22,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
       >
         {/* ヘッダー */}
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">プライバシーポリシー</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            プライバシーポリシー
+          </h2>
           <button
             onClick={onClose}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
@@ -44,13 +46,17 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
           <div className="prose prose-sm max-w-none">
             {/* 必須同意項目 */}
             <section className="mb-8">
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">必須同意項目</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                必須同意項目
+              </h3>
               <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
                 本サービスを利用する前に、以下の事項に同意する必要があります。
               </p>
 
               <div className="mb-4">
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">サービスの性質</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  サービスの性質
+                </h4>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700 dark:text-gray-300">
                   <li>
                     <strong>
@@ -67,7 +73,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
               </div>
 
               <div className="mb-4">
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">免責事項</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  免責事項
+                </h4>
                 <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
                   本サービスの利用に関して、以下の点をご了承ください：
                 </p>
@@ -87,7 +95,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
               </div>
 
               <div>
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">利用条件</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  利用条件
+                </h4>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700 dark:text-gray-300">
                   <li>
                     上記の「サービスの性質」および「免責事項」に同意した場合のみ、本サービスを利用できます。
@@ -102,50 +112,74 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
 
             {/* データの取り扱い */}
             <section className="mb-8">
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">データの取り扱い</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                データの取り扱い
+              </h3>
 
               <div className="mb-4">
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">サーバー側での処理</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  サーバー側での処理
+                </h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse border border-gray-300 text-sm dark:border-gray-600">
                     <thead>
                       <tr className="bg-gray-100 dark:bg-gray-700">
-                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">項目</th>
-                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">内容</th>
+                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                          項目
+                        </th>
+                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                          内容
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">ファイルの保存</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          ファイルの保存
+                        </td>
                         <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                           しない（ディスクに書き込まない）
                         </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">データベースへの保存</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          データベースへの保存
+                        </td>
                         <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                           しない（DBを使用しない）
                         </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">メモリ上での処理</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          メモリ上での処理
+                        </td>
                         <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                           解析処理中のみ一時的に保持
                         </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">解析後のデータ</td>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">即座にメモリから破棄</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          解析後のデータ
+                        </td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          即座にメモリから破棄
+                        </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">アクセスログ</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          アクセスログ
+                        </td>
                         <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                           IPアドレス・時刻のみ記録（トーク内容は記録しない）
                         </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">第三者への提供</td>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">一切行わない</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          第三者への提供
+                        </td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          一切行わない
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -153,7 +187,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
               </div>
 
               <div className="mb-4">
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">通信の保護</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  通信の保護
+                </h4>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700 dark:text-gray-300">
                   <li>
                     <strong>HTTPS（TLS 1.2以上）</strong> による暗号化通信
@@ -164,26 +200,42 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
               </div>
 
               <div>
-                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">フロントエンド側での処理</h4>
+                <h4 className="mb-2 text-base font-bold text-gray-900 dark:text-gray-200">
+                  フロントエンド側での処理
+                </h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse border border-gray-300 text-sm dark:border-gray-600">
                     <thead>
                       <tr className="bg-gray-100 dark:bg-gray-700">
-                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">項目</th>
-                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">内容</th>
+                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                          項目
+                        </th>
+                        <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                          内容
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">LocalStorage</td>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">トーク内容を保存しない</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          LocalStorage
+                        </td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          トーク内容を保存しない
+                        </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">Cookie</td>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">トーク内容を保存しない</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          Cookie
+                        </td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          トーク内容を保存しない
+                        </td>
                       </tr>
                       <tr>
-                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">解析結果の保持</td>
+                        <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                          解析結果の保持
+                        </td>
                         <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                           ブラウザのメモリ上のみ（ページ離脱で消去）
                         </td>
@@ -214,7 +266,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                 </div>
 
                 <div>
-                  <h4 className="mb-2 text-sm font-bold text-gray-900 dark:text-gray-200">2. 解析後の操作</h4>
+                  <h4 className="mb-2 text-sm font-bold text-gray-900 dark:text-gray-200">
+                    2. 解析後の操作
+                  </h4>
                   <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700 dark:text-gray-300">
                     <li>結果確認後、ブラウザのタブを閉じることでメモリ上のデータも消去</li>
                     <li>必要に応じてブラウザの履歴を削除</li>
@@ -225,7 +279,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
 
             {/* データ処理の透明性 */}
             <section className="mb-8">
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">データ処理の透明性</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                データ処理の透明性
+              </h3>
               <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
                 本サービスはオープンソースで開発されており、処理内容を誰でも確認できます。
               </p>
@@ -233,8 +289,12 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                 <table className="min-w-full border-collapse border border-gray-300 text-sm dark:border-gray-600">
                   <thead>
                     <tr className="bg-gray-100 dark:bg-gray-700">
-                      <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">リポジトリ</th>
-                      <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">説明</th>
+                      <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                        リポジトリ
+                      </th>
+                      <th className="border border-gray-300 px-3 py-2 text-left dark:border-gray-600 dark:text-gray-200">
+                        説明
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -249,7 +309,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                           line_talk_analyzer_frontend
                         </a>
                       </td>
-                      <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">フロントエンド</td>
+                      <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                        フロントエンド
+                      </td>
                     </tr>
                     <tr>
                       <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
@@ -262,7 +324,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                           line_talk_analyzer_backend
                         </a>
                       </td>
-                      <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">バックエンド</td>
+                      <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
+                        バックエンド
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -271,7 +335,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
 
             {/* Cookie・ローカルストレージ */}
             <section className="mb-8">
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">Cookie・ローカルストレージ</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                Cookie・ローカルストレージ
+              </h3>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 本サービスは、機能向上のためにCookieやローカルストレージを使用する場合があります。個人を特定できる情報は保存されません。
               </p>
@@ -279,7 +345,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
 
             {/* プライバシーポリシーの変更 */}
             <section className="mb-8">
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">プライバシーポリシーの変更</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                プライバシーポリシーの変更
+              </h3>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 本ポリシーは予告なく変更される場合があります。重要な変更がある場合は、サービス上で通知します。
               </p>
@@ -287,7 +355,9 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
 
             {/* お問い合わせ */}
             <section>
-              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">お問い合わせ</h3>
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">
+                お問い合わせ
+              </h3>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 本ポリシーに関するお問い合わせは、GitHubリポジトリのIssuesにてお願いします。
               </p>

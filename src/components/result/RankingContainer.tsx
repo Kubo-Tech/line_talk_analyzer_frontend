@@ -78,7 +78,9 @@ export default function RankingContainer({ wordRanking, messageRanking }: Rankin
               key={index}
               onClick={() => setActiveIndex(index)}
               className={`h-2 w-2 rounded-full transition-all ${
-                index === activeIndex ? 'w-8 bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
+                index === activeIndex
+                  ? 'w-8 bg-blue-600 dark:bg-blue-500'
+                  : 'bg-gray-300 dark:bg-gray-600'
               }`}
               aria-label={`${index + 1}番目のランキングへ移動`}
               aria-pressed={index === activeIndex}

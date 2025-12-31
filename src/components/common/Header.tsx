@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="bg-primary text-white shadow-md dark:bg-primary-dark">
+    <header className="bg-primary dark:bg-primary-dark text-white shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link
