@@ -17,6 +17,8 @@ const config: Config = {
         },
         // アプリ独自のカラーパレット
         primary: {
+          DEFAULT: '#22c55e',
+          dark: '#16a34a',
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
