@@ -26,17 +26,19 @@ export default function HelpPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
             <a
               href="#iphone"
-              className="flex items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-6 py-4 transition-all hover:border-blue-400 hover:bg-blue-100"
+              className="flex items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-6 py-4 transition-all hover:border-blue-400 hover:bg-blue-100 dark:border-blue-600 dark:bg-blue-900/30 dark:hover:border-blue-400 dark:hover:bg-blue-800/40"
             >
               <span className="mr-3 text-2xl">📱</span>
-              <span className="font-semibold text-blue-700">iPhoneの場合</span>
+              <span className="font-semibold text-blue-700 dark:text-blue-300">iPhoneの場合</span>
             </a>
             <a
               href="#android"
-              className="flex items-center rounded-lg border-2 border-green-200 bg-green-50 px-6 py-4 transition-all hover:border-green-400 hover:bg-green-100"
+              className="flex items-center rounded-lg border-2 border-green-200 bg-green-50 px-6 py-4 transition-all hover:border-green-400 hover:bg-green-100 dark:border-green-600 dark:bg-green-900/30 dark:hover:border-green-400 dark:hover:bg-green-800/40"
             >
               <span className="mr-3 text-2xl">🤖</span>
-              <span className="font-semibold text-green-700">Androidの場合</span>
+              <span className="font-semibold text-green-700 dark:text-green-300">
+                Androidの場合
+              </span>
             </a>
           </div>
         </div>

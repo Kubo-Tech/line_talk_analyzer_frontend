@@ -12,20 +12,25 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// 初期テーマを取得する関数
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
-
-  const savedTheme = localStorage.getItem('theme') as Theme | null;
-  if (savedTheme) return savedTheme;
-
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  // SSRとクライアント初回レンダリングを一致させるため、常にlightで開始
+  const [theme, setThemeState] = useState<Theme>('light');
 
-  // DOMクラスの同期のみをuseEffectで実行
+  // マウント時に実際のテーマを読み込む（mounted状態は使わない）
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+    const initialTheme = savedTheme || systemTheme;
+
+    // 初期化時のみの setState なので問題なし
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setThemeState(initialTheme);
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+  }, []);
+
+  // テーマ変更時のDOMクラス同期
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
@@ -34,7 +39,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(newTheme);
     if (typeof window !== 'undefined') {
       localStorage.setItem('theme', newTheme);
-      document.documentElement.classList.toggle('dark', newTheme === 'dark');
     }
   };
 
