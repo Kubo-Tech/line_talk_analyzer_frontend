@@ -2,15 +2,37 @@
 
 LINEのトーク履歴を解析し、1年間の流行語大賞を表示するスマホ用Webアプリケーションのフロントエンドです。
 
-## 技術スタック
+## 概要
 
+### 主な機能
+
+- LINEトーク履歴ファイル（.txt形式）のアップロード
+- バックエンドAPIとの連携による解析処理
+- 流行語大賞・流行メッセージのランキング表示
+- ユーザー別ランキングの表示
+- プライバシーポリシーの表示と同意機能
+- トーク履歴生成方法のヘルプページ
+- ダークモード対応
+
+### 各種リンク
+
+- [【流行語大賞】LINEのトーク履歴を解析して自分たちだけの流行語大賞を発表するアプリを作った](https://qiita.com/KuboTech/items/2f337b7dc5b39d88e08b)
+- [バックエンドリポジトリ](https://github.com/Kubo-Tech/line_talk_analyzer_backend)
+
+### 技術スタック
+
+- **言語**: TypeScript 5.x
 - **フレームワーク**: Next.js 16 (App Router)
-- **言語**: TypeScript 5
+- **UIライブラリ**: React 19
 - **スタイリング**: Tailwind CSS 4
-- **アニメーション**: Framer Motion
-- **テスト**: Jest + React Testing Library / Playwright
+- **アニメーション**: Framer Motion 11
+- **HTTP クライアント**: fetch API (Next.js built-in)
+- **テストフレームワーク**: Jest + React Testing Library
+- **E2Eテスト**: Playwright
+- **リンター/フォーマッター**: ESLint, Prettier
+- **パッケージマネージャ**: npm
 
-## 開発環境のセットアップ
+## 環境構築
 
 ### 必要条件
 
@@ -63,14 +85,26 @@ npm run dev
 
 ### バックエンドの起動
 
-開発時は `line_talk_analyzer_backend` を Docker で起動してください：
+開発時は [line_talk_analyzer_backend](https://github.com/Kubo-Tech/line_talk_analyzer_backend) をcloneし、Docker で起動してください。
 
 ```bash
-cd ../line_talk_analyzer_backend
+cd path/to/your/line_talk_analyzer_backend
 docker-compose up
 ```
 
-## 利用可能なスクリプト
+### 環境変数の設定
+
+環境変数の設定は**オプション**です。設定しない場合、以下のデフォルト値が使用されます：
+
+- `NEXT_PUBLIC_API_BASE_URL`: `http://localhost:8001`
+
+デフォルト値を変更したい場合は、`.env.local` ファイルを作成してください（`.env.example`を参考）：
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8001
+```
+
+### 利用可能なスクリプト
 
 | コマンド | 説明 |
 |---------|------|
@@ -87,43 +121,16 @@ docker-compose up
 | `npm run test:e2e` | E2Eテスト実行 |
 | `npm run test:e2e:ui` | E2Eテスト（UIモード） |
 
-## ディレクトリ構成
-
-```
-src/
-├── app/                 # Next.js App Router
-│   ├── layout.tsx       # ルートレイアウト
-│   ├── page.tsx         # トップページ
-│   ├── globals.css      # グローバルスタイル
-│   ├── result/          # 結果表示ページ
-│   ├── help/            # ヘルプページ
-│   └── privacy/         # プライバシーポリシーページ
-├── components/          # 共通コンポーネント
-│   ├── common/          # 汎用コンポーネント
-│   ├── upload/          # アップロード関連
-│   ├── result/          # 結果表示関連
-│   └── animation/       # アニメーション関連
-├── hooks/               # カスタムフック
-├── lib/                 # ユーティリティ
-└── types/               # 型定義
-
-tests/
-├── unit/                # ユニットテスト
-├── integration/         # 統合テスト
-└── e2e/                 # E2Eテスト
-```
-
-## 環境変数
-
-`.env.local` ファイルを作成してください：
-
-```env
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
-```
-
 ## ドキュメント
 
-- [仕様書](./doc/SPEC.md)
+- [API連携](./doc/API.md)
+- [ディレクトリ構成](./doc/DIRECTORY.md)
+- [実装計画](./doc/PLAN.md)
+- [プライバシーポリシーポリシー](./doc/PRIVACY.md)
+- [テスト計画](./doc/TEST.md)
+- [画面設計](./doc/UI.md)
+- [メイン実装履歴](./doc/PR/)
+- [issue対応履歴](./doc/ISSUE/)
 
 ## ライセンス
 
