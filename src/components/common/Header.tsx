@@ -2,12 +2,14 @@
 
 import ThemeToggle from '@/components/common/ThemeToggle';
 import { useFile } from '@/contexts/FileContext';
+import { getDefaultYear } from '@/types/settings';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const { setUploadedFile } = useFile();
   const pathname = usePathname();
+  const defaultYear = getDefaultYear();
 
   const handleHomeClick = async () => {
     // ヘルプページからの遷移の場合はファイルを保持
@@ -28,7 +30,7 @@ export default function Header() {
             className="flex items-center space-x-2 transition-opacity hover:opacity-80"
           >
             <span className="text-2xl font-bold">📊</span>
-            <h1 className="text-xl font-bold">LINE流行語大賞 2025</h1>
+            <h1 className="text-xl font-bold">LINE流行語大賞 {defaultYear}</h1>
           </Link>
           <ThemeToggle />
         </div>

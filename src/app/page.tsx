@@ -11,6 +11,7 @@ import { usePrivacyConsent } from '@/hooks/usePrivacyConsent';
 import { useServerWarmup } from '@/hooks/useServerWarmup';
 import { useSettings } from '@/hooks/useSettings';
 import { ANALYSIS_DEFAULTS } from '@/lib/constants';
+import { getDefaultYear } from '@/types/settings';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -76,10 +77,12 @@ export default function Home() {
   // ファイル選択済み かつ プライバシー同意済みでボタンを有効化
   const isAnalyzeButtonEnabled = uploadedFile !== null && isConsented && !isLoading;
 
+  const defaultYear = getDefaultYear();
+
   return (
     <main className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-4xl font-bold dark:text-gray-100">LINE流行語大賞 2025</h1>
+        <h1 className="mb-2 text-4xl font-bold dark:text-gray-100">LINE流行語大賞 {defaultYear}</h1>
         <p className="text-gray-600 dark:text-gray-400">
           LINEトーク履歴から今年の流行語を分析します
         </p>

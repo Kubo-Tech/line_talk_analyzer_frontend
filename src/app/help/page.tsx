@@ -1,9 +1,12 @@
+import { getDefaultYear } from '@/types/settings';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const defaultYear = getDefaultYear();
+
 export const metadata: Metadata = {
-  title: 'ヘルプ | LINE流行語大賞 2025',
+  title: `ヘルプ | LINE流行語大賞 ${defaultYear}`,
   description: 'LINEトーク履歴の取得方法を詳しく説明します',
 };
 
