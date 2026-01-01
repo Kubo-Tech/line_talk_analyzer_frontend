@@ -1,7 +1,8 @@
 'use client';
 
+import { useFile } from '@/contexts/FileContext';
 import { useFileUpload } from '@/hooks/useFileUpload';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DropZone from './DropZone';
 
 interface FileUploaderProps {
@@ -9,8 +10,16 @@ interface FileUploaderProps {
 }
 
 export default function FileUploader({ onFileChange }: FileUploaderProps) {
-  const { file, error, validateAndSetFile, clearFile, clearError } = useFileUpload();
+  const { uploadedFile } = useFile();
+  const { file, error, validateAndSetFile, clearFile, clearError, setFile } = useFileUpload();
   const [isDragActive, setIsDragActive] = useState(false);
+
+  // FileContextからファイルが復元された場合、ローカルステートを同期
+  useEffect(() => {
+    if (uploadedFile && !file) {
+      setFile(uploadedFile);
+    }
+  }, [uploadedFile, file, setFile]);
 
   const handleFileSelect = (selectedFile: File) => {
     const isValid = validateAndSetFile(selectedFile);
