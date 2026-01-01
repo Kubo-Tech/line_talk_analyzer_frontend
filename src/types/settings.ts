@@ -21,15 +21,23 @@ export interface AnalysisSettings {
 }
 
 /**
- * デフォルト設定を取得する関数
- * 呼び出すたびに現在の日付に基づいて期間を計算する
+ * デフォルト年を取得する関数
+ * 1月の場合は前年、2月以降は現在の年を返す
  */
-export function getDefaultSettings(): AnalysisSettings {
+export function getDefaultYear(): number {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1; // 0-indexed なので +1
   // 1月の場合は前年をデフォルトにする
-  const defaultYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+  return currentMonth === 1 ? currentYear - 1 : currentYear;
+}
+
+/**
+ * デフォルト設定を取得する関数
+ * 呼び出すたびに現在の日付に基づいて期間を計算する
+ */
+export function getDefaultSettings(): AnalysisSettings {
+  const defaultYear = getDefaultYear();
 
   return {
     startDate: `${defaultYear}-01-01`,

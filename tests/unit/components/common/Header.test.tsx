@@ -26,12 +26,17 @@ const renderWithTheme = () => {
 describe('Header', () => {
   beforeEach(() => {
     sessionStorage.clear();
+    jest.useFakeTimers();
     mockUseRouter.mockReturnValue({
       push: jest.fn(),
       replace: jest.fn(),
       prefetch: jest.fn(),
     });
     mockUsePathname.mockReturnValue('/');
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   beforeAll(() => {
@@ -57,10 +62,18 @@ describe('Header', () => {
     expect(screen.getByRole('banner')).toBeInTheDocument();
   });
 
-  it('タイトルが表示される', () => {
+  it('1月の場合はタイトルに前年が表示される', () => {
+    jest.setSystemTime(new Date('2026-01-01'));
     renderWithTheme();
 
     expect(screen.getByText('LINE流行語大賞 2025')).toBeInTheDocument();
+  });
+
+  it('2月の場合はタイトルに現在の年が表示される', () => {
+    jest.setSystemTime(new Date('2026-02-01'));
+    renderWithTheme();
+
+    expect(screen.getByText('LINE流行語大賞 2026')).toBeInTheDocument();
   });
 
   it('ホームへのリンクが正しく設定されている', () => {
@@ -94,6 +107,11 @@ describe('Header', () => {
   });
 
   describe('ファイルクリア機能', () => {
+    beforeEach(() => {
+      // ファイルクリア機能のテストでは実際のタイマーを使用
+      jest.useRealTimers();
+    });
+
     it('トップページからヘッダーをクリックした場合、ファイルがクリアされる', async () => {
       mockUsePathname.mockReturnValue('/');
       
