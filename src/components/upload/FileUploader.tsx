@@ -14,12 +14,23 @@ export default function FileUploader({ onFileChange }: FileUploaderProps) {
   const { file, error, validateAndSetFile, clearFile, clearError, setFile } = useFileUpload();
   const [isDragActive, setIsDragActive] = useState(false);
 
-  // FileContextからファイルが復元された場合、ローカルステートを同期
+  // FileContextとローカルステートを同期
+  // uploadedFileの変更を監視して、ローカルステートを一方向に同期
   useEffect(() => {
-    if (uploadedFile && !file) {
-      setFile(uploadedFile);
+    if (uploadedFile) {
+      // FileContextにファイルがある場合、ローカルにも設定
+      if (file?.name !== uploadedFile.name) {
+        setFile(uploadedFile);
+      }
+    } else {
+      // FileContextがnullの場合、ローカルもクリア
+      if (file !== null) {
+        clearFile();
+      }
     }
-  }, [uploadedFile, file, setFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 意図的にuploadedFileのみを監視（file, setFile, clearFileを含めると無限ループが発生）
+  }, [uploadedFile]);
 
   const handleFileSelect = (selectedFile: File) => {
     const isValid = validateAndSetFile(selectedFile);

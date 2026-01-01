@@ -226,7 +226,8 @@ describe('トップページ - 解析フロー統合テスト', () => {
 
       // 遷移しない
       expect(mockPush).not.toHaveBeenCalled();
-      expect(window.sessionStorage.setItem).not.toHaveBeenCalled();
+      // 解析結果がsessionStorageに保存されていないことを確認
+      expect(window.sessionStorage.getItem('analysisResult')).toBeFalsy();
     });
   });
 

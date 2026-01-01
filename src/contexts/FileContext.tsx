@@ -18,11 +18,11 @@ export function FileProvider({ children }: { children: ReactNode }) {
   const [uploadedFile, setUploadedFileState] = useState<File | null>(null);
   const [lastFileName, setLastFileName] = useState<string | null>(null);
 
-  // クライアントサイドでマウント後にlocalStorageからファイルを復元
+  // クライアントサイドでマウント後にsessionStorageからファイルを復元
   useEffect(() => {
     try {
-      const fileInfo = localStorage.getItem(FILE_INFO_KEY);
-      const fileContent = localStorage.getItem(FILE_CONTENT_KEY);
+      const fileInfo = sessionStorage.getItem(FILE_INFO_KEY);
+      const fileContent = sessionStorage.getItem(FILE_CONTENT_KEY);
 
       if (fileInfo) {
         const { name } = JSON.parse(fileInfo);
@@ -52,31 +52,31 @@ export function FileProvider({ children }: { children: ReactNode }) {
         type: file.type,
         size: file.size,
       };
-      localStorage.setItem(FILE_INFO_KEY, JSON.stringify(fileInfo));
+      sessionStorage.setItem(FILE_INFO_KEY, JSON.stringify(fileInfo));
       setLastFileName(file.name);
 
       // ファイル内容の保存を試みる（小さいファイルのみ）
-      // 5MB以下のファイルのみlocalStorageに保存
+      // 5MB以下のファイルのみsessionStorageに保存
       if (file.size < 5 * 1024 * 1024) {
         // テスト環境でfile.textが存在しない場合を考慮
         if (typeof file.text === 'function') {
           try {
             const content = await file.text();
-            localStorage.setItem(FILE_CONTENT_KEY, content);
+            sessionStorage.setItem(FILE_CONTENT_KEY, content);
           } catch (error) {
             console.warn('ファイル内容の保存に失敗しました（容量制限）:', error);
             // ファイル内容は保存できないが、ファイル情報は保存済み
-            localStorage.removeItem(FILE_CONTENT_KEY);
+            sessionStorage.removeItem(FILE_CONTENT_KEY);
           }
         }
       } else {
         // 大きいファイルは内容を保存しない
-        localStorage.removeItem(FILE_CONTENT_KEY);
+        sessionStorage.removeItem(FILE_CONTENT_KEY);
       }
     } else {
       // ファイルがクリアされた場合
-      localStorage.removeItem(FILE_INFO_KEY);
-      localStorage.removeItem(FILE_CONTENT_KEY);
+      sessionStorage.removeItem(FILE_INFO_KEY);
+      sessionStorage.removeItem(FILE_CONTENT_KEY);
       setLastFileName(null);
     }
   };

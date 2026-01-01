@@ -12,7 +12,7 @@ describe('FileUploader', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('レンダリング', () => {
@@ -150,7 +150,7 @@ describe('FileUploader', () => {
 
   describe('ページ遷移後のファイル復元', () => {
     it('FileContextから復元されたファイルが表示される', async () => {
-      // localStorageにファイル情報を設定
+      // sessionStorageにファイル情報を設定
       const fileInfo = {
         name: 'restored.txt',
         type: 'text/plain',
@@ -158,8 +158,8 @@ describe('FileUploader', () => {
       };
       const fileContent = 'restored content';
 
-      localStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
-      localStorage.setItem('uploaded_file_content', fileContent);
+      sessionStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
+      sessionStorage.setItem('uploaded_file_content', fileContent);
 
       // コンポーネントをレンダリング
       renderWithProvider(<FileUploader />);
@@ -170,14 +170,14 @@ describe('FileUploader', () => {
     });
 
     it('ファイル情報のみの場合は表示されない', async () => {
-      // localStorageにファイル情報のみ設定（内容なし）
+      // sessionStorageにファイル情報のみ設定（内容なし）
       const fileInfo = {
         name: 'nameonly.txt',
         type: 'text/plain',
         size: 1234,
       };
 
-      localStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
+      sessionStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
       // ファイル内容は保存しない
 
       // コンポーネントをレンダリング
