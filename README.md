@@ -16,8 +16,10 @@ LINEのトーク履歴を解析し、1年間の流行語大賞を表示するス
 
 ### 各種リンク
 
+- [LINE流行語大賞](https://line-talk-analyzer-frontend.vercel.app/)
 - [【流行語大賞】LINEのトーク履歴を解析して自分たちだけの流行語大賞を発表するアプリを作った](https://qiita.com/KuboTech/items/2f337b7dc5b39d88e08b)
 - [バックエンドリポジトリ](https://github.com/Kubo-Tech/line_talk_analyzer_backend)
+- [vercelダッシュボード](https://vercel.com/kubo-techs-projects/line-talk-analyzer-frontend)
 
 ### 技術スタック
 
