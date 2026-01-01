@@ -1,4 +1,5 @@
 import { PrivacyPolicyModal } from '@/components/common/PrivacyPolicyModal';
+import { APP_INFO } from '@/lib/constants';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -62,6 +63,18 @@ describe('PrivacyPolicyModal', () => {
     it('お問い合わせセクションが表示される', () => {
       const elements = screen.getAllByText('お問い合わせ', { exact: false });
       expect(elements.length).toBeGreaterThan(0);
+    });
+
+    it('GitHubリポジトリのリンクが表示される', () => {
+      const frontendLink = screen.getByRole('link', { name: 'line_talk_analyzer_frontend' });
+      expect(frontendLink).toHaveAttribute('href', APP_INFO.GITHUB_REPO_FRONTEND);
+      expect(frontendLink).toHaveAttribute('target', '_blank');
+      expect(frontendLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+      const backendLink = screen.getByRole('link', { name: 'line_talk_analyzer_backend' });
+      expect(backendLink).toHaveAttribute('href', APP_INFO.GITHUB_REPO_BACKEND);
+      expect(backendLink).toHaveAttribute('target', '_blank');
+      expect(backendLink).toHaveAttribute('rel', 'noopener noreferrer');
     });
   });
 
