@@ -91,16 +91,8 @@ describe('トップページ - 解析フロー統合テスト', () => {
       prefetch: jest.fn(),
     });
 
-    // sessionStorage のモック
-    Object.defineProperty(window, 'sessionStorage', {
-      value: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-        clear: jest.fn(),
-      },
-      writable: true,
-    });
+    // sessionStorageをクリア
+    sessionStorage.clear();
   });
 
   const mockResponse: AnalysisResponse = {
@@ -188,10 +180,8 @@ describe('トップページ - 解析フロー統合テスト', () => {
 
       // sessionStorageに結果が保存される
       await waitFor(() => {
-        expect(window.sessionStorage.setItem).toHaveBeenCalledWith(
-          'analysisResult',
-          JSON.stringify(mockResponse)
-        );
+        const savedResult = sessionStorage.getItem('analysisResult');
+        expect(savedResult).toBe(JSON.stringify(mockResponse));
       });
 
       // 結果ページへ遷移
