@@ -10,7 +10,7 @@ interface FileUploaderProps {
 }
 
 export default function FileUploader({ onFileChange }: FileUploaderProps) {
-  const { uploadedFile } = useFile();
+  const { uploadedFile, setUploadedFile } = useFile();
   const { file, error, validateAndSetFile, clearFile, clearError, setFile } = useFileUpload();
   const [isDragActive, setIsDragActive] = useState(false);
 
@@ -30,8 +30,10 @@ export default function FileUploader({ onFileChange }: FileUploaderProps) {
     }
   };
 
-  const handleRemoveFile = () => {
+  const handleRemoveFile = async () => {
     clearFile();
+    // FileContextもクリアして、再同期を防ぐ
+    await setUploadedFile(null);
     onFileChange?.(null);
   };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 interface FileContextType {
   uploadedFile: File | null;
@@ -14,35 +14,33 @@ const FILE_INFO_KEY = 'uploaded_file_info';
 const FILE_CONTENT_KEY = 'uploaded_file_content';
 
 export function FileProvider({ children }: { children: ReactNode }) {
-  // 初期化時にlocalStorageからファイルを復元
-  const [uploadedFile, setUploadedFileState] = useState<File | null>(() => {
+  // 初期状態は常にnull（SSRとの一貫性のため）
+  const [uploadedFile, setUploadedFileState] = useState<File | null>(null);
+  const [lastFileName, setLastFileName] = useState<string | null>(null);
+
+  // クライアントサイドでマウント後にlocalStorageからファイルを復元
+  useEffect(() => {
     try {
       const fileInfo = localStorage.getItem(FILE_INFO_KEY);
       const fileContent = localStorage.getItem(FILE_CONTENT_KEY);
 
-      if (fileInfo && fileContent) {
-        const { name, type } = JSON.parse(fileInfo);
-        const blob = new Blob([fileContent], { type });
-        return new File([blob], name, { type });
+      if (fileInfo) {
+        const { name } = JSON.parse(fileInfo);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLastFileName(name);
+
+        // ファイル内容がある場合は復元
+        if (fileContent) {
+          const { type } = JSON.parse(fileInfo);
+          const blob = new Blob([fileContent], { type });
+          const file = new File([blob], name, { type });
+          setUploadedFileState(file);
+        }
       }
     } catch (error) {
       console.error('ファイル情報の読み込みに失敗しました:', error);
     }
-    return null;
-  });
-
-  const [lastFileName, setLastFileName] = useState<string | null>(() => {
-    try {
-      const fileInfo = localStorage.getItem(FILE_INFO_KEY);
-      if (fileInfo) {
-        const { name } = JSON.parse(fileInfo);
-        return name;
-      }
-    } catch {
-      // エラーは既に上でログ出力済み
-    }
-    return null;
-  });
+  }, []);
 
   const setUploadedFile = async (file: File | null) => {
     setUploadedFileState(file);

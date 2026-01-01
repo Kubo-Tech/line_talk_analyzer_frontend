@@ -165,11 +165,14 @@ describe('FileContext', () => {
       );
       const { result } = renderHook(() => useFile(), { wrapper });
 
-      // 少し待って状態が変わらないことを確認
-      await new Promise((resolve) => setTimeout(resolve, 50));
-
-      expect(result.current.uploadedFile).toBeNull();
-      expect(result.current.lastFileName).toBeNull();
+      // useEffectが実行され、状態が変わらないことを確認
+      await waitFor(
+        () => {
+          expect(result.current.uploadedFile).toBeNull();
+          expect(result.current.lastFileName).toBeNull();
+        },
+        { timeout: 100 }
+      );
     });
   });
 

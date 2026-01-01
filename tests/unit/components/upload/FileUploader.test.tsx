@@ -1,7 +1,7 @@
 import FileUploader from '@/components/upload/FileUploader';
 import { FileProvider } from '@/contexts/FileContext';
 import { ERROR_MESSAGES } from '@/lib/constants';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const renderWithProvider = (ui: React.ReactElement) => {
   return render(<FileProvider>{ui}</FileProvider>);
@@ -97,7 +97,7 @@ describe('FileUploader', () => {
   });
 
   describe('ファイル削除', () => {
-    it('ファイルを削除できる', () => {
+    it('ファイルを削除できる', async () => {
       const { container } = renderWithProvider(<FileUploader onFileChange={mockOnFileChange} />);
       const file = new File(['test content'], 'test.txt', {
         type: 'text/plain',
@@ -109,7 +109,9 @@ describe('FileUploader', () => {
       expect(screen.getByText('ファイル選択済み')).toBeInTheDocument();
 
       const deleteButton = screen.getByRole('button', { name: 'ファイルを削除' });
-      fireEvent.click(deleteButton);
+      await act(async () => {
+        fireEvent.click(deleteButton);
+      });
 
       expect(screen.queryByText('ファイル選択済み')).not.toBeInTheDocument();
       expect(mockOnFileChange).toHaveBeenCalledWith(null);
@@ -181,10 +183,13 @@ describe('FileUploader', () => {
       // コンポーネントをレンダリング
       renderWithProvider(<FileUploader />);
 
+      // useEffectが実行され、ドロップゾーンが表示されることを確認
+      await waitFor(() => {
+        expect(screen.getByText('ここにファイルをドロップ')).toBeInTheDocument();
+      });
+
       // ファイル選択済みが表示されないことを確認
-      await new Promise((resolve) => setTimeout(resolve, 100));
       expect(screen.queryByText('ファイル選択済み')).not.toBeInTheDocument();
-      expect(screen.getByText('ここにファイルをドロップ')).toBeInTheDocument();
     });
   });
 });

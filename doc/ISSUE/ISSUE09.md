@@ -48,10 +48,14 @@
 
 #### 変更点
 
-**依存配列の最適化**
+**SSR対応とハイドレーション問題の解決**
 
 ```tsx
 // 修正前
+const [uploadedFile, setUploadedFileState] = useState<File | null>(null);
+const [lastFileName, setLastFileName] = useState<string | null>(null);
+const [isInitialized, setIsInitialized] = useState(false);
+
 useEffect(() => {
   if (isInitialized) return;
   // ... ファイル復元処理
@@ -59,15 +63,37 @@ useEffect(() => {
 }, [isInitialized]);
 
 // 修正後
+const [uploadedFile, setUploadedFileState] = useState<File | null>(null);
+const [lastFileName, setLastFileName] = useState<string | null>(null);
+
+// クライアントサイドでマウント後にlocalStorageからファイルを復元
 useEffect(() => {
-  // ... ファイル復元処理
-}, []); // 空配列でマウント時に必ず1回実行
+  try {
+    const fileInfo = localStorage.getItem(FILE_INFO_KEY);
+    const fileContent = localStorage.getItem(FILE_CONTENT_KEY);
+
+    if (fileInfo) {
+      const { name } = JSON.parse(fileInfo);
+      setLastFileName(name);
+
+      if (fileContent) {
+        const { type } = JSON.parse(fileInfo);
+        const blob = new Blob([fileContent], { type });
+        const file = new File([blob], name, { type });
+        setUploadedFileState(file);
+      }
+    }
+  } catch (error) {
+    console.error('ファイル情報の読み込みに失敗しました:', error);
+  }
+}, []);
 ```
 
 **変更理由**:
-- `isInitialized`状態を削除し、依存配列を空配列`[]`に変更
-- コンポーネントがマウントされるたびに確実に復元処理が実行される
-- ページ遷移後の再マウント時も正しく動作する
+- **初期状態を常に`null`に統一**: サーバーサイドとクライアントサイドで同じ初期状態を保証し、ハイドレーションミスマッチを防止
+- **`useEffect`でファイル復元**: クライアントサイドでマウント後にのみ`localStorage`から復元（`useEffect`はサーバーサイドでは実行されない）
+- **`isInitialized`状態を削除**: 空配列の依存配列により、マウント時に1回のみ実行されることが保証される
+- **SSR完全対応**: Next.jsのSSR/ハイドレーション処理と完全に互換性あり
 
 ### 2. FileUploader コンポーネントの同期処理追加
 
@@ -208,25 +234,52 @@ describe('ページ遷移後のファイル復元', () => {
 
 ```tsx
 // FileContext (親コンテキスト)
-┌─────────────────────────────┐
-│ useEffect(() => {            │
-│   // localStorage から復元   │
-│   const file = restore();    │
-│   setUploadedFile(file);     │
-│ }, []);                      │
-└─────────────────────────────┘
+┌─────────────────────────────────────┐
+│ // 初期状態はサーバーと一致          │
+│ const [uploadedFile, setState] =    │
+│   useState<File | null>(null);      │
+│                                     │
+│ // マウント後にクライアントで復元    │
+│ useEffect(() => {                   │
+│   const file = restoreFromStorage();│
+│   setState(file);                   │
+│ }, []);                             │
+└─────────────────────────────────────┘
          ↓
          uploadedFile 更新
          ↓
 // FileUploader (子コンポーネント)
+┌─────────────────────────────────────┐
+│ const { uploadedFile } = useFile(); │
+│                                     │
+│ useEffect(() => {                   │
+│   if (uploadedFile && !file)        │
+│     setFile(uploadedFile);          │
+│ }, [uploadedFile, file]);           │
+└─────────────────────────────────────┘
+```
+
+### SSR/ハイドレーションの動作フロー
+
+```
+サーバーサイドレンダリング:
 ┌─────────────────────────────┐
-│ const { uploadedFile } =     │
-│   useFile();                 │
-│                              │
-│ useEffect(() => {            │
-│   if (uploadedFile && !file) │
-│     setFile(uploadedFile);   │
-│ }, [uploadedFile, file]);    │
+│ FileProvider初期化           │
+│ uploadedFile = null         │
+│ (useEffectは実行されない)    │
+└─────────────────────────────┘
+         ↓
+クライアントハイドレーション:
+┌─────────────────────────────┐
+│ 初期状態: uploadedFile = null│
+│ (サーバーと一致 ✓)           │
+└─────────────────────────────┘
+         ↓
+useEffect実行（マウント後）:
+┌─────────────────────────────┐
+│ localStorageから復元         │
+│ uploadedFile = File          │
+│ UI更新: "ファイル選択済み"   │
 └─────────────────────────────┘
 ```
 
@@ -262,8 +315,10 @@ Tests:       20 passed, 20 total
 ### 変更されたファイル
 
 1. [src/contexts/FileContext.tsx](../../src/contexts/FileContext.tsx)
-   - `useEffect`の依存配列を最適化
+   - 初期状態を常に`null`に変更（SSR対応）
+   - `useEffect`でクライアントサイドのみファイル復元
    - `isInitialized`状態を削除
+   - ハイドレーションミスマッチを解消
 
 2. [src/components/upload/FileUploader.tsx](../../src/components/upload/FileUploader.tsx)
    - `useFile`フックの追加
@@ -345,10 +400,19 @@ Tests:       20 passed, 20 total
 - ✅ 「ファイル選択済み」の表示が正しく維持される
 - ✅ ユーザーが再度ファイルを選択する必要がない
 - ✅ 内部データとUI表示の一貫性を確保
+- ✅ SSR/ハイドレーション完全対応（Next.js互換）
+- ✅ サーバーとクライアントの初期状態を統一
 - ✅ 包括的なテストカバレッジ
+
+**技術的な特徴**:
+- Next.jsのSSR環境で安全に動作
+- ハイドレーションミスマッチを完全に回避
+- クライアントサイドでのみ`localStorage`にアクセス
+- パフォーマンスへの影響を最小限に抑制
 
 **ユーザーへのメリット**:
 - より直感的で自然な操作フロー
 - ヘルプページへの遷移がストレスフリー
 - ファイル再選択の手間が不要
 - 安心して画面遷移できる
+- ページリロード時もファイルが保持される
