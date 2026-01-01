@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 describe('FileContext', () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('初期状態', () => {
@@ -36,7 +36,7 @@ describe('FileContext', () => {
       expect(result.current.lastFileName).toBe('test.txt');
     });
 
-    it('ファイル情報がlocalStorageに保存される', async () => {
+    it('ファイル情報がsessionStorageに保存される', async () => {
       const wrapper = ({ children }: { children: ReactNode }) => (
         <FileProvider>{children}</FileProvider>
       );
@@ -48,7 +48,7 @@ describe('FileContext', () => {
         await result.current.setUploadedFile(file);
       });
 
-      const storedInfo = localStorage.getItem('uploaded_file_info');
+      const storedInfo = sessionStorage.getItem('uploaded_file_info');
       expect(storedInfo).toBeTruthy();
 
       const parsedInfo = JSON.parse(storedInfo!);
@@ -56,7 +56,7 @@ describe('FileContext', () => {
       expect(parsedInfo.type).toBe('text/plain');
     });
 
-    it('小さいファイルはlocalStorageに内容も保存される', async () => {
+    it('小さいファイルはsessionStorageに内容も保存される', async () => {
       const wrapper = ({ children }: { children: ReactNode }) => (
         <FileProvider>{children}</FileProvider>
       );
@@ -76,7 +76,7 @@ describe('FileContext', () => {
         expect(mockText).toHaveBeenCalled();
       });
 
-      const storedContent = localStorage.getItem('uploaded_file_content');
+      const storedContent = sessionStorage.getItem('uploaded_file_content');
       expect(storedContent).toBe('small content');
     });
 
@@ -100,13 +100,13 @@ describe('FileContext', () => {
 
       expect(result.current.uploadedFile).toBeNull();
       expect(result.current.lastFileName).toBeNull();
-      expect(localStorage.getItem('uploaded_file_info')).toBeNull();
-      expect(localStorage.getItem('uploaded_file_content')).toBeNull();
+      expect(sessionStorage.getItem('uploaded_file_info')).toBeNull();
+      expect(sessionStorage.getItem('uploaded_file_content')).toBeNull();
     });
   });
 
   describe('ファイルの復元', () => {
-    it('localStorageからファイル情報が復元される', async () => {
+    it('sessionStorageからファイル情報が復元される', async () => {
       const fileInfo = {
         name: 'restored.txt',
         type: 'text/plain',
@@ -114,8 +114,8 @@ describe('FileContext', () => {
       };
       const fileContent = 'restored content';
 
-      localStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
-      localStorage.setItem('uploaded_file_content', fileContent);
+      sessionStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
+      sessionStorage.setItem('uploaded_file_content', fileContent);
 
       const wrapper = ({ children }: { children: ReactNode }) => (
         <FileProvider>{children}</FileProvider>
@@ -134,14 +134,14 @@ describe('FileContext', () => {
       expect(result.current.uploadedFile?.size).toBeGreaterThan(0);
     });
 
-    it('localStorageにファイル情報のみの場合、ファイル名だけ復元される', async () => {
+    it('sessionStorageにファイル情報のみの場合、ファイル名だけ復元される', async () => {
       const fileInfo = {
         name: 'nameonly.txt',
         type: 'text/plain',
         size: 1234,
       };
 
-      localStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
+      sessionStorage.setItem('uploaded_file_info', JSON.stringify(fileInfo));
       // ファイル内容は保存しない
 
       const wrapper = ({ children }: { children: ReactNode }) => (
@@ -159,7 +159,7 @@ describe('FileContext', () => {
       expect(result.current.lastFileName).toBe('nameonly.txt');
     });
 
-    it('localStorageが空の場合は初期状態のまま', async () => {
+    it('sessionStorageが空の場合は初期状態のまま', async () => {
       const wrapper = ({ children }: { children: ReactNode }) => (
         <FileProvider>{children}</FileProvider>
       );

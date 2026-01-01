@@ -22,7 +22,7 @@ export default function ResultPage() {
   const [hasSettingsChanged, setHasSettingsChanged] = useState(false);
   const router = useRouter();
   const { settings, isLoaded, updateSettings } = useSettings();
-  const { uploadedFile } = useFile();
+  const { uploadedFile, setUploadedFile } = useFile();
   const { isLoading, analyze } = useAnalyze();
 
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function ResultPage() {
 
       {/* アクション */}
       <section className="space-y-4">
-        <Link href="/" className="block">
+        <Link href="/" className="block" onClick={async () => await setUploadedFile(null)}>
           <Button variant="primary" className="w-full">
             別のファイルを解析
           </Button>
