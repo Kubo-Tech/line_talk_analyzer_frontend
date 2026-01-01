@@ -34,7 +34,12 @@ export default function Footer() {
             </a>
           </div>
           <p className="text-center text-xs text-gray-500 dark:text-gray-500">
-            &copy; {currentYear} LINE Talk Analyzer. All rights reserved.
+            &copy; {APP_INFO.YEAR}
+            {currentYear > APP_INFO.YEAR ? `-${currentYear}` : ''} LINE Talk Analyzer. All rights
+            reserved.
+          </p>
+          <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+            Version {APP_INFO.VERSION}
           </p>
           <p className="max-w-md text-center text-xs text-gray-500 dark:text-gray-500">
             本サービスはLINE株式会社およびLINEヤフー株式会社とは一切関係がありません。

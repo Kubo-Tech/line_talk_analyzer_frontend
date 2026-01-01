@@ -36,9 +36,18 @@ describe('Footer', () => {
     render(<Footer />);
 
     const currentYear = new Date().getFullYear();
-    expect(
-      screen.getByText(`© ${currentYear} LINE Talk Analyzer. All rights reserved.`)
-    ).toBeInTheDocument();
+    const expectedCopyright =
+      currentYear > APP_INFO.YEAR
+        ? `© ${APP_INFO.YEAR}-${currentYear} LINE Talk Analyzer. All rights reserved.`
+        : `© ${APP_INFO.YEAR} LINE Talk Analyzer. All rights reserved.`;
+
+    expect(screen.getByText(expectedCopyright)).toBeInTheDocument();
+  });
+
+  it('バージョン情報が表示される', () => {
+    render(<Footer />);
+
+    expect(screen.getByText(`Version ${APP_INFO.VERSION}`)).toBeInTheDocument();
   });
 
   it('免責事項が表示される', () => {
