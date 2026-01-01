@@ -31,6 +31,10 @@ export default defineConfig({
     // ベースURL
     baseURL: 'http://localhost:3000',
 
+    // タイムアウト設定
+    actionTimeout: 10000, // 10秒
+    navigationTimeout: 15000, // 15秒
+
     // スクリーンショット設定
     screenshot: 'only-on-failure',
 
@@ -42,19 +46,21 @@ export default defineConfig({
   },
 
   // プロジェクト（ブラウザ）設定
+  // Chromiumのみ使用（CIとローカルでの高速化のため）
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 13'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
+    // Mobile SafariとMobile Chromeは必要に応じてコメント解除
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 13'] },
+    // },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
   ],
 
   // 開発サーバーの設定
