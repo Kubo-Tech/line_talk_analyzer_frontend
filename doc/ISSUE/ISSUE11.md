@@ -140,6 +140,23 @@ useEffect(() => {
 }, [isConsented]);
 ```
 
+**4. ESLintルールの無効化**
+
+useEffect内でsetStateを使用する実装に対して、ESLintの`react-hooks/set-state-in-effect`ルールが警告を出すため、該当箇所で無効化しています：
+
+```tsx
+if (storedConsent === 'true') {
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorageとの同期のため必要
+  setIsConsented(true);
+}
+```
+
+**無効化の正当性**:
+- このケースは「外部システム（sessionStorage）との同期」という正当なユースケース
+- SSRとの互換性を保つため、useEffect内での読み込みが必須
+- パフォーマンスへの影響は最小限（マウント時の一度のみ実行）
+- 代替手段（lazy initializer）はHydrationエラーを引き起こす
+
 ### 2. テストの更新
 
 **ファイル**: [tests/unit/hooks/usePrivacyConsent.test.ts](../../tests/unit/hooks/usePrivacyConsent.test.ts)

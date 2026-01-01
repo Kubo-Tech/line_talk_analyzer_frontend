@@ -24,6 +24,7 @@ export function usePrivacyConsent() {
     const storedReadPolicy = sessionStorage.getItem(READ_POLICY_STORAGE_KEY);
 
     if (storedConsent === 'true') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorageとの同期のため必要
       setIsConsented(true);
     }
     if (storedReadPolicy === 'true') {
