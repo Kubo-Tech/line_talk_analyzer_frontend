@@ -128,7 +128,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8001
 - [API連携](./doc/API.md)
 - [ディレクトリ構成](./doc/DIRECTORY.md)
 - [実装計画](./doc/PLAN.md)
-- [プライバシーポリシーポリシー](./doc/PRIVACY.md)
+- [プライバシーポリシー](./doc/PRIVACY.md)
 - [テスト計画](./doc/TEST.md)
 - [画面設計](./doc/UI.md)
 - [メイン実装履歴](./doc/PR/)
