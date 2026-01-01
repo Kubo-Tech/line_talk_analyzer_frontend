@@ -112,13 +112,26 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install MeCab and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mecab libmecab-dev mecab-ipadic-utf8
+          # Install mecab-ipadic-neologd
+          git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp/neologd
+          sudo /tmp/neologd/bin/install-mecab-ipadic-neologd -n -y
+          # Verify installation
+          mecab -v
+
+      - name: Install Python dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
       - name: Start backend API server
         working-directory: backend
         run: |
-          pip install -r requirements.txt
           nohup uvicorn app.main:app --host 0.0.0.0 --port 8001 &
-          sleep 5
-          curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:8001/health || echo "Backend health check failed"
+          sleep 10
+          curl --retry 10 --retry-delay 3 --retry-connrefused http://localhost:8001/health || echo "Backend health check failed"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
