@@ -28,7 +28,9 @@ export default function FileUploader({ onFileChange }: FileUploaderProps) {
         clearFile();
       }
     }
-  }, [uploadedFile]); // uploadedFileのみを監視
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 意図的にuploadedFileのみを監視（file, setFile, clearFileを含めると無限ループが発生）
+  }, [uploadedFile]);
 
   const handleFileSelect = (selectedFile: File) => {
     const isValid = validateAndSetFile(selectedFile);
