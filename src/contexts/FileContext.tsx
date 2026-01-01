@@ -14,24 +14,24 @@ const FILE_INFO_KEY = 'uploaded_file_info';
 const FILE_CONTENT_KEY = 'uploaded_file_content';
 
 export function FileProvider({ children }: { children: ReactNode }) {
+  // 初期状態は常にnull（SSRとの一貫性のため）
   const [uploadedFile, setUploadedFileState] = useState<File | null>(null);
   const [lastFileName, setLastFileName] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
 
-  // 初回マウント時にlocalStorageからファイルを復元
+  // クライアントサイドでマウント後にlocalStorageからファイルを復元
   useEffect(() => {
-    if (isInitialized) return;
-
     try {
       const fileInfo = localStorage.getItem(FILE_INFO_KEY);
       const fileContent = localStorage.getItem(FILE_CONTENT_KEY);
 
       if (fileInfo) {
-        const { name, type } = JSON.parse(fileInfo);
+        const { name } = JSON.parse(fileInfo);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLastFileName(name);
 
         // ファイル内容がある場合は復元
         if (fileContent) {
+          const { type } = JSON.parse(fileInfo);
           const blob = new Blob([fileContent], { type });
           const file = new File([blob], name, { type });
           setUploadedFileState(file);
@@ -39,10 +39,8 @@ export function FileProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       console.error('ファイル情報の読み込みに失敗しました:', error);
-    } finally {
-      setIsInitialized(true);
     }
-  }, [isInitialized]);
+  }, []);
 
   const setUploadedFile = async (file: File | null) => {
     setUploadedFileState(file);
