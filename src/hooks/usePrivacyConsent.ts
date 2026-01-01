@@ -34,12 +34,22 @@ export function usePrivacyConsent() {
 
   // isConsentedが変更されたらsessionStorageに保存
   useEffect(() => {
-    sessionStorage.setItem(CONSENT_STORAGE_KEY, String(isConsented));
+    const storedConsent = sessionStorage.getItem(CONSENT_STORAGE_KEY);
+    const nextConsentValue = String(isConsented);
+
+    if (storedConsent !== nextConsentValue) {
+      sessionStorage.setItem(CONSENT_STORAGE_KEY, nextConsentValue);
+    }
   }, [isConsented]);
 
   // hasReadPolicyが変更されたらsessionStorageに保存
   useEffect(() => {
-    sessionStorage.setItem(READ_POLICY_STORAGE_KEY, String(hasReadPolicy));
+    const storedReadPolicy = sessionStorage.getItem(READ_POLICY_STORAGE_KEY);
+    const nextReadPolicyValue = String(hasReadPolicy);
+
+    if (storedReadPolicy !== nextReadPolicyValue) {
+      sessionStorage.setItem(READ_POLICY_STORAGE_KEY, nextReadPolicyValue);
+    }
   }, [hasReadPolicy]);
 
   /**
