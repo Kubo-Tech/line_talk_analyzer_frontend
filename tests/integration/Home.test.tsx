@@ -33,6 +33,8 @@ jest.mock('@/lib/api', () => ({
 describe('Home (トップページ)', () => {
   beforeEach(() => {
     mockPush.mockClear();
+    // sessionStorageをクリア
+    sessionStorage.clear();
   });
 
   describe('基本レンダリング', () => {
