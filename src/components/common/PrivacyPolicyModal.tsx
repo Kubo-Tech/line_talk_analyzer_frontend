@@ -1,5 +1,7 @@
 'use client';
 
+import { APP_INFO } from '@/lib/constants';
+
 interface PrivacyPolicyModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -301,7 +303,7 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                     <tr>
                       <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                         <a
-                          href="https://github.com/Kubo-Tech/line_talk_analyzer_frontend"
+                          href={APP_INFO.GITHUB_REPO_FRONTEND}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline dark:text-blue-400"
@@ -316,7 +318,7 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                     <tr>
                       <td className="border border-gray-300 px-3 py-2 dark:border-gray-600 dark:text-gray-300">
                         <a
-                          href="https://github.com/Kubo-Tech/line_talk_analyzer_backend"
+                          href={APP_INFO.GITHUB_REPO_BACKEND}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline dark:text-blue-400"

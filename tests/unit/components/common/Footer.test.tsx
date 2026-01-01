@@ -1,4 +1,5 @@
 import Footer from '@/components/common/Footer';
+import { APP_INFO } from '@/lib/constants';
 import { render, screen } from '@testing-library/react';
 
 describe('Footer', () => {
@@ -21,18 +22,12 @@ describe('Footer', () => {
     render(<Footer />);
 
     const githubFrontendLink = screen.getByRole('link', { name: 'GitHub (Frontend)' });
-    expect(githubFrontendLink).toHaveAttribute(
-      'href',
-      'https://github.com/Kubo-Tech/line_talk_analyzer_frontend'
-    );
+    expect(githubFrontendLink).toHaveAttribute('href', APP_INFO.GITHUB_REPO_FRONTEND);
     expect(githubFrontendLink).toHaveAttribute('target', '_blank');
     expect(githubFrontendLink).toHaveAttribute('rel', 'noopener noreferrer');
 
     const githubBackendLink = screen.getByRole('link', { name: 'GitHub (Backend)' });
-    expect(githubBackendLink).toHaveAttribute(
-      'href',
-      'https://github.com/Kubo-Tech/line_talk_analyzer_backend'
-    );
+    expect(githubBackendLink).toHaveAttribute('href', APP_INFO.GITHUB_REPO_BACKEND);
     expect(githubBackendLink).toHaveAttribute('target', '_blank');
     expect(githubBackendLink).toHaveAttribute('rel', 'noopener noreferrer');
   });

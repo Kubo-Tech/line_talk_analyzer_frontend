@@ -1,3 +1,5 @@
+import { APP_INFO } from '@/lib/constants';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -15,7 +17,7 @@ export default function Footer() {
               Qiita
             </a>
             <a
-              href="https://github.com/Kubo-Tech/line_talk_analyzer_frontend"
+              href={APP_INFO.GITHUB_REPO_FRONTEND}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
@@ -23,7 +25,7 @@ export default function Footer() {
               GitHub (Frontend)
             </a>
             <a
-              href="https://github.com/Kubo-Tech/line_talk_analyzer_backend"
+              href={APP_INFO.GITHUB_REPO_BACKEND}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary dark:hover:text-primary text-gray-600 transition-colors dark:text-gray-400"
