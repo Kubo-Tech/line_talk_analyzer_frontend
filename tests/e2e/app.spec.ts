@@ -64,82 +64,14 @@ test.describe('E2E: アプリケーション全体のフロー', () => {
       // 解析ボタンが有効化される
       await expect(analyzeButton).toBeEnabled();
 
-      // API呼び出しをモック
-      await page.route('**/api/analyze', async (route) => {
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            status: 'success',
-            data: {
-              analysis_period: {
-                start_date: '2024-01-01',
-                end_date: '2024-12-31',
-              },
-              total_messages: 1000,
-              total_users: 3,
-              morphological_analysis: {
-                top_words: Array.from({ length: 10 }, (_, i) => ({
-                  word: `テストワード${i + 1}`,
-                  count: 100 - i * 5,
-                  part_of_speech: '名詞',
-                })),
-              },
-              full_message_analysis: {
-                top_messages: Array.from({ length: 10 }, (_, i) => ({
-                  message: `テストメッセージ${i + 1}`,
-                  count: 50 - i * 2,
-                })),
-              },
-              user_analysis: {
-                word_analysis: [
-                  {
-                    user: 'ユーザーA',
-                    top_words: Array.from({ length: 10 }, (_, i) => ({
-                      word: `ワードA${i + 1}`,
-                      count: 80 - i * 4,
-                      part_of_speech: '名詞',
-                    })),
-                  },
-                  {
-                    user: 'ユーザーB',
-                    top_words: Array.from({ length: 10 }, (_, i) => ({
-                      word: `ワードB${i + 1}`,
-                      count: 70 - i * 4,
-                      part_of_speech: '名詞',
-                    })),
-                  },
-                ],
-                message_analysis: [
-                  {
-                    user: 'ユーザーA',
-                    top_messages: Array.from({ length: 10 }, (_, i) => ({
-                      message: `メッセージA${i + 1}`,
-                      count: 40 - i * 2,
-                    })),
-                  },
-                  {
-                    user: 'ユーザーB',
-                    top_messages: Array.from({ length: 10 }, (_, i) => ({
-                      message: `メッセージB${i + 1}`,
-                      count: 35 - i * 2,
-                    })),
-                  },
-                ],
-              },
-            },
-          }),
-        });
-      });
-
-      // 解析ボタンをクリック
+      // 解析ボタンをクリック（実際のバックエンドAPI /api/v1/analyze を呼び出します）
       await analyzeButton.click();
 
       // ローディング表示の確認
       await expect(page.getByRole('button', { name: /解析中/ })).toBeVisible();
 
       // 結果ページへの遷移を待つ
-      await page.waitForURL('**/result', { timeout: 10000 });
+      await page.waitForURL('**/result');
 
       // 結果ページの内容を確認
       await expect(page.getByText(/解析情報/)).toBeVisible();
@@ -237,8 +169,8 @@ test.describe('E2E: アプリケーション全体のフロー', () => {
       const analyzeButton = page.getByRole('button', { name: /解析を開始する/ });
       await analyzeButton.click();
 
-      // エラーメッセージが表示される（タイムアウト延長）
-      await expect(page.getByText('エラーが発生しました')).toBeVisible({ timeout: 10000 });
+      // エラーメッセージが表示される
+      await expect(page.getByText('エラーが発生しました')).toBeVisible();
       await expect(page.getByText('ファイルの形式が無効です')).toBeVisible();
 
       // 結果ページへ遷移しない
@@ -262,8 +194,8 @@ test.describe('E2E: アプリケーション全体のフロー', () => {
       const analyzeButton = page.getByRole('button', { name: /解析を開始する/ });
       await analyzeButton.click();
 
-      // エラーメッセージが表示される（タイムアウト延長）
-      await expect(page.getByText('エラーが発生しました')).toBeVisible({ timeout: 10000 });
+      // エラーメッセージが表示される
+      await expect(page.getByText('エラーが発生しました')).toBeVisible();
 
       // 結果ページへ遷移しない
       await expect(page).toHaveURL('/');
@@ -295,13 +227,13 @@ test.describe('E2E: アプリケーション全体のフロー', () => {
       // トップページへリダイレクト（または適切なエラーメッセージ）
       // 実装によってはトップページへ自動遷移、またはエラーメッセージ表示
       // ここでは現在の実装を確認
-      const hasResultData = await page.locator('text=解析結果').isVisible({ timeout: 2000 }).catch(() => false);
+      const hasResultData = await page.locator('text=解析結果').isVisible().catch(() => false);
 
       if (!hasResultData) {
         // データがない場合の適切な処理を確認
         // 例: トップページへのリンクが表示される、または自動遷移
         const backLink = page.getByRole('link', { name: /トップ/ });
-        if (await backLink.isVisible({ timeout: 2000 }).catch(() => false)) {
+        if (await backLink.isVisible().catch(() => false)) {
           await expect(backLink).toBeVisible();
         }
       }
